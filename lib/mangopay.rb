@@ -62,7 +62,6 @@ module MangoPay
       request.body = MangoPay::JSON.dump(params)
       http.request request
     end
-    puts res.body
     puts MangoPay::JSON.load(res.body)
     MangoPay::JSON.load(res.body)
   end
