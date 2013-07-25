@@ -1,8 +1,23 @@
 shared_context 'clients' do
 
+  let(:client_id) {
+    SecureRandom.hex(10)
+  }
+
+  let(:wrong_client_id) {
+   SecureRandom.hex(20)
+  }
+
+  let(:wrong_client) {
+    MangoPay::Client.create({
+      'ClientID' => wrong_client_id,
+      'Name' => 'What a nice name'
+    })
+  }
+
   let(:new_client) {
     MangoPay::Client.create({
-      'ClientID' => MangoPay.configuration.client_id,
+      'ClientID' => client_id,
       'Name' => 'What a nice name'
     })
   }
