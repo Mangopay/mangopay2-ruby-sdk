@@ -1,5 +1,4 @@
 require 'net/http'
-require 'rest_client'
 require 'multi_json'
 
 # Version

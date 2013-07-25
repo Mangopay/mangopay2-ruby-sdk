@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
   s.required_ruby_version = '>= 1.9.2'
 
   s.add_dependency('multi_json', '~> 1.7.7')
-  s.add_dependency('rest-client', '~> 1.6.7')
 
   s.add_development_dependency('rake', '~> 10.1.0')
   s.add_development_dependency('rspec', '~> 2.14.1')
