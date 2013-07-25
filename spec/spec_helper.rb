@@ -1,4 +1,5 @@
 require_relative '../lib/mangopay'
+require_relative './lib/mangopay/shared_resources'
 
 MangoPay.configure do |c|
   c.preproduction = true

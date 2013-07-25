@@ -64,11 +64,6 @@ module MangoPay
     puts res.body
     puts MangoPay::JSON.load(res.body)
     MangoPay::JSON.load(res.body)
-    #   # RestClient::Request.execute(opts)
-    # rescue RestClient::ExceptionWithResponse => e
-    #   puts e.http_code
-    #   puts e.http_body
-    # end
   end
 
   def self.user_agent

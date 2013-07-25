@@ -26,8 +26,8 @@ module MangoPay
 
     module Fetch
       module ClassMethods
-        def fetch(id = nil)
-          response = MangoPay.request(:get, url(id))
+        def fetch(id = nil, filters = {})
+          response = MangoPay.request(:get, url(id), filters)
         end
       end
 

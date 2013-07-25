@@ -1,40 +1,7 @@
 require_relative '../../spec_helper'
 
 describe MangoPay::User do
-
-  let(:new_natural_user) {
-    MangoPay::NaturalUser.create({
-      Tag: 'test',
-      Email: 'my@email.com',
-      FirstName: 'John',
-      LastName: 'Doe',
-      Address: 'Here',
-      Birthday: '',
-      Birthplace: 'Paris',
-      Nationality: 'FR',
-      CountryOfResidence: 'FR',
-      Occupation: 'Worker',
-      IncomeRange: 1
-    })
-  }
-
-  let(:new_legal_user) {
-    MangoPay::LegalUser.create({
-      Name: 'Super',
-      LegalPersonType: 'BUSINESS',
-      HeadquartersAddress: 'Here',
-      LegalRepresentativeFirstName: 'John',
-      LegalRepresentativeLastName: 'Doe',
-      LegalRepresentativeAdress: 'Here',
-      LegalRepresentativeEmail: 'john@doe.com',
-      LegalRepresentativeBirthday: '',
-      LegalRepresentativeNationality: 'FR',
-      LegalRepresentativeCountryOfResidence: 'FR',
-      Statute: '',
-      ProofOfRegistration: '',
-      ShareholderDeclaration: ''
-    })
-  }
+  include_context 'users'
 
   describe 'CREATE' do
     it 'creates a new natural user' do

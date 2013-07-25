@@ -1,13 +1,7 @@
 require_relative '../../spec_helper'
 
 describe MangoPay::Client do
-
-  let(:new_client) {
-    MangoPay::Client.create({
-      'ClientID' => MangoPay.configuration.client_id,
-      'Name' => 'What a nice name'
-    })
-  }
+  include_context 'clients'
 
   describe 'CREATE' do
     it 'creates a new client' do

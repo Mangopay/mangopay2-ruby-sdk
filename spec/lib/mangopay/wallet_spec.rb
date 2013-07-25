@@ -1,31 +1,8 @@
 require_relative '../../spec_helper'
 
 describe MangoPay::Wallet do
-
-  let(:new_natural_user) {
-    MangoPay::NaturalUser.create({
-      Tag: 'test',
-      Email: 'my@email.com',
-      FirstName: 'John',
-      LastName: 'Doe',
-      Address: 'Here',
-      Birthday: '',
-      Birthplace: 'Paris',
-      Nationality: 'FR',
-      CountryOfResidence: 'FR',
-      Occupation: 'Worker',
-      IncomeRange: 1
-    })
-  }
-
-  let(:new_wallet) {
-    MangoPay::Wallet.create({
-      Owners: [new_natural_user['Id']],
-      Description: 'A test wallet',
-      Currency: 'EUR',
-      Tag: 'Test Time'
-    })
-  }
+  include_context 'users'
+  include_context 'wallets'
 
   describe 'CREATE' do
     it 'creates a wallet' do
