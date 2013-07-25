@@ -1,7 +1,6 @@
 module MangoPay
   class PayIn < Resource
     include MangoPay::HTTPCalls::Fetch
-
     module Card
       class Web < Resource
         include MangoPay::HTTPCalls::Create

@@ -87,23 +87,7 @@ shared_context 'bank_details' do
 end
 
 shared_context 'cards' do
-
   let(:new_web_card) {
-    puts new_natural_user
-    puts new_wallet
-    puts "Hey"
-    puts({
-      AuthorId: new_natural_user['Id'],
-      CreditedUserId: new_wallet['Owners'][0],
-      DebitedFunds: { Currency: 'EUR', Amount: 1000 },
-      Fees: { Currency: 'EUR', Amount: 0},
-      CreditedWalletId: new_wallet['Id'],
-      ReturnURL: 'http://dev.leetchi.com',
-      CardType: 'CB_VISA_MASTERCARD',
-      Culture: 'FR',
-      Tag: 'Test Card'
-    })
-    puts "bye"
     MangoPay::PayIn::Card::Web.create({
       AuthorId: new_natural_user['Id'],
       CreditedUserId: new_wallet['Owners'][0],
@@ -114,6 +98,20 @@ shared_context 'cards' do
       CardType: 'CB_VISA_MASTERCARD',
       Culture: 'FR',
       Tag: 'Test Card'
+    })
+  }
+end
+
+shared_context 'bank_wires' do
+  let(:new_bank_wire){
+    MangoPay::PayOut::BankWire.create({
+      AuthorId: new_wallet['Owners'][0],
+      DebitedFunds: { Currency: 'EUR', Amount: 500 },
+      Fees: { Currency: 'EUR', Amount: 0 },
+      DebitedWalletId: new_wallet['Id'],
+      BankDetailsId: new_iban_bank_detail['Id'],
+      Communication: 'This is a test',
+      Tag: 'Test Bank Wire'
     })
   }
 end
