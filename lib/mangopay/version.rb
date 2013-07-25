@@ -1,0 +1,3 @@
+module MangoPay
+  VERSION = '3.0.0'
+end
