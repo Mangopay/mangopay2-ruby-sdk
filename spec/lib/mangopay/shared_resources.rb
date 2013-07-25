@@ -115,3 +115,35 @@ shared_context 'bank_wires' do
     })
   }
 end
+
+shared_context 'transfer' do
+  let(:credited_wallet) {
+    MangoPay::Wallet.create({
+      Owners: [new_natural_user['Id']],
+      Description: 'A test wallet',
+      Currency: 'EUR',
+      Tag: 'Test Time'
+    })
+  }
+
+  let(:debited_wallet) {
+    MangoPay::Wallet.create({
+      Owners: [new_legal_user['Id']],
+      Description: 'A test wallet',
+      Currency: 'EUR',
+      Tag: 'Test Time'
+    })
+  }
+
+  let(:new_transfer) {
+    MangoPay::Transfer.create({
+      AuthorId: debited_wallet['Owners'][0],
+      CreditedUserId: credited_wallet['Owners'][0],
+      DebitedFunds: { Currency: 'EUR', Amount: 500},
+      Fees: { Currency: 'EUR', Amout: 0},
+      DebitedWalletId: debited_wallet['Id'],
+      CreditedWalletId: credited_wallet['Id'],
+      Tag: 'Test Transfer'
+    })
+  }
+end
