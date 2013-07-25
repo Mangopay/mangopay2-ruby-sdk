@@ -56,6 +56,7 @@ module MangoPay
 
     res = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
       request = Net::HTTP::const_get(method.capitalize).new(uri.request_uri, request_headers)
+      puts method
       puts request.uri
       puts request.path
       request.body = MangoPay::JSON.dump(params)

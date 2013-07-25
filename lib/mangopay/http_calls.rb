@@ -2,8 +2,10 @@ module MangoPay
   module HTTPCalls
     module Create
       module ClassMethods
-        def create(params={})
-          response = MangoPay.request(:post, self.url, params)
+
+        def create(*id, params)
+          id = id.empty? ? nil : id[0]
+          response = MangoPay.request(:post, self.url(id), params)
         end
       end
 
@@ -14,7 +16,7 @@ module MangoPay
 
     module Update
       module ClassMethods
-        def update(id, params = {})
+        def update(id = nil, params = {})
           response = MangoPay.request(:put, url(id), params)
         end
       end

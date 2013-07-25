@@ -56,3 +56,17 @@ shared_context 'wallets' do
     })
   }
 end
+
+shared_context 'bank_details' do
+
+  let(:new_iban_bank_detail) {
+    MangoPay::BankDetail.create(new_natural_user['Id'], {
+      Type: 'IBAN',
+      OwnerName: 'John',
+      OwnerAddress: 'Here',
+      IBAN: 'FR76 1790 6000 3200 0833 5232 973',
+      BIC: 'AGRIFRPP879',
+      Tag: 'Test Time'
+    })
+  }
+end
