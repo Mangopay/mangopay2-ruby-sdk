@@ -12,14 +12,11 @@ module Mangopay
 
       desc 'Installs all the basic configuration of the mangopay gem'
       def setup
+        @client_id = client_id
         template 'mangopay.rb', 'config/initializers/mangopay.rb'
       end
 
       protected
-
-      def client_id
-        client_id
-      end
 
       def client_passphrase
         client = MangoPay::Client.create({
