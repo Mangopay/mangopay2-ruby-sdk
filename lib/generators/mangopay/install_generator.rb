@@ -1,10 +1,10 @@
 require 'mangopay'
 
-module MangoPay
+module Mangopay
   module Generators
     class InstallGenerator < Rails::Generators::Base
       namespace 'mangopay'
-      source_root File.expand_path('./templates', __FILE__)
+      source_root File.expand_path('../templates', __FILE__)
       argument :client_id, type: :string,
         desc: 'The id you want to use to query the MangoPay API (must match with the regex ^[a-z0-9_-]{4,20}$)'
       argument :client_name, type: :string, desc: "Full name of you're organization"
