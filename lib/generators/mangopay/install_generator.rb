@@ -17,6 +17,10 @@ module Mangopay
 
       protected
 
+      def client_id
+        client_id
+      end
+
       def client_passphrase
         client = MangoPay::Client.create({
           ClientID: client_id,
