@@ -1,3 +1,4 @@
+require 'rails/generators/base'
 require 'mangopay'
 
 module Mangopay
