@@ -113,11 +113,14 @@ end
 
 shared_context 'bank_wires' do
   let(:new_bank_wire){
+    # TODO: Once the issue with the CreditedWalletID being uppercased is solved
+    # change DebitedWalletId: new_web_card['CreditedWalletID'] to
+    # DebitedWalletId: new_web_card['CreditedWalletId']
     MangoPay::PayOut::BankWire.create({
-      AuthorId: new_wallet['Owners'][0],
+      AuthorId: new_web_card['CreditedUserId'],
       DebitedFunds: { Currency: 'EUR', Amount: 500 },
       Fees: { Currency: 'EUR', Amount: 0 },
-      DebitedWalletId: new_wallet['Id'],
+      DebitedWalletId: new_web_card['CreditedWalletID'],
       BankDetailsId: new_iban_bank_detail['Id'],
       Communication: 'This is a test',
       Tag: 'Test Bank Wire'
