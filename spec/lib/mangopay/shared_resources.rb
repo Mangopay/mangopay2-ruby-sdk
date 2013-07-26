@@ -88,17 +88,26 @@ end
 
 shared_context 'cards' do
   let(:new_web_card) {
-    MangoPay::PayIn::Card::Web.create({
+    card = MangoPay::PayIn::Card::Web.create({
       AuthorId: new_natural_user['Id'],
       CreditedUserId: new_wallet['Owners'][0],
       DebitedFunds: { Currency: 'EUR', Amount: 1000 },
-      Fees: { Currency: 'EUR', Amount: 0},
+      Fees: { Currency: 'EUR', Amount: 0 },
       CreditedWalletId: new_wallet['Id'],
-      ReturnURL: 'http://dev.leetchi.com',
+      ReturnURL: MangoPay.configuration.root_url,
       CardType: 'CB_VISA_MASTERCARD',
       Culture: 'FR',
       Tag: 'Test Card'
     })
+    visit(card['RedirectURL'])
+    fill_in('number', with: '4970100000000154')
+    fill_in('cvv', with: '123')
+    click_button('paybutton')
+    card = MangoPay::PayIn.fetch(card['Id'])
+    while card["Status"] == 'CREATED' do
+      card = MangoPay::PayIn.fetch(card['Id'])
+    end
+    card
   }
 end
 

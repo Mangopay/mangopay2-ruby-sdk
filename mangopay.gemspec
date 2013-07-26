@@ -22,6 +22,8 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency('rake', '~> 10.1.0')
   s.add_development_dependency('rspec', '~> 2.14.1')
+  s.add_development_dependency('capybara', '~> 2.1.0')
+  s.add_development_dependency('capybara-webkit', '~> 1.0.0')
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- spec/*`.split("\n")
