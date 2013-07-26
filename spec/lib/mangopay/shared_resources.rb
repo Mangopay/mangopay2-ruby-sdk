@@ -147,13 +147,39 @@ shared_context 'transfer' do
     })
   }
 
+  let(:web_card_contribution) {
+    card = MangoPay::PayIn::Card::Web.create({
+      AuthorId: debited_wallet['Owners'][0],
+      CreditedUserId: debited_wallet['Owners'][0],
+      DebitedFunds: { Currency: 'EUR', Amount: 1000 },
+      Fees: { Currency: 'EUR', Amount: 0 },
+      CreditedWalletId: debited_wallet['Id'],
+      ReturnURL: MangoPay.configuration.root_url,
+      CardType: 'CB_VISA_MASTERCARD',
+      Culture: 'FR',
+      Tag: 'Test Card'
+    })
+    visit(card['RedirectURL'])
+    fill_in('number', with: '4970100000000154')
+    fill_in('cvv', with: '123')
+    click_button('paybutton')
+    card = MangoPay::PayIn.fetch(card['Id'])
+    while card["Status"] == 'CREATED' do
+      card = MangoPay::PayIn.fetch(card['Id'])
+    end
+    card
+  }
+
+  # TODO: Once the issue with the CreditedWalletID being uppercased is solved
+  # change DebitedWalletId: new_web_card['CreditedWalletID'] to
+  # DebitedWalletId: new_web_card['CreditedWalletId']
   let(:new_transfer) {
     MangoPay::Transfer.create({
-      AuthorId: debited_wallet['Owners'][0],
+      AuthorId: web_card_contribution['CreditedUserId'],
       CreditedUserId: credited_wallet['Owners'][0],
       DebitedFunds: { Currency: 'EUR', Amount: 500},
       Fees: { Currency: 'EUR', Amout: 0},
-      DebitedWalletId: debited_wallet['Id'],
+      DebitedWalletId: web_card_contribution['CreditedWalletID'],
       CreditedWalletId: credited_wallet['Id'],
       Tag: 'Test Transfer'
     })
