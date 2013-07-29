@@ -56,13 +56,9 @@ module MangoPay
 
     res = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
       request = Net::HTTP::const_get(method.capitalize).new(uri.request_uri, request_headers)
-      puts method
-      puts request.uri
-      puts request.path
       request.body = MangoPay::JSON.dump(params)
       http.request request
     end
-    puts MangoPay::JSON.load(res.body)
     MangoPay::JSON.load(res.body)
   end
 
@@ -85,14 +81,18 @@ module MangoPay
   end
 
   def self.get_oauth_token
-    uri = api_uri('/api/oauth/token')
-    res = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
-      req = Net::HTTP::Post.new(uri.request_uri)
-      req.basic_auth configuration.client_id, configuration.client_passphrase
-      req.body = 'grant_type=client_credentials'
-      http.request req
+    if @auth_timestamp.nil? || @auth_timestamp <= Time.now || @auth_token.nil?
+      uri = api_uri('/api/oauth/token')
+      res = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+        req = Net::HTTP::Post.new(uri.request_uri)
+        req.basic_auth configuration.client_id, configuration.client_passphrase
+        req.body = 'grant_type=client_credentials'
+        http.request req
+      end
+      @auth_token = MangoPay::JSON.load(res.body)
+      @auth_timestamp = Time.now + @auth_token['expires_in'].to_i
     end
-    MangoPay::JSON.load(res.body)
+    @auth_token
   end
 
   def self.oauth_token
