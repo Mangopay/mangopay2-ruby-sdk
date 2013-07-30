@@ -1,5 +1,6 @@
 module MangoPay
   class Client < Resource
+
     def self.create(params)
       uri = URI(MangoPay.configuration.root_url + '/api/clients/')
       res = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|

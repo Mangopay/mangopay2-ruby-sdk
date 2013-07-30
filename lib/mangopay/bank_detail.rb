@@ -8,6 +8,8 @@ module MangoPay
       response = MangoPay.request(:get, url)
     end
 
+    private
+
     def self.url(*id)
       if id.length == 1
         "/v2/#{MangoPay.configuration.client_id}/users/#{CGI.escape(id[0])}/bank-details"
