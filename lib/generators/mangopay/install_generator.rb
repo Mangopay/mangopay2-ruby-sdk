@@ -12,13 +12,21 @@ module Mangopay
 
       desc 'Installs all the basic configuration of the mangopay gem'
       def setup
-        remove_file 'config/initializers/mangopay.rb'
-        @client_id = client_id
-        @client_passphrase = client_passphrase
-        template 'mangopay.rb', 'config/initializers/mangopay.rb'
+        if check_client_id
+          remove_file 'config/initializers/mangopay.rb'
+          @client_id = client_id
+          @client_passphrase = client_passphrase
+          template 'mangopay.rb', 'config/initializers/mangopay.rb'
+        else
+          puts "client_id must match the regexp ^[a-z0-9_-]{4,20}$"
+        end
       end
 
       protected
+
+      def check_client_id
+        (/^[a-z0-9_-]{4,20}$/ =~ client_id).nil? ? false : true
+      end
 
       def client_passphrase
         MangoPay.configure do |c|
