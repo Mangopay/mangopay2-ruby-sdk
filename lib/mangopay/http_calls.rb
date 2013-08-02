@@ -37,5 +37,17 @@ module MangoPay
         base.extend(ClassMethods)
       end
     end
+
+    module Refund
+      module ClassMethods
+        def refund(id = nil, params = {})
+          MangoPay.request(:post, url(id) + '/refunds', params)
+        end
+      end
+
+      def self.included(base)
+        base.extend(ClassMethods)
+      end
+    end
   end
 end

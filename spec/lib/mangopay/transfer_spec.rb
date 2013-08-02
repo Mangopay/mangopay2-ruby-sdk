@@ -19,4 +19,14 @@ describe MangoPay::Transfer, type: :feature do
       expect(new_transfer['Status']).to eq('SUCCEEDED')
     end
   end
+
+  describe 'REFUND' do
+    it 'refunds a transfer' do
+      transfer_refund = MangoPay::Transfer.refund(new_transfer['Id'], {
+        AuthorId: new_transfer['AuthorId']
+      })
+      expect(transfer_refund['Id']).not_to be_nil
+      expect(transfer_refund['Status']).to eq('SUCCEEDED')
+    end
+  end
 end

@@ -18,4 +18,14 @@ describe MangoPay::PayIn::Card::Web, type: :feature do
       expect(payin['Id']).to eq(new_web_card['Id'])
     end
   end
+
+  describe 'REFUND' do
+    it 'refunds a payin' do
+      payin_refund = MangoPay::PayIn.refund(new_web_card['Id'], {
+        AuthorId: new_web_card['AuthorId']
+      })
+      expect(payin_refund['Id']).not_to be_nil
+      expect(payin_refund['Status']).to eq('SUCCEEDED')
+    end
+  end
 end
