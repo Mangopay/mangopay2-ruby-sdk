@@ -75,7 +75,7 @@ end
 shared_context 'bank_details' do
 
   let(:new_iban_bank_detail) {
-    MangoPay::BankDetail.create(new_natural_user['Id'], {
+    MangoPay::BankAccount.create(new_natural_user['Id'], {
       Type: 'IBAN',
       OwnerName: 'John',
       OwnerAddress: 'Here',
@@ -113,15 +113,12 @@ end
 
 shared_context 'bank_wires' do
   let(:new_bank_wire){
-    # TODO: Once the issue with the CreditedWalletID being uppercased is solved
-    # change DebitedWalletId: new_web_card['CreditedWalletID'] to
-    # DebitedWalletId: new_web_card['CreditedWalletId']
     MangoPay::PayOut::BankWire.create({
       AuthorId: new_web_card['CreditedUserId'],
       DebitedFunds: { Currency: 'EUR', Amount: 500 },
       Fees: { Currency: 'EUR', Amount: 0 },
-      DebitedWalletId: new_web_card['CreditedWalletID'],
-      BankDetailsId: new_iban_bank_detail['Id'],
+      DebitedWalletId: new_web_card['CreditedWalletId'],
+      BankAccountId: new_iban_bank_detail['Id'],
       Communication: 'This is a test',
       Tag: 'Test Bank Wire'
     })
@@ -170,16 +167,13 @@ shared_context 'transfer' do
     card
   }
 
-  # TODO: Once the issue with the CreditedWalletID being uppercased is solved
-  # change DebitedWalletId: new_web_card['CreditedWalletID'] to
-  # DebitedWalletId: new_web_card['CreditedWalletId']
   let(:new_transfer) {
     MangoPay::Transfer.create({
       AuthorId: web_card_contribution['CreditedUserId'],
       CreditedUserId: credited_wallet['Owners'][0],
       DebitedFunds: { Currency: 'EUR', Amount: 500},
       Fees: { Currency: 'EUR', Amout: 0},
-      DebitedWalletId: web_card_contribution['CreditedWalletID'],
+      DebitedWalletId: web_card_contribution['CreditedWalletId'],
       CreditedWalletId: credited_wallet['Id'],
       Tag: 'Test Transfer'
     })

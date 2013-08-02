@@ -8,7 +8,7 @@ module MangoPay
       private
 
       def self.url(id = nil)
-        "/v2/#{MangoPay.configuration.client_id}/payouts/bank-wire"
+        "/v2/#{MangoPay.configuration.client_id}/payouts/bankwire"
       end
     end
   end

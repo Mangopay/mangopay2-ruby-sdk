@@ -19,7 +19,7 @@ require 'mangopay/payout'
 require 'mangopay/transfer'
 require 'mangopay/transaction'
 require 'mangopay/wallet'
-require 'mangopay/bank_detail'
+require 'mangopay/bank_account'
 
 # Errors
 require 'mangopay/errors'

@@ -6,7 +6,7 @@ describe MangoPay::Client do
 
   describe 'CREATE' do
     it 'creates a new client' do
-      expect(new_client['ClientID']).to eq(client_id)
+      expect(new_client['ClientId']).to eq(client_id)
       expect(new_client['Passphrase']).not_to be_nil
     end
 
@@ -14,13 +14,13 @@ describe MangoPay::Client do
       expect(wrong_client['errors']).not_to be_nil
     end
 
-    it "ClientID_already_exist" do
+    it "ClientId_already_exist" do
       existing_client = MangoPay::Client.create({
-        'ClientID' => new_client['ClientID'],
+        'ClientId' => new_client['ClientId'],
         'Name' => 'What a nice name'
       })
-      expect(existing_client['Type']).to eq('ClientID_already_exist')
-      expect(existing_client['Message']).to eq('A partner with this ClientID already exist')
+      expect(existing_client['Type']).to eq('ClientId_already_exist')
+      expect(existing_client['Message']).to eq('A partner with this ClientId already exist')
     end
   end
 end

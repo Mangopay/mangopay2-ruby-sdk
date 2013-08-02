@@ -5,9 +5,9 @@ module MangoPay
 
     def self.url(id = nil)
       if id
-        "/v2/#{MangoPay.configuration.client_id}/users/legals/#{CGI.escape(id)}"
+        "/v2/#{MangoPay.configuration.client_id}/users/legal/#{CGI.escape(id)}"
       else
-        "/v2/#{MangoPay.configuration.client_id}/users/legals"
+        "/v2/#{MangoPay.configuration.client_id}/users/legal"
       end
     end
   end
