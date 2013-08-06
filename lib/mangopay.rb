@@ -76,8 +76,8 @@ module MangoPay
 
   def self.get_uname
     `uname -a 2>/dev/null`.strip if RUBY_PLATFORM =~ /linux|darwin/i
-  rescue Errno::ENOMEM => ex
-    "uname lookup failed"
+  rescue Errno::ENOMEM
+    'uname lookup failed'
   end
 
   def self.get_oauth_token
