@@ -11,8 +11,14 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
+tags
 
 # YARD artifacts
 .yardoc
 _yardoc
 doc/
+
+.DS_Store
+.rvmrc
+/Gemfile.lock
+/mangopay-*.gem
