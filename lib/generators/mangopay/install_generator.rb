@@ -8,6 +8,7 @@ module Mangopay
       argument :client_id, type: :string,
         desc: 'The id you want to use to query the MangoPay API (must match with the regex ^[a-z0-9_-]{4,20}$)'
       argument :client_name, type: :string, desc: "Full name of you're organization"
+      argument :client_email, type: :string, desc: "An email for future contacts"
       class_option :preproduction, type: :boolean, default: true, desc: 'Whether or not use the preproduction environment'
 
       desc 'Installs all the basic configuration of the mangopay gem'
@@ -50,7 +51,8 @@ module Mangopay
         end
         MangoPay::Client.create({
           ClientID: client_id,
-          Name: client_name
+          Name: client_name,
+          Email: client_email
         })
       end
     end

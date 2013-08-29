@@ -11,14 +11,16 @@ shared_context 'clients' do
   let(:wrong_client) {
     MangoPay::Client.create({
       'ClientID' => wrong_client_id,
-      'Name' => 'What a nice name'
+      'Name' => 'What a nice name',
+      'Email' => 'clientemail@email.com'
     })
   }
 
   let(:new_client) {
     MangoPay::Client.create({
       'ClientID' => client_id,
-      'Name' => 'What a nice name'
+      'Name' => 'What a nice name',
+      'Email' => 'clientemail@email.com'
     })
   }
 end
