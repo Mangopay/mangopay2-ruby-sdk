@@ -22,3 +22,5 @@ doc/
 .rvmrc
 /Gemfile.lock
 /mangopay-*.gem
+
+/nbproject/

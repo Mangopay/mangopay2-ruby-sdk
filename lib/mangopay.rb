@@ -1,4 +1,5 @@
 require 'net/http'
+require 'cgi/util'
 require 'multi_json'
 
 # Version
@@ -20,6 +21,8 @@ require 'mangopay/transfer'
 require 'mangopay/transaction'
 require 'mangopay/wallet'
 require 'mangopay/bank_account'
+require 'mangopay/card_registration'
+require 'mangopay/card'
 
 # Errors
 require 'mangopay/errors'

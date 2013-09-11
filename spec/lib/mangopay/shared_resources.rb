@@ -5,7 +5,7 @@ shared_context 'clients' do
   }
 
   let(:wrong_client_id) {
-   SecureRandom.hex(20)
+    SecureRandom.hex(20)
   }
 
   let(:wrong_client) {
@@ -88,38 +88,38 @@ shared_context 'bank_details' do
   }
 end
 
-shared_context 'cards' do
-  let(:new_web_card) {
+shared_context 'payin_card_web' do
+  let(:new_payin_card_web) {
     card = MangoPay::PayIn::Card::Web.create({
       AuthorId: new_natural_user['Id'],
       CreditedUserId: new_wallet['Owners'][0],
       DebitedFunds: { Currency: 'EUR', Amount: 1000 },
       Fees: { Currency: 'EUR', Amount: 0 },
       CreditedWalletId: new_wallet['Id'],
-      ReturnURL: MangoPay.configuration.root_url,
       CardType: 'CB_VISA_MASTERCARD',
+      ReturnURL: MangoPay.configuration.root_url,
       Culture: 'FR',
-      Tag: 'Test Card'
+      Tag: 'Test PayIn/Card/Web'
     })
-    visit(card['RedirectURL'])
-    fill_in('number', with: '4970100000000154')
-    fill_in('cvv', with: '123')
-    click_button('paybutton')
-    card = MangoPay::PayIn.fetch(card['Id'])
-    while card["Status"] == 'CREATED' do
-      card = MangoPay::PayIn.fetch(card['Id'])
-    end
+#    visit(card['RedirectURL'])
+#    fill_in('number', with: '4970100000000154')
+#    fill_in('cvv', with: '123')
+#    click_button('paybutton')
+#    card = MangoPay::PayIn.fetch(card['Id'])
+#    while card["Status"] == 'CREATED' do
+#      card = MangoPay::PayIn.fetch(card['Id'])
+#    end
     card
   }
 end
 
-shared_context 'bank_wires' do
-  let(:new_bank_wire){
+shared_context 'payout_bankwire' do
+  let(:new_payout_bankwire){
     MangoPay::PayOut::BankWire.create({
-      AuthorId: new_web_card['CreditedUserId'],
+      AuthorId: new_payin_card_web['CreditedUserId'],
       DebitedFunds: { Currency: 'EUR', Amount: 500 },
       Fees: { Currency: 'EUR', Amount: 0 },
-      DebitedWalletId: new_web_card['CreditedWalletId'],
+      DebitedWalletId: new_payin_card_web['CreditedWalletId'],
       BankAccountId: new_iban_bank_detail['Id'],
       Communication: 'This is a test',
       Tag: 'Test Bank Wire'
@@ -153,19 +153,19 @@ shared_context 'transfer' do
       DebitedFunds: { Currency: 'EUR', Amount: 1000 },
       Fees: { Currency: 'EUR', Amount: 0 },
       CreditedWalletId: debited_wallet['Id'],
-      ReturnURL: MangoPay.configuration.root_url,
       CardType: 'CB_VISA_MASTERCARD',
+      ReturnURL: MangoPay.configuration.root_url,
       Culture: 'FR',
-      Tag: 'Test Card'
+      Tag: 'Test PayIn/Card/Web'
     })
-    visit(card['RedirectURL'])
-    fill_in('number', with: '4970100000000154')
-    fill_in('cvv', with: '123')
-    click_button('paybutton')
-    card = MangoPay::PayIn.fetch(card['Id'])
-    while card["Status"] == 'CREATED' do
-      card = MangoPay::PayIn.fetch(card['Id'])
-    end
+#    visit(card['RedirectURL'])
+#    fill_in('number', with: '4970100000000154')
+#    fill_in('cvv', with: '123')
+#    click_button('paybutton')
+#    card = MangoPay::PayIn.fetch(card['Id'])
+#    while card["Status"] == 'CREATED' do
+#      card = MangoPay::PayIn.fetch(card['Id'])
+#    end
     card
   }
 
@@ -178,6 +178,16 @@ shared_context 'transfer' do
       DebitedWalletId: web_card_contribution['CreditedWalletId'],
       CreditedWalletId: credited_wallet['Id'],
       Tag: 'Test Transfer'
+    })
+  }
+end
+
+shared_context 'card_registration' do
+  let(:new_card_registration) {
+    MangoPay::CardRegistration.create({
+      UserId: new_natural_user['Id'],
+      Currency: 'EUR',
+      Tag: 'Test Card Registration'
     })
   }
 end

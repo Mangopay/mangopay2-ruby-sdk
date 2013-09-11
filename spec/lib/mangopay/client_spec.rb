@@ -16,12 +16,13 @@ describe MangoPay::Client do
     end
 
     it "ClientId_already_exist" do
-      existing_client = MangoPay::Client.create({
+      existing_client_error = MangoPay::Client.create({
         'ClientId' => new_client['ClientId'],
-        'Name' => 'What a nice name'
+        'Name' => 'What a nice name',
+        'Email' => 'clientemail@email.com'
       })
-      expect(existing_client['Type']).to eq('ClientId_already_exist')
-      expect(existing_client['Message']).to eq('A partner with this ClientId already exist')
+      expect(existing_client_error['Type']).to eq('ClientId_already_exist')
+      expect(existing_client_error['Message']).to eq('A partner with this ClientId already exist')
     end
   end
 end
