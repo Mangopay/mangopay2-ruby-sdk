@@ -12,10 +12,11 @@ Tested on the following versions of Ruby: 1.9.2, 1.9.3, 2.0.0
 
 ## NEWS
 
-### Version 3.0.0
+### Version 3.*
 ** BREAKING CHANGES **
-This version of the gem is targeting the MangoPay API Version 2.
+This version (3.*) of the gem is targeting the MangoPay API Version 2.
 It has a brand new structure to make the api calls easier to use
+and is not backward compatible with 2.* series.
 
 ## Usage
 
