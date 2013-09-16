@@ -2,13 +2,13 @@ require 'net/http'
 require 'cgi/util'
 require 'multi_json'
 
-# Version
+# helpers
 require 'mangopay/version'
-
-# JSON
 require 'mangopay/json'
+require 'mangopay/errors'
+require 'mangopay/authorization_token_manager'
 
-# Resources
+# resources
 require 'mangopay/http_calls'
 require 'mangopay/resource'
 require 'mangopay/client'
@@ -24,13 +24,12 @@ require 'mangopay/bank_account'
 require 'mangopay/card_registration'
 require 'mangopay/card'
 
-# Errors
-require 'mangopay/errors'
-
 module MangoPay
 
   class Configuration
-    attr_accessor :root_url, :client_id, :client_passphrase, :preproduction
+    attr_accessor :preproduction, :root_url,
+      :client_id, :client_passphrase,
+      :temp_dir
 
     def preproduction
       @preproduction || false
@@ -64,6 +63,8 @@ module MangoPay
     end
     MangoPay::JSON.load(res.body)
   end
+  
+  private
 
   def self.user_agent
     @uname ||= get_uname
@@ -83,30 +84,11 @@ module MangoPay
     'uname lookup failed'
   end
 
-  def self.get_oauth_token
-    if @auth_timestamp.nil? || @auth_timestamp <= Time.now || @auth_token.nil?
-      uri = api_uri('/api/oauth/token')
-      res = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
-        req = Net::HTTP::Post.new(uri.request_uri)
-        req.basic_auth configuration.client_id, configuration.client_passphrase
-        req.body = 'grant_type=client_credentials'
-        http.request req
-      end
-      @auth_token = MangoPay::JSON.load(res.body)
-      @auth_timestamp = Time.now + @auth_token['expires_in'].to_i
-    end
-    @auth_token
-  end
-
-  def self.oauth_token
-    oauth = get_oauth_token
-    "#{oauth['token_type']} #{oauth['access_token']}"
-  end
-
   def self.request_headers
+    auth_token = MangoPay::AuthorizationToken::Manager.get_token
     headers = {
       'user_agent' => "MangoPay V1 RubyBindings/#{MangoPay::VERSION}",
-      'Authorization' => oauth_token,
+      'Authorization' => "#{auth_token['token_type']} #{auth_token['access_token']}",
       'Content-Type' => 'application/json'
     }
     begin

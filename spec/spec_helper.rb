@@ -10,4 +10,7 @@ MangoPay.configure do |c|
   c.preproduction = true
   c.client_id = 'example'
   c.client_passphrase = 'uyWsmnwMQyTnqKgi8Y35A3eVB7bGhqrebYqA1tL6x2vYNpGPiY'
+  #c.temp_dir = 'D:/tmp'
 end
+
+#MangoPay::AuthorizationToken::Manager.storage = MangoPay::AuthorizationToken::FileStorage.new 'D:/tmp'
