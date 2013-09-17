@@ -14,8 +14,7 @@ module MangoPay
 
       def self.get_token
         token = storage.get
-        timestamp = Time.now + token['expires_in'].to_i if token
-        if token.nil? || timestamp.nil? || timestamp <= Time.now
+        if token.nil? || token['timestamp'].nil? || token['timestamp'] <= Time.now
           uri = MangoPay.api_uri('/api/oauth/token')
           cfg = MangoPay.configuration
           res = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
@@ -25,6 +24,7 @@ module MangoPay
             http.request req
           end
           token = MangoPay::JSON.load(res.body)
+          token['timestamp'] = Time.now + token['expires_in'].to_i
           storage.store token
         end
         token
@@ -36,7 +36,6 @@ module MangoPay
         @@token ||= nil
       end
       def store(token)
-#p "#{self}.store", token
         @@token = token
       end
     end
@@ -65,7 +64,6 @@ module MangoPay
       end
 
       def store(token)
-#p "#{self}.store", token
         File.open(file_path, File::RDWR|File::CREAT, 0644) do |f|
           f.flock(File::LOCK_EX)
           f.truncate(0)

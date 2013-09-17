@@ -6,7 +6,7 @@ require 'multi_json'
 require 'mangopay/version'
 require 'mangopay/json'
 require 'mangopay/errors'
-require 'mangopay/authorization_token_manager'
+require 'mangopay/authorization_token'
 
 # resources
 require 'mangopay/http_calls'

@@ -33,6 +33,7 @@ describe MangoPay::User do
     it 'fetches all the users' do
       users = MangoPay::User.fetch()
       expect(users).to be_kind_of(Array)
+      expect(users).not_to be_empty
     end
 
     it 'fetches a legal user using the User module' do
