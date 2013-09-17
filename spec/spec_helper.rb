@@ -12,6 +12,8 @@ def reset_mangopay_configuration
     c.preproduction = true
     c.client_id = 'example'
     c.client_passphrase = 'uyWsmnwMQyTnqKgi8Y35A3eVB7bGhqrebYqA1tL6x2vYNpGPiY'
+    c.temp_dir = File.expand_path('../tmp', __FILE__)
+    FileUtils.mkdir_p(c.temp_dir) unless File.directory?(c.temp_dir)
   end
 end
 reset_mangopay_configuration

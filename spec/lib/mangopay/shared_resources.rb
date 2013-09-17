@@ -1,5 +1,7 @@
 shared_context 'clients' do
 
+  require 'securerandom'
+
   let(:client_id) {
     SecureRandom.hex(10)
   }

@@ -46,8 +46,8 @@ module MangoPay
 
       def initialize(temp_dir = nil)
         @temp_dir = temp_dir || MangoPay.configuration.temp_dir
-        if !@temp_dir || !File.exists?(@temp_dir)
-          raise "Path to temporary folder is not defined or doesn't exist"
+        if !@temp_dir
+          raise "Path to temporary folder is not defined"
         end
       end
 
@@ -71,8 +71,6 @@ module MangoPay
           f.puts(YAML.dump(token))
         end
       end
-
-      private
 
       def file_path
         File.join(@temp_dir, "MangoPay.AuthorizationToken.FileStore.tmp")

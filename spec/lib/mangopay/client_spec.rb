@@ -1,5 +1,4 @@
 require_relative '../../spec_helper'
-require 'securerandom'
 
 describe MangoPay::Client do
   include_context 'clients'
