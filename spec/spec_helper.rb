@@ -3,6 +3,7 @@ require_relative './lib/mangopay/shared_resources'
 
 require 'capybara/rspec'
 require 'capybara-webkit'
+require 'fileutils'
 require 'pp'
 
 Capybara.default_driver = :webkit
