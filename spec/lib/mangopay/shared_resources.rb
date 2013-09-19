@@ -83,10 +83,10 @@ shared_context 'wallets' do
 end
 
 ###############################################
-shared_context 'bank_details' do
+shared_context 'bank_accounts' do
 ###############################################
 
-  let(:new_iban_bank_detail) {
+  let(:new_bank_account) {
     MangoPay::BankAccount.create(new_natural_user['Id'], {
       Type: 'IBAN',
       OwnerName: 'John',

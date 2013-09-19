@@ -3,45 +3,62 @@ require_relative '../../spec_helper'
 describe MangoPay::PayOut::BankWire, type: :feature do
   include_context 'users'
   include_context 'wallets'
-  include_context 'bank_details'
+  include_context 'bank_accounts'
   include_context 'payins'
 
-  def new_payout_bankwire(payin, bank_detail = nil)
-    bank_detail ||= new_iban_bank_detail
+  def check_type_and_status(payout)
+    expect(payout['Type']).to eq('PAYOUT')
+    expect(payout['Nature']).to eq('REGULAR')
+    expect(payout['PaymentType']).to eq('BANK_WIRE')
+
+    # linked to correct bank account
+    expect(payout['BankAccountId']).to eq(new_bank_account['Id'])
+
+    # not SUCCEEDED yet: waiting for processing
+    expect(payout['Status']).to eq('CREATED')
+    expect(payout['ResultCode']).to be_nil
+    expect(payout['ResultMessage']).to be_nil
+    expect(payout['ExecutionDate']).to be_nil
+  end
+
+  def new_payout_bankwire(payin)
     MangoPay::PayOut::BankWire.create({
       AuthorId: payin['CreditedUserId'],
       DebitedWalletId: payin['CreditedWalletId'],
       DebitedFunds: { Currency: 'EUR', Amount: 500 },
       Fees: { Currency: 'EUR', Amount: 0 },
-      BankAccountId: bank_detail['Id'],
+      BankAccountId: new_bank_account['Id'],
       Communication: 'This is a test',
-      Tag: 'Test Bank Wire'
+      Tag: 'Test PayOut/Bank/Wire'
     })
   end
 
   describe 'CREATE' do
+
+    it 'creates a bank wire payout' do
+      payin = new_payin_card_direct # this payin is successfull so payout may happen
+      payout = new_payout_bankwire(payin)
+      expect(payout['Id']).not_to be_nil
+      check_type_and_status(payout)
+      expect(payout['DebitedWalletId']).to eq(payin['CreditedWalletId'])
+    end
+
     it 'fails if not enough money' do
-      err = new_payout_bankwire(new_payin_card_web)
-      expect(err['Message']).to eq("The amount you wish to spend must be smaller than the amount left in your collection.")
+      payin = new_payin_card_web # this payin is NOT processed yet so payout may NOT happen
+      error = new_payout_bankwire(payin)
+      expect(error['Message']).to eq("The amount you wish to spend must be smaller than the amount left in your collection.")
     end
   end
 
-# cannot test yet:
-#  describe 'CREATE' do
-#    it 'creates a bank wire payout' do
-#      expect(new_payout_bankwire['Id']).not_to be_nil
-#      #expect(new_payout_bankwire['Status']).to eq('CREATED')
-#      expect(new_payout_bankwire['Status']).to be_nil
-#      "The amount you wish to spend must be smaller than the amount left in your collection."
-#    end
-#  end
-#
-#  describe 'FETCH' do
-#    it 'fetches a payout' do
-#      bank_wire = MangoPay::PayOut.fetch(new_payout_bankwire['Id'])
-#      expect(bank_wire['Id']).to eq(new_payout_bankwire['Id'])
-#      expect(new_payout_bankwire['Status']).to eq('CREATED')
-#    end
-#  end
+  describe 'FETCH' do
+    it 'fetches a payout' do
+      created = new_payout_bankwire(new_payin_card_direct)
+      fetched = MangoPay::PayOut.fetch(created['Id'])
+      expect(fetched['Id']).to eq(created['Id'])
+      expect(fetched['CreationDate']).to eq(created['CreationDate'])
+      check_type_and_status(created)
+      check_type_and_status(fetched)
+    end
+  end
 
 end

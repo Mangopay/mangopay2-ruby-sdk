@@ -35,6 +35,7 @@ describe MangoPay::PayIn::Card::Direct, type: :feature do
       expect(fetched['CreditedFunds']).to eq(created['CreditedFunds'])
       expect(fetched['CreditedWalletId']).to eq(created['CreditedWalletId'])
       check_type_and_status(created)
+      check_type_and_status(fetched)
     end
   end
 
