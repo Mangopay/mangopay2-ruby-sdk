@@ -5,6 +5,7 @@ describe MangoPay::PayOut::BankWire, type: :feature do
   include_context 'wallets'
   include_context 'bank_accounts'
   include_context 'payins'
+  include_context 'payouts'
 
   def check_type_and_status(payout)
     expect(payout['Type']).to eq('PAYOUT')
@@ -19,18 +20,6 @@ describe MangoPay::PayOut::BankWire, type: :feature do
     expect(payout['ResultCode']).to be_nil
     expect(payout['ResultMessage']).to be_nil
     expect(payout['ExecutionDate']).to be_nil
-  end
-
-  def new_payout_bankwire(payin)
-    MangoPay::PayOut::BankWire.create({
-      AuthorId: payin['CreditedUserId'],
-      DebitedWalletId: payin['CreditedWalletId'],
-      DebitedFunds: { Currency: 'EUR', Amount: 500 },
-      Fees: { Currency: 'EUR', Amount: 0 },
-      BankAccountId: new_bank_account['Id'],
-      Communication: 'This is a test',
-      Tag: 'Test PayOut/Bank/Wire'
-    })
   end
 
   describe 'CREATE' do

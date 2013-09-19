@@ -71,6 +71,7 @@ end
 ###############################################
 shared_context 'wallets' do
 ###############################################
+  include_context 'users'
 
   let(:new_wallet) {
     MangoPay::Wallet.create({
@@ -85,6 +86,7 @@ end
 ###############################################
 shared_context 'bank_accounts' do
 ###############################################
+  include_context 'users'
 
   let(:new_bank_account) {
     MangoPay::BankAccount.create(new_natural_user['Id'], {
@@ -101,7 +103,9 @@ end
 ###############################################
 shared_context 'payins' do
 ###############################################
-  
+  include_context 'users'
+  include_context 'wallets'
+
   ###############################################
   # card/web
   ###############################################
@@ -171,8 +175,27 @@ shared_context 'payins' do
 end
 
 ###############################################
+shared_context 'payouts' do
+###############################################
+  include_context 'bank_accounts'
+
+  def new_payout_bankwire(payin)
+    MangoPay::PayOut::BankWire.create({
+      AuthorId: payin['CreditedUserId'],
+      DebitedWalletId: payin['CreditedWalletId'],
+      DebitedFunds: { Currency: 'EUR', Amount: 500 },
+      Fees: { Currency: 'EUR', Amount: 0 },
+      BankAccountId: new_bank_account['Id'],
+      Communication: 'This is a test',
+      Tag: 'Test PayOut/Bank/Wire'
+    })
+  end
+end
+
+###############################################
 shared_context 'transfer' do
 ###############################################
+  include_context 'users'
 
   let(:credited_wallet) {
     MangoPay::Wallet.create({
