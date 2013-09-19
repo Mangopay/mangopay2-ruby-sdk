@@ -1,4 +1,6 @@
+###############################################
 shared_context 'clients' do
+###############################################
 
   require 'securerandom'
 
@@ -27,7 +29,9 @@ shared_context 'clients' do
   }
 end
 
+###############################################
 shared_context 'users' do
+###############################################
 
   let(:new_natural_user) {
     MangoPay::NaturalUser.create({
@@ -64,7 +68,9 @@ shared_context 'users' do
   }
 end
 
+###############################################
 shared_context 'wallets' do
+###############################################
 
   let(:new_wallet) {
     MangoPay::Wallet.create({
@@ -76,7 +82,9 @@ shared_context 'wallets' do
   }
 end
 
+###############################################
 shared_context 'bank_details' do
+###############################################
 
   let(:new_iban_bank_detail) {
     MangoPay::BankAccount.create(new_natural_user['Id'], {
@@ -90,46 +98,82 @@ shared_context 'bank_details' do
   }
 end
 
-shared_context 'payin_card_web' do
+###############################################
+shared_context 'payins' do
+###############################################
+  
+  ###############################################
+  # card/web
+  ###############################################
+
   let(:new_payin_card_web) {
-    card = MangoPay::PayIn::Card::Web.create({
+    MangoPay::PayIn::Card::Web.create({
       AuthorId: new_natural_user['Id'],
       CreditedUserId: new_wallet['Owners'][0],
+      CreditedWalletId: new_wallet['Id'],
       DebitedFunds: { Currency: 'EUR', Amount: 1000 },
       Fees: { Currency: 'EUR', Amount: 0 },
-      CreditedWalletId: new_wallet['Id'],
       CardType: 'CB_VISA_MASTERCARD',
       ReturnURL: MangoPay.configuration.root_url,
       Culture: 'FR',
       Tag: 'Test PayIn/Card/Web'
     })
-#    visit(card['RedirectURL'])
-#    fill_in('number', with: '4970100000000154')
-#    fill_in('cvv', with: '123')
-#    click_button('paybutton')
-#    card = MangoPay::PayIn.fetch(card['Id'])
-#    while card["Status"] == 'CREATED' do
-#      card = MangoPay::PayIn.fetch(card['Id'])
-#    end
-    card
   }
-end
 
-shared_context 'payout_bankwire' do
-  let(:new_payout_bankwire){
-    MangoPay::PayOut::BankWire.create({
-      AuthorId: new_payin_card_web['CreditedUserId'],
-      DebitedFunds: { Currency: 'EUR', Amount: 500 },
-      Fees: { Currency: 'EUR', Amount: 0 },
-      DebitedWalletId: new_payin_card_web['CreditedWalletId'],
-      BankAccountId: new_iban_bank_detail['Id'],
-      Communication: 'This is a test',
-      Tag: 'Test Bank Wire'
+  ###############################################
+  # card/direct
+  ###############################################
+
+  let(:new_card_registration) {
+    MangoPay::CardRegistration.create({
+      UserId: new_natural_user['Id'],
+      Currency: 'EUR',
+      Tag: 'Test Card Registration'
     })
   }
+
+  let(:new_card_registration_completed) {
+    # 1st step: create
+    cardreg = new_card_registration
+
+    # 2nd step: tokenize by payline (fills-in RegistrationData)
+    data = {
+      data: cardreg['PreregistrationData'],
+      accessKeyRef: cardreg['AccessKey'],
+      cardNumber: 4970101122334406,
+      cardExpirationDate: 1214,
+      cardCvx: 123}
+    res = Net::HTTP.post_form(URI(cardreg['CardRegistrationURL']), data)
+    raise Exception, [res, res.body] if (!res.is_a?(Net::HTTPOK) || !res.body.start_with?('data='))
+    cardreg['RegistrationData'] = res.body
+
+    # 3rd step: update (fills-in CardId) and return it
+    MangoPay::CardRegistration.update(cardreg['Id'], {
+      RegistrationData: cardreg['RegistrationData']
+    })
+  }
+
+  let(:new_payin_card_direct) {
+    cardreg = new_card_registration_completed
+    MangoPay::PayIn::Card::Direct.create({
+      AuthorId: new_natural_user['Id'],
+      CreditedUserId: new_wallet['Owners'][0],
+      CreditedWalletId: new_wallet['Id'],
+      DebitedFunds: { Currency: 'EUR', Amount: 1000 },
+      Fees: { Currency: 'EUR', Amount: 0 },
+      CardType: 'CB_VISA_MASTERCARD',
+      CardId: cardreg['CardId'],
+      SecureModeReturnURL: 'http://test.com',
+      Tag: 'Test PayIn/Card/Direct'
+    })
+  }
+
 end
 
+###############################################
 shared_context 'transfer' do
+###############################################
+
   let(:credited_wallet) {
     MangoPay::Wallet.create({
       Owners: [new_natural_user['Id']],
@@ -180,16 +224,6 @@ shared_context 'transfer' do
       DebitedWalletId: web_card_contribution['CreditedWalletId'],
       CreditedWalletId: credited_wallet['Id'],
       Tag: 'Test Transfer'
-    })
-  }
-end
-
-shared_context 'card_registration' do
-  let(:new_card_registration) {
-    MangoPay::CardRegistration.create({
-      UserId: new_natural_user['Id'],
-      Currency: 'EUR',
-      Tag: 'Test Card Registration'
     })
   }
 end

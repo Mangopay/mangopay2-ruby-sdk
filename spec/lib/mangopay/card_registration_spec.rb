@@ -2,26 +2,28 @@ require_relative '../../spec_helper'
 
 describe MangoPay::CardRegistration do
   include_context 'users'
-  include_context 'card_registration'
+  include_context 'payins'
 
   describe 'CREATE' do
     it 'creates a new card registration' do
-      expect(new_card_registration['Id']).not_to be_nil
-      expect(new_card_registration['Id'].to_i).to be > 0
-      expect(new_card_registration['AccessKey']).not_to be_nil
-      expect(new_card_registration['PreregistrationData']).not_to be_nil
-      expect(new_card_registration['CardRegistrationURL']).not_to be_nil
-      expect(new_card_registration['CardId']).to be_nil
-      expect(new_card_registration['RegistrationData']).to be_nil
-      expect(new_card_registration['UserId']).to eq(new_natural_user["Id"])
-      expect(new_card_registration['Currency']).to eq('EUR')
-      expect(new_card_registration['Status']).to eq('CREATED')
+      created = new_card_registration
+      expect(created['Id']).not_to be_nil
+      expect(created['Id'].to_i).to be > 0
+      expect(created['AccessKey']).not_to be_nil
+      expect(created['PreregistrationData']).not_to be_nil
+      expect(created['CardRegistrationURL']).not_to be_nil
+      expect(created['RegistrationData']).to be_nil
+      expect(created['CardId']).to be_nil
+      expect(created['UserId']).to eq(new_natural_user["Id"])
+      expect(created['Currency']).to eq('EUR')
+      expect(created['Status']).to eq('CREATED')
     end
   end
 
   describe 'UPDATE' do
     it 'updates a card registration' do
-      updated = MangoPay::CardRegistration.update(new_card_registration['Id'] ,{
+      created = new_card_registration
+      updated = MangoPay::CardRegistration.update(created['Id'] ,{
         RegistrationData: 'test RegistrationData'
       })
       expect(updated['RegistrationData']).to eq('test RegistrationData')
@@ -30,10 +32,32 @@ describe MangoPay::CardRegistration do
 
   describe 'FETCH' do
     it 'fetches a card registration' do
-      fetched = MangoPay::CardRegistration.fetch(new_card_registration['Id'])
-      expect(fetched['Id']).to eq(new_card_registration['Id'])
-      expect(fetched['UserId']).to eq(new_card_registration['UserId'])
-      expect(fetched['Tag']).to eq(new_card_registration['Tag'])
+      created = new_card_registration
+      fetched = MangoPay::CardRegistration.fetch(created['Id'])
+      expect(fetched['Id']).to eq(created['Id'])
+      expect(fetched['UserId']).to eq(created['UserId'])
+      expect(fetched['Tag']).to eq(created['Tag'])
+    end
+  end
+
+  describe 'TOKENIZATION PROCESS' do
+    it 'fills-in registration data and links it to a newly created card' do
+      completed = new_card_registration_completed
+      reg_data = completed['RegistrationData']
+      card_id = completed['CardId']
+
+      # reg data filled-in
+      expect(reg_data).not_to be_nil
+      expect(reg_data).to be_kind_of String
+      expect(reg_data).not_to be_empty
+
+      # card id filled-in...
+      expect(card_id).not_to be_nil
+      expect(card_id.to_i).to be > 0
+
+      # ...and points to existing (newly created) card
+      card = MangoPay::Card.fetch(card_id)
+      expect(card['Id']).to eq card_id
     end
   end
 
