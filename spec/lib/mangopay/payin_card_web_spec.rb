@@ -1,8 +1,6 @@
 require_relative '../../spec_helper'
 
 describe MangoPay::PayIn::Card::Web, type: :feature do
-  include_context 'users'
-  include_context 'wallets'
   include_context 'payins'
 
   def check_type_and_status(payin)
@@ -42,9 +40,7 @@ describe MangoPay::PayIn::Card::Web, type: :feature do
   describe 'REFUND' do
     it 'refunds a payin' do
       payin = new_payin_card_web
-      error = MangoPay::PayIn.refund(payin['Id'], {
-        AuthorId: payin['AuthorId']
-      })
+      error = MangoPay::PayIn.refund(payin['Id'], {AuthorId: payin['AuthorId']})
       expect(error['Message']).to eq("Impossible to refund the transaction, can't have negative amount.")
     end
   end

@@ -1,7 +1,6 @@
 require_relative '../../spec_helper'
 
 describe MangoPay::Wallet do
-  include_context 'users'
   include_context 'wallets'
 
   describe 'CREATE' do

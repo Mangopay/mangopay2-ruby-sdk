@@ -1,7 +1,6 @@
 require_relative '../../spec_helper'
 
 describe MangoPay::PayIn::Card::Direct, type: :feature do
-  include_context 'users'
   include_context 'wallets'
   include_context 'payins'
   
@@ -42,9 +41,7 @@ describe MangoPay::PayIn::Card::Direct, type: :feature do
   describe 'REFUND' do
     it 'refunds a payin' do
       payin = new_payin_card_direct
-      refund = MangoPay::PayIn.refund(payin['Id'], {
-        AuthorId: payin['AuthorId']
-      })
+      refund = MangoPay::PayIn.refund(payin['Id'], {AuthorId: payin['AuthorId']})
       expect(refund['Id']).not_to be_nil
       expect(refund['Status']).to eq('SUCCEEDED')
       expect(refund['Type']).to eq('PAYOUT')
@@ -52,6 +49,21 @@ describe MangoPay::PayIn::Card::Direct, type: :feature do
       expect(refund['InitialTransactionType']).to eq('PAYIN')
       expect(refund['InitialTransactionId']).to eq(payin['Id'])
       expect(refund['DebitedWalletId']).to eq(payin['CreditedWalletId'])
+    end
+  end
+
+  describe 'CASH FLOW' do
+    it 'changes balances correctly' do
+      wlt = new_wallet
+      wallets_check_amounts(wlt, 0)
+
+      # payin: feed wlt1 with money
+      payin = create_new_payin_card_direct(wlt, 1000)
+      wallets_reload_and_check_amounts(wlt, 1000)
+
+      # refund the payin
+      refund = MangoPay::PayIn.refund(payin['Id'], {AuthorId: payin['AuthorId']})
+      wallets_reload_and_check_amounts(wlt, 0)
     end
   end
 

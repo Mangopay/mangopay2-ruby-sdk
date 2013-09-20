@@ -1,8 +1,6 @@
 require_relative '../../spec_helper'
 
 describe MangoPay::PayOut::BankWire, type: :feature do
-  include_context 'users'
-  include_context 'wallets'
   include_context 'bank_accounts'
   include_context 'payins'
   include_context 'payouts'
@@ -26,7 +24,7 @@ describe MangoPay::PayOut::BankWire, type: :feature do
 
     it 'creates a bank wire payout' do
       payin = new_payin_card_direct # this payin is successfull so payout may happen
-      payout = new_payout_bankwire(payin)
+      payout = create_new_payout_bankwire(payin)
       expect(payout['Id']).not_to be_nil
       check_type_and_status(payout)
       expect(payout['DebitedWalletId']).to eq(payin['CreditedWalletId'])
@@ -34,14 +32,14 @@ describe MangoPay::PayOut::BankWire, type: :feature do
 
     it 'fails if not enough money' do
       payin = new_payin_card_web # this payin is NOT processed yet so payout may NOT happen
-      error = new_payout_bankwire(payin)
+      error = create_new_payout_bankwire(payin)
       expect(error['Message']).to eq("The amount you wish to spend must be smaller than the amount left in your collection.")
     end
   end
 
   describe 'FETCH' do
     it 'fetches a payout' do
-      created = new_payout_bankwire(new_payin_card_direct)
+      created = new_payout_bankwire
       fetched = MangoPay::PayOut.fetch(created['Id'])
       expect(fetched['Id']).to eq(created['Id'])
       expect(fetched['CreationDate']).to eq(created['CreationDate'])

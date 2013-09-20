@@ -1,35 +1,71 @@
 require_relative '../../spec_helper'
 
 describe MangoPay::Transfer, type: :feature do
-  include_context 'users'
   include_context 'wallets'
-  include_context 'transfer'
+  include_context 'payins'
+  include_context 'transfers'
+
+  def check_type_and_status(trans)
+    expect(trans['Type']).to eq('TRANSFER')
+    expect(trans['Nature']).to eq('REGULAR')
+
+    # SUCCEEDED
+    expect(trans['Status']).to eq('SUCCEEDED')
+    expect(trans['ResultCode']).to eq('000000')
+    expect(trans['ResultMessage']).to eq('Success')
+    expect(trans['ExecutionDate']).to be > 0
+  end
 
   describe 'CREATE' do
     it 'creates a new Transfer' do
-      expect(new_transfer['Id']).not_to be_nil
-      #expect(new_transfer['Status']).to eq('SUCCEEDED') # cannot test yet
-      expect(new_transfer['Status']).to eq('FAILED')
+      created = new_transfer
+      expect(created['Id']).not_to be_nil
+      check_type_and_status(created)
     end
   end
 
   describe 'FETCH' do
     it 'fetches a Transfer' do
-      transfer = MangoPay::Transfer.fetch(new_transfer['Id'])
-      expect(transfer['Id']).to eq(new_transfer['Id'])
-      #expect(new_transfer['Status']).to eq('SUCCEEDED') # cannot test yet
-      expect(new_transfer['Status']).to eq('FAILED')
+      created = new_transfer
+      fetched = MangoPay::Transfer.fetch(created['Id'])
+      expect(fetched['Id']).to eq(created['Id'])
+      check_type_and_status(created)
+      check_type_and_status(fetched)
     end
   end
 
   describe 'REFUND' do
     it 'refunds a transfer' do
-      transfer_refund = MangoPay::Transfer.refund(new_transfer['Id'], {
-        AuthorId: new_transfer['AuthorId']
-      })
-      expect(transfer_refund['Id']).not_to be_nil
-      #expect(transfer_refund['Status']).to eq('SUCCEEDED') # cannot test yet
-      expect(transfer_refund['Status']).to be_nil
+      trans = new_transfer
+      refund = MangoPay::Transfer.refund(trans['Id'], {AuthorId: trans['AuthorId']})
+      expect(refund['Id']).not_to be_nil
+      expect(refund['Status']).to eq('SUCCEEDED')
+      expect(refund['Type']).to eq('TRANSFER')
+      expect(refund['Nature']).to eq('REFUND')
+      expect(refund['InitialTransactionType']).to eq('TRANSFER')
+      expect(refund['InitialTransactionId']).to eq(trans['Id'])
+      expect(refund['DebitedWalletId']).to eq(trans['CreditedWalletId'])
+      expect(refund['CreditedWalletId']).to eq(trans['DebitedWalletId'])
+    end
+  end
+
+  describe 'CASH FLOW' do
+    it 'changes balances correctly' do
+      wlt1 = new_wallet
+      wlt2 = new_wallet_legal
+      wallets_check_amounts(wlt1, 0, wlt2, 0)
+
+      # payin: feed wlt1 with money
+      create_new_payin_card_direct(wlt1, 1000)
+      wallets_reload_and_check_amounts(wlt1, 1000, wlt2, 0)
+
+      # trnasfer wlt1 => wlt2
+      trans = create_new_transfer(wlt1, wlt2, 600)
+      wallets_reload_and_check_amounts(wlt1, 400, wlt2, 600)
+
+      # refund the trnasfer
+      refund = MangoPay::Transfer.refund(trans['Id'], {AuthorId: trans['AuthorId']})
+      wallets_reload_and_check_amounts(wlt1, 1000, wlt2, 0)
     end
   end
 end

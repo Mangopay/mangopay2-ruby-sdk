@@ -1,7 +1,6 @@
 require_relative '../../spec_helper'
 
 describe MangoPay::Transaction do
-  include_context 'users'
   include_context 'wallets'
   include_context 'payins'
   include_context 'payouts'
@@ -24,7 +23,7 @@ describe MangoPay::Transaction do
 
     it 'fetches list with two transactions after payin and payout done' do
       payin = new_payin_card_direct
-      payout = new_payout_bankwire(payin)
+      payout = create_new_payout_bankwire(payin)
       transactions = MangoPay::Transaction.fetch(new_wallet['Id'])
       expect(transactions).to be_kind_of(Array)
       expect(transactions.count).to eq 2

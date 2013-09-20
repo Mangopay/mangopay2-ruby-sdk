@@ -35,7 +35,7 @@ shared_context 'users' do
 
   let(:new_natural_user) {
     MangoPay::NaturalUser.create({
-      Tag: 'test',
+      Tag: 'Test natural user',
       Email: 'my@email.com',
       FirstName: 'John',
       LastName: 'Doe',
@@ -73,14 +73,27 @@ shared_context 'wallets' do
 ###############################################
   include_context 'users'
 
-  let(:new_wallet) {
+  let(:new_wallet) { create_new_wallet(new_natural_user) }
+  let(:new_wallet_legal) { create_new_wallet(new_legal_user) }
+  def create_new_wallet(user)
     MangoPay::Wallet.create({
-      Owners: [new_natural_user['Id']],
+      Owners: [user['Id']],
       Description: 'A test wallet',
       Currency: 'EUR',
-      Tag: 'Test Time'
+      Tag: 'Test wallet'
     })
-  }
+  end
+
+  def wallets_check_amounts(wlt1, amnt1, wlt2 = nil, amnt2 = nil)
+    expect(wlt1['Balance']['Amount']).to eq amnt1
+    expect(wlt2['Balance']['Amount']).to eq amnt2 if wlt2
+  end
+
+  def wallets_reload_and_check_amounts(wlt1, amnt1, wlt2 = nil, amnt2 = nil)
+    wlt1 = MangoPay::Wallet::fetch(wlt1['Id'])
+    wlt2 = MangoPay::Wallet::fetch(wlt2['Id']) if wlt2
+    wallets_check_amounts(wlt1, amnt1, wlt2, amnt2)
+  end
 end
 
 ###############################################
@@ -95,7 +108,7 @@ shared_context 'bank_accounts' do
       OwnerAddress: 'Here',
       IBAN: 'FR76 1790 6000 3200 0833 5232 973',
       BIC: 'AGRIFRPP879',
-      Tag: 'Test Time'
+      Tag: 'Test bank account'
     })
   }
 end
@@ -157,20 +170,21 @@ shared_context 'payins' do
     })
   }
 
-  let(:new_payin_card_direct) {
+  let(:new_payin_card_direct) { create_new_payin_card_direct(new_wallet) }
+  def create_new_payin_card_direct(to_wallet, amnt = 1000)
     cardreg = new_card_registration_completed
     MangoPay::PayIn::Card::Direct.create({
       AuthorId: new_natural_user['Id'],
-      CreditedUserId: new_wallet['Owners'][0],
-      CreditedWalletId: new_wallet['Id'],
-      DebitedFunds: { Currency: 'EUR', Amount: 1000 },
+      CreditedUserId: to_wallet['Owners'][0],
+      CreditedWalletId: to_wallet['Id'],
+      DebitedFunds: { Currency: 'EUR', Amount: amnt },
       Fees: { Currency: 'EUR', Amount: 0 },
       CardType: 'CB_VISA_MASTERCARD',
       CardId: cardreg['CardId'],
       SecureModeReturnURL: 'http://test.com',
       Tag: 'Test PayIn/Card/Direct'
     })
-  }
+  end
 
 end
 
@@ -179,11 +193,12 @@ shared_context 'payouts' do
 ###############################################
   include_context 'bank_accounts'
 
-  def new_payout_bankwire(payin)
+  let(:new_payout_bankwire) { create_new_payout_bankwire(new_payin_card_direct) }
+  def create_new_payout_bankwire(payin, amnt = 500)
     MangoPay::PayOut::BankWire.create({
       AuthorId: payin['CreditedUserId'],
       DebitedWalletId: payin['CreditedWalletId'],
-      DebitedFunds: { Currency: 'EUR', Amount: 500 },
+      DebitedFunds: { Currency: 'EUR', Amount: amnt },
       Fees: { Currency: 'EUR', Amount: 0 },
       BankAccountId: new_bank_account['Id'],
       Communication: 'This is a test',
@@ -193,60 +208,27 @@ shared_context 'payouts' do
 end
 
 ###############################################
-shared_context 'transfer' do
+shared_context 'transfers' do
 ###############################################
   include_context 'users'
-
-  let(:credited_wallet) {
-    MangoPay::Wallet.create({
-      Owners: [new_natural_user['Id']],
-      Description: 'A test wallet',
-      Currency: 'EUR',
-      Tag: 'Test Time'
-    })
-  }
-
-  let(:debited_wallet) {
-    MangoPay::Wallet.create({
-      Owners: [new_legal_user['Id']],
-      Description: 'A test wallet',
-      Currency: 'EUR',
-      Tag: 'Test Time'
-    })
-  }
-
-  let(:web_card_contribution) {
-    card = MangoPay::PayIn::Card::Web.create({
-      AuthorId: debited_wallet['Owners'][0],
-      CreditedUserId: debited_wallet['Owners'][0],
-      DebitedFunds: { Currency: 'EUR', Amount: 1000 },
-      Fees: { Currency: 'EUR', Amount: 0 },
-      CreditedWalletId: debited_wallet['Id'],
-      CardType: 'CB_VISA_MASTERCARD',
-      ReturnURL: MangoPay.configuration.root_url,
-      Culture: 'FR',
-      Tag: 'Test PayIn/Card/Web'
-    })
-#    visit(card['RedirectURL'])
-#    fill_in('number', with: '4970100000000154')
-#    fill_in('cvv', with: '123')
-#    click_button('paybutton')
-#    card = MangoPay::PayIn.fetch(card['Id'])
-#    while card["Status"] == 'CREATED' do
-#      card = MangoPay::PayIn.fetch(card['Id'])
-#    end
-    card
-  }
+  include_context 'wallets'
+  include_context 'payins'
 
   let(:new_transfer) {
-    MangoPay::Transfer.create({
-      AuthorId: web_card_contribution['CreditedUserId'],
-      CreditedUserId: credited_wallet['Owners'][0],
-      DebitedFunds: { Currency: 'EUR', Amount: 500},
-      Fees: { Currency: 'EUR', Amout: 0},
-      DebitedWalletId: web_card_contribution['CreditedWalletId'],
-      CreditedWalletId: credited_wallet['Id'],
-      Tag: 'Test Transfer'
-    })
+    wlt1 = new_wallet
+    wlt2 = new_wallet_legal
+    create_new_payin_card_direct(wlt1, 1000) # feed wlt1 with money
+    create_new_transfer(wlt1, wlt2, 500) # transfer wlt1 => wlt2
   }
+  def create_new_transfer(from_wallet, to_wallet, amnt = 500)
+    MangoPay::Transfer.create({
+      AuthorId: from_wallet['Owners'][0],
+      DebitedWalletId: from_wallet['Id'],
+      CreditedUserId: to_wallet['Owners'][0],
+      CreditedWalletId: to_wallet['Id'],
+      DebitedFunds: { Currency: 'EUR', Amount: amnt},
+      Fees: { Currency: 'EUR', Amout: 0},
+      Tag: 'Test transfer'
+    })
+  end
 end
