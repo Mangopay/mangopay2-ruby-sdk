@@ -12,9 +12,9 @@ module MangoPay
 
     def self.url(*id)
       if id.length == 1
-        "/v2/#{MangoPay.configuration.client_id}/users/#{CGI.escape(id[0])}/bankaccounts"
+        "/v2/#{MangoPay.configuration.client_id}/users/#{CGI.escape(id[0].to_s)}/bankaccounts"
       else
-        "/v2/#{MangoPay.configuration.client_id}/users/#{CGI.escape(id[0])}/bankaccounts/#{CGI.escape(id[1])}"
+        "/v2/#{MangoPay.configuration.client_id}/users/#{CGI.escape(id[0].to_s)}/bankaccounts/#{CGI.escape(id[1].to_s)}"
       end
     end
   end
