@@ -13,7 +13,7 @@ module MangoPay
         raise NotImplementedError.new('Resource is an abstract class. Do not use it directly.')
       end
       if id
-        "/v2/#{MangoPay.configuration.client_id}/#{CGI.escape(class_name.downcase)}s/#{CGI.escape(id)}"
+        "/v2/#{MangoPay.configuration.client_id}/#{CGI.escape(class_name.downcase)}s/#{CGI.escape(id.to_s)}"
       else
         "/v2/#{MangoPay.configuration.client_id}/#{CGI.escape(class_name.downcase)}s"
       end
