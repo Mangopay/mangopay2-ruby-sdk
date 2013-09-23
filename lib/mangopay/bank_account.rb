@@ -3,18 +3,18 @@ module MangoPay
     include MangoPay::HTTPCalls::Create
     include MangoPay::HTTPCalls::Fetch
 
-    def self.fetch(*ids)
-      url = ids.length == 1 ? url(ids[0]) : url(ids[0], ids[1])
-      MangoPay.request(:get, url)
+    def self.fetch(user_id, bank_account_id_or_filters={})
+      bank_account_id, filters = MangoPay::HTTPCalls::Fetch.parse_id_or_filters(bank_account_id_or_filters)
+      MangoPay.request(:get, url(user_id, bank_account_id), {}, filters)
     end
 
     private
 
-    def self.url(*id)
-      if id.length == 1
-        "/v2/#{MangoPay.configuration.client_id}/users/#{CGI.escape(id[0].to_s)}/bankaccounts"
+    def self.url(user_id, bank_account_id = nil)
+      if bank_account_id
+        "/v2/#{MangoPay.configuration.client_id}/users/#{CGI.escape(user_id.to_s)}/bankaccounts/#{CGI.escape(bank_account_id.to_s)}"
       else
-        "/v2/#{MangoPay.configuration.client_id}/users/#{CGI.escape(id[0].to_s)}/bankaccounts/#{CGI.escape(id[1].to_s)}"
+        "/v2/#{MangoPay.configuration.client_id}/users/#{CGI.escape(user_id.to_s)}/bankaccounts"
       end
     end
   end

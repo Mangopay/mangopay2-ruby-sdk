@@ -53,17 +53,24 @@ module MangoPay
     URI(configuration.root_url + url)
   end
 
-  def self.request(method, url, params={}, headers={})
+  def self.request(method, url, params={}, filters={})
     uri = api_uri(url)
+    uri.query = URI.encode_www_form(filters) unless filters.empty?
 
     res = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
       request = Net::HTTP::const_get(method.capitalize).new(uri.request_uri, request_headers)
       request.body = MangoPay::JSON.dump(params)
       http.request request
     end
+
+    # copy pagination info if any
+    ['x-number-of-pages', 'x-number-of-items'].each { |k|
+      filters[k.gsub('x-number-of-', 'total_')] = res[k].to_i if res[k]
+    }
+
     MangoPay::JSON.load(res.body)
   end
-  
+
   private
 
   def self.user_agent

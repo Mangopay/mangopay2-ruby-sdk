@@ -28,13 +28,18 @@ module MangoPay
 
     module Fetch
       module ClassMethods
-        def fetch(id = nil, filters = {})
-          response = MangoPay.request(:get, url(id), filters)
+        def fetch(id_or_filters = nil)
+          id, filters = MangoPay::HTTPCalls::Fetch.parse_id_or_filters(id_or_filters)
+          response = MangoPay.request(:get, url(id), {}, filters)
         end
       end
 
       def self.included(base)
         base.extend(ClassMethods)
+      end
+
+      def self.parse_id_or_filters(id_or_filters = nil)
+        id_or_filters.is_a?(Hash) ? [nil, id_or_filters] : [id_or_filters, {}]
       end
     end
 

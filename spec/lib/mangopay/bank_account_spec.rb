@@ -12,14 +12,14 @@ describe MangoPay::BankAccount do
   describe 'FETCH' do
 
     it 'fetches all the bank details' do
-      bank_details = MangoPay::BankAccount.fetch(new_bank_account['UserId'])
-      expect(bank_details).to be_kind_of(Array)
-      expect(bank_details[0]['Id']).to eq(new_bank_account['Id'])
+      list = MangoPay::BankAccount.fetch(new_bank_account['UserId'])
+      expect(list).to be_kind_of(Array)
+      expect(list[0]['Id']).to eq(new_bank_account['Id'])
     end
 
-    it 'fetches one bank detail' do
-      bank_detail = MangoPay::BankAccount.fetch(new_bank_account['UserId'], new_bank_account['Id'])
-      expect(bank_detail['Id']).to eq(new_bank_account['Id'])
+    it 'fetches single bank detail' do
+      single = MangoPay::BankAccount.fetch(new_bank_account['UserId'], new_bank_account['Id'])
+      expect(single['Id']).to eq(new_bank_account['Id'])
     end
   end
 end
