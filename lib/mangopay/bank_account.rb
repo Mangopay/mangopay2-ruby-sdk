@@ -3,6 +3,7 @@ module MangoPay
     include MangoPay::HTTPCalls::Create
     include MangoPay::HTTPCalls::Fetch
 
+    # see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch for details
     def self.fetch(user_id, bank_account_id_or_filters={})
       bank_account_id, filters = MangoPay::HTTPCalls::Fetch.parse_id_or_filters(bank_account_id_or_filters)
       MangoPay.request(:get, url(user_id, bank_account_id), {}, filters)
