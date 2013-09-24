@@ -53,22 +53,44 @@ module MangoPay
     URI(configuration.root_url + url)
   end
 
-  def self.request(method, url, params={}, filters={})
+  #
+  # - +method+: HTTP method; lowercase symbol, e.g. :get, :post etc.
+  # - +url+: the part after Configuration#root_url
+  # - +params+: hash; entity data for creation, update etc.; will dump it by JSON and assign to Net::HTTPRequest#body
+  # - +filters+: hash; pagination params etc.; will encode it by URI and assign to URI#query
+  # - +headers+: hash; request_headers by default
+  # - +before_request_proc+: optional proc; will call it passing the Net::HTTPRequest instance just before Net::HTTPRequest#request
+  #
+  # Raises MangoPay::ResponseError if response code != 200.
+  #
+  def self.request(method, url, params={}, filters={}, headers = request_headers, before_request_proc = nil)
     uri = api_uri(url)
     uri.query = URI.encode_www_form(filters) unless filters.empty?
 
     res = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
-      request = Net::HTTP::const_get(method.capitalize).new(uri.request_uri, request_headers)
-      request.body = MangoPay::JSON.dump(params)
-      http.request request
+      req = Net::HTTP::const_get(method.capitalize).new(uri.request_uri, headers)
+      req.body = MangoPay::JSON.dump(params)
+      before_request_proc.call(req) if before_request_proc
+#pp req, req.body;_={};req.each{|k,v|_[k]=v};pp _
+      http.request req
     end
+
+    # decode json data
+    begin
+      data = MangoPay::JSON.load(res.body)
+    rescue MultiJson::LoadError
+      data = {}
+    end
+#pp uri, res, res.code, res.body[0, 25] + '.....', data;_={};res.each{|k,v|_[k]=v};pp _
+
+    raise MangoPay::ResponseError.new(uri, res.code, data) unless res.is_a? Net::HTTPOK
 
     # copy pagination info if any
     ['x-number-of-pages', 'x-number-of-items'].each { |k|
       filters[k.gsub('x-number-of-', 'total_')] = res[k].to_i if res[k]
     }
 
-    MangoPay::JSON.load(res.body)
+    data
   end
 
   private

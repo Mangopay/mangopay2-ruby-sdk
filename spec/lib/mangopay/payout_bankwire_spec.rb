@@ -32,8 +32,13 @@ describe MangoPay::PayOut::BankWire, type: :feature do
 
     it 'fails if not enough money' do
       payin = new_payin_card_web # this payin is NOT processed yet so payout may NOT happen
-      error = create_new_payout_bankwire(payin)
-      expect(error['Message']).to eq("The amount you wish to spend must be smaller than the amount left in your collection.")
+      expect {
+        create_new_payout_bankwire(payin)
+      }.to raise_error { |err|
+        err.should be_a MangoPay::ResponseError
+        err.type.should eq 'other'
+        err.message.should eq 'The amount you wish to spend must be smaller than the amount left in your collection.'
+      }
     end
   end
 

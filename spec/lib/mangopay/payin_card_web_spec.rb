@@ -40,8 +40,13 @@ describe MangoPay::PayIn::Card::Web, type: :feature do
   describe 'REFUND' do
     it 'refunds a payin' do
       payin = new_payin_card_web
-      error = MangoPay::PayIn.refund(payin['Id'], {AuthorId: payin['AuthorId']})
-      expect(error['Message']).to eq("Impossible to refund the transaction, can't have negative amount.")
+      expect {
+        MangoPay::PayIn.refund(payin['Id'], {AuthorId: payin['AuthorId']})
+      }.to raise_error { |err|
+        err.should be_a MangoPay::ResponseError
+        err.type.should eq 'other'
+        err.message.should eq "Impossible to refund the transaction, can't have negative amount."
+      }
     end
   end
 

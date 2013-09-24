@@ -161,7 +161,7 @@ shared_context 'payins' do
       cardExpirationDate: 1214,
       cardCvx: 123}
     res = Net::HTTP.post_form(URI(cardreg['CardRegistrationURL']), data)
-    raise Exception, [res, res.body] if (!res.is_a?(Net::HTTPOK) || !res.body.start_with?('data='))
+    raise Exception, [res, res.body] unless (res.is_a?(Net::HTTPOK) && res.body.start_with?('data='))
     cardreg['RegistrationData'] = res.body
 
     # 3rd step: update (fills-in CardId) and return it

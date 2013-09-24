@@ -3,12 +3,12 @@ require_relative '../../spec_helper'
 describe MangoPay::Configuration do
 
   it 'fails when calling with wrong client credentials' do
-    c = MangoPay.configuration
-    c.client_id = 'test_asd'
-    c.client_passphrase = '00000'
-    error = MangoPay::User.fetch()
-    expect(error['Message']).not_to be_empty
-    expect(['not_authorized', 'forbidden_ressource'].include? error['Type']).to be_true
+    expect {
+      c = MangoPay.configuration
+      c.client_id = 'test_asd'
+      c.client_passphrase = '00000'
+      MangoPay::User.fetch()
+    }.to raise_error(MangoPay::ResponseError)
   end
 
   it 'goes ok when calling with correct client credentials' do

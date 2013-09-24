@@ -15,15 +15,11 @@ module MangoPay
       def self.get_token
         token = storage.get
         if token.nil? || token['timestamp'].nil? || token['timestamp'] <= Time.now
-          uri = MangoPay.api_uri('/api/oauth/token')
-          cfg = MangoPay.configuration
-          res = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
-            req = Net::HTTP::Post.new(uri.request_uri)
+          token = MangoPay.request(:post, '/api/oauth/token', {}, {}, {}, Proc.new do |req|
+            cfg = MangoPay.configuration
             req.basic_auth cfg.client_id, cfg.client_passphrase
             req.body = 'grant_type=client_credentials'
-            http.request req
-          end
-          token = MangoPay::JSON.load(res.body)
+          end)
           token['timestamp'] = Time.now + token['expires_in'].to_i
           storage.store token
         end

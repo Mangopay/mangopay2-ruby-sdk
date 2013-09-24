@@ -11,17 +11,23 @@ describe MangoPay::Client do
     end
 
     it 'refuses the client id' do
-      expect(wrong_client['errors']).not_to be_nil
+      expect { wrong_client['errors'] }.to raise_error { |err|
+        err.should be_a MangoPay::ResponseError
+        err.type.should eq 'param_error'
+      }
     end
 
     it "ClientId_already_exist" do
-      existing_client_error = MangoPay::Client.create({
-        'ClientId' => new_client['ClientId'],
-        'Name' => 'What a nice name',
-        'Email' => 'clientemail@email.com'
-      })
-      expect(existing_client_error['Type']).to eq('ClientId_already_exist')
-      expect(existing_client_error['Message']).to eq('A partner with this ClientId already exist')
+      expect {
+        MangoPay::Client.create({
+          'ClientId' => new_client['ClientId'],
+          'Name' => 'What a nice name',
+          'Email' => 'clientemail@email.com'
+        })
+      }.to raise_error { |err|
+        err.should be_a MangoPay::ResponseError
+        err.type.should eq 'ClientId_already_exist'
+      }
     end
   end
 end
