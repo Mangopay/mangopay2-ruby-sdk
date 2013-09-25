@@ -34,7 +34,8 @@ module MangoPay
         #   MangoPay::User.fetch("user-id") # => { "FirstName": "Mango", "LastName": "Pay", ... }
         # 
         # - Fetching multiple entities with _optional_ +filters+ hash,
-        #   including _pagination_ params (http://docs.mangopay.com/api-references/pagination/):
+        #   including _pagination_ params
+        #   (+page+, +per_page+; see http://docs.mangopay.com/api-references/pagination/):
         #   
         #   MangoPay::User.fetch() # => [{...}, ...]: list of user data hashes (10 per page by default)
         #   MangoPay::User.fetch({'page' => 2, 'per_page' => 3}) # => list of 3 hashes from 2nd page
@@ -43,6 +44,7 @@ module MangoPay
         #   
         #   MangoPay::User.fetch(filter = {'page' => 2, 'per_page' => 3})
         #   filter # => {"page"=>2, "per_page"=>3, "total_pages"=>1969, "total_items"=>5905}
+        #
         def fetch(id_or_filters = nil)
           id, filters = MangoPay::HTTPCalls::Fetch.parse_id_or_filters(id_or_filters)
           response = MangoPay.request(:get, url(id), {}, filters)

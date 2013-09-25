@@ -17,12 +17,8 @@ module MangoPay
       super(message) if message
     end
 
-    def message
-      @details['Message']
-    end
-
-    def type
-      @details['Type']
-    end
+    def message; @details['Message']; end
+    def type;    @details['Type']; end
+    def errors;  @details['errors']; end
   end
 end

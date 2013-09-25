@@ -71,7 +71,6 @@ module MangoPay
       req = Net::HTTP::const_get(method.capitalize).new(uri.request_uri, headers)
       req.body = MangoPay::JSON.dump(params)
       before_request_proc.call(req) if before_request_proc
-#pp req, req.body;_={};req.each{|k,v|_[k]=v};pp _
       http.request req
     end
 
@@ -81,7 +80,6 @@ module MangoPay
     rescue MultiJson::LoadError
       data = {}
     end
-#pp uri, res, res.code, res.body[0, 25] + '.....', data;_={};res.each{|k,v|_[k]=v};pp _
 
     raise MangoPay::ResponseError.new(uri, res.code, data) unless res.is_a? Net::HTTPOK
 

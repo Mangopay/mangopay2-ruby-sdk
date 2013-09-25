@@ -3,7 +3,13 @@ module MangoPay
     include MangoPay::HTTPCalls::Create
     include MangoPay::HTTPCalls::Fetch
 
-    # see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch for details
+    # Fetches:
+    # - list of bank accounts belonging to the given +user_id+
+    # - or single bank account belonging to the given +user_id+ with the given +bank_account_id+.
+    # 
+    # In case of list query, optional +filters+ is a hash accepting pagination params
+    # (+page+, +per_page+; see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch)
+    #
     def self.fetch(user_id, bank_account_id_or_filters={})
       bank_account_id, filters = MangoPay::HTTPCalls::Fetch.parse_id_or_filters(bank_account_id_or_filters)
       MangoPay.request(:get, url(user_id, bank_account_id), {}, filters)
