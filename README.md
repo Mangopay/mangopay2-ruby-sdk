@@ -29,6 +29,23 @@ between you and the MangoPay Team.
 
 ### Examples
 
+```ruby
+require 'mangopay'
+
+# get some user by id
+john = MangoPay::User.fetch(john_id) # => {FirstName"=>"John", "LastName"=>"Doe", ...}
+
+# update some of his data
+MangoPay::NaturalUser.update(john_id, {'LastName' => 'CHANGED'}) # => {FirstName"=>"John", "LastName"=>"CHANGED", ...}
+
+# get all users (with pagination)
+pagination = {'page' => 1, 'per_page' => 8} # get 1st page, 8 items per page
+users = MangoPay::User.fetch(pagination) # => [{...}, ...]: list of 8 users data hashes
+pagination # => {"page"=>1, "per_page"=>8, "total_pages"=>748, "total_items"=>5978}
+
+# get John's bank accounts
+accounts = MangoPay::BankAccount.fetch(john_id) # => [{...}, ...]: list of accounts data hashes (10 per page by default)
+```
 
 ### Tests
 Make sure that you have run: ```bundle install```

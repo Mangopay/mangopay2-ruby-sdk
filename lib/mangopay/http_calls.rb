@@ -31,7 +31,7 @@ module MangoPay
 
         # - Fetching single entity by +id+:
         # 
-        #   MangoPay::User.fetch("user-id") # => { "FirstName": "Mango", "LastName": "Pay", ... }
+        #   MangoPay::User.fetch("user-id") # => {"FirstName"=>"Mango", "LastName"=>"Pay", ...}
         # 
         # - Fetching multiple entities with _optional_ +filters+ hash,
         #   including _pagination_ params
