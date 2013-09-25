@@ -27,10 +27,19 @@ where CLIENT_ID is the id you will use to connect to the api
 and CLIENT_NAME is a full name that will be use to identify all communications
 between you and the MangoPay Team.
 
+* Otherwise, call ```MangoPay.configure``` in your script as shown in the snippet below.
+
 ### Examples
 
 ```ruby
 require 'mangopay'
+
+# configuration (not required if Rails generator fired as above)
+MangoPay.configure do |c|
+  c.preproduction = true
+  c.client_id = 'YOUR_CLIENT_ID'
+  c.client_passphrase = 'YOUR_CLIENT_PASSWORD'
+end
 
 # get some user by id
 john = MangoPay::User.fetch(john_id) # => {FirstName"=>"John", "LastName"=>"Doe", ...}
