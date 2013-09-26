@@ -37,7 +37,6 @@ describe MangoPay::PayOut::BankWire, type: :feature do
       }.to raise_error { |err|
         err.should be_a MangoPay::ResponseError
         err.type.should eq 'other'
-        err.message.should eq 'The amount you wish to spend must be smaller than the amount left in your collection.'
       }
     end
   end

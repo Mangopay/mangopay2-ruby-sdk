@@ -24,10 +24,7 @@ describe MangoPay::Client do
           'Name' => 'What a nice name',
           'Email' => 'clientemail@email.com'
         })
-      }.to raise_error { |err|
-        err.should be_a MangoPay::ResponseError
-        err.type.should eq 'ClientId_already_exist'
-      }
+      }.to raise_error MangoPay::ResponseError
     end
   end
 end

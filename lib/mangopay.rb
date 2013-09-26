@@ -36,7 +36,8 @@ module MangoPay
     end
 
     def root_url
-      @root_url || (@preproduction == true  ? "https://mangopay-api-inte.leetchi.com" : "https://api.leetchi.com")
+#      @root_url || (@preproduction == true  ? "https://mangopay-api-inte.leetchi.com" : "https://api.leetchi.com")
+      @root_url || (@preproduction == true  ? "https://api-preprod.mangopay.com" : "https://api.leetchi.com")
     end
   end
 
