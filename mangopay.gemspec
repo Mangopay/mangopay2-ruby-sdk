@@ -8,12 +8,12 @@ Gem::Specification.new do |s|
   s.summary     = "Ruby bindings for the version 2 of the MangoPay API"
   s.description = <<-EOF
   The mangopay Gem makes interacting with MangoPay Services much easier.
-  For any questions regarding the use of MangoPay's Services feel free to contact us at http://www.mangopay.com/contact-us/
-  You can find more documentation about MangoPay Services at http://www.mangopay.com/
+  For any questions regarding the use of MangoPay's Services feel free to contact us at http://www.mangopay.com/get-started-2/
+  You can find more documentation about MangoPay Services at http://docs.mangopay.com/
   EOF
-  s.authors     = ['Geoffroy Lorieux']
+  s.authors     = ['Geoffroy Lorieux', 'Sergiusz Woznicki']
   s.email       = 'it-support@mangopay.com'
-  s.homepage    = 'http://www.mangopay.com/'
+  s.homepage    = 'http://docs.mangopay.com/'
   s.license     = 'MIT'
 
   s.required_ruby_version = '>= 1.9.2'
