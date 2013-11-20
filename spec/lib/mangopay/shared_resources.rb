@@ -171,10 +171,14 @@ shared_context 'payins' do
     data = {
       data: cardreg['PreregistrationData'],
       accessKeyRef: cardreg['AccessKey'],
-      cardNumber: 4970101122334406,
+      cardNumber: 4970100000000154,
       cardExpirationDate: 1214,
       cardCvx: 123}
     res = Net::HTTP.post_form(URI(cardreg['CardRegistrationURL']), data)
+############### TEMP!!!! #######################################################
+#pp :post, cardreg['CardRegistrationURL'], data
+#pp res, res.body
+#puts
     raise Exception, [res, res.body] unless (res.is_a?(Net::HTTPOK) && res.body.start_with?('data='))
     cardreg['RegistrationData'] = res.body
 

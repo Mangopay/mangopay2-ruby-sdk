@@ -83,14 +83,14 @@ module MangoPay
       data = {}
     end
 
-############## TEMP!!!! ################################################################
+############### TEMP!!!! #######################################################
 #pp method, uri.request_uri, params #, filters, headers
 #pp res, data
 #puts
 
     if (!(res.is_a? Net::HTTPOK))
       ex = MangoPay::ResponseError.new(uri, res.code, data)
-############## TEMP!!!! ################################################################
+############## TEMP!!!! ########################################################
 #pp ex, data
       raise ex
     end
