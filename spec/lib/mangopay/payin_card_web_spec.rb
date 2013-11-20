@@ -40,13 +40,16 @@ describe MangoPay::PayIn::Card::Web, type: :feature do
   describe 'REFUND' do
     it 'refunds a payin' do
       payin = new_payin_card_web
-      expect {
-        MangoPay::PayIn.refund(payin['Id'], {AuthorId: payin['AuthorId']})
-      }.to raise_error { |err|
-        err.should be_a MangoPay::ResponseError
-        err.type.should eq 'other'
-        err.message.should eq "Impossible to refund the transaction, can't have negative amount."
-      }
+      refund = MangoPay::PayIn.refund(payin['Id'], {AuthorId: payin['AuthorId']})
+      expect(refund['Id']).not_to be_nil
+      expect(refund['Type']).to eq('PAYOUT')
+      expect(refund['Nature']).to eq('REFUND')
+      expect(refund['InitialTransactionType']).to eq('PAYIN')
+      expect(refund['InitialTransactionId']).to eq(payin['Id'])
+      expect(refund['DebitedWalletId']).to eq(payin['CreditedWalletId'])
+      expect(refund['Status']).to eq('FAILED')
+      expect(refund['ResultCode']).to eq('001001')
+      expect(refund['ResultMessage']).to eq('Unsufficient wallet balance')
     end
   end
 

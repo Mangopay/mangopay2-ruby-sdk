@@ -1,6 +1,5 @@
 module MangoPay
   class Transaction < Resource
-    include MangoPay::HTTPCalls::Fetch
 
     # Fetches list of transactions belonging to the given +wallet_id+.
     # 

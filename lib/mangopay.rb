@@ -23,6 +23,8 @@ require 'mangopay/wallet'
 require 'mangopay/bank_account'
 require 'mangopay/card_registration'
 require 'mangopay/card'
+require 'mangopay/event'
+require 'mangopay/kyc_document'
 
 module MangoPay
 
@@ -36,7 +38,7 @@ module MangoPay
     end
 
     def root_url
-      @root_url || (@preproduction == true  ? "https://api-preprod.mangopay.com" : "https://api.mangopay.com")
+      @root_url || (@preproduction == true  ? "https://api.sandbox.mangopay.com" : "https://api.mangopay.com")
     end
   end
 
@@ -66,7 +68,7 @@ module MangoPay
   def self.request(method, url, params={}, filters={}, headers = request_headers, before_request_proc = nil)
     uri = api_uri(url)
     uri.query = URI.encode_www_form(filters) unless filters.empty?
-
+    
     res = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
       req = Net::HTTP::const_get(method.capitalize).new(uri.request_uri, headers)
       req.body = MangoPay::JSON.dump(params)
@@ -81,7 +83,17 @@ module MangoPay
       data = {}
     end
 
-    raise MangoPay::ResponseError.new(uri, res.code, data) unless res.is_a? Net::HTTPOK
+############## TEMP!!!! ################################################################
+#pp method, uri.request_uri, params #, filters, headers
+#pp res, data
+#puts
+
+    if (!(res.is_a? Net::HTTPOK))
+      ex = MangoPay::ResponseError.new(uri, res.code, data)
+############## TEMP!!!! ################################################################
+#pp ex, data
+      raise ex
+    end
 
     # copy pagination info if any
     ['x-number-of-pages', 'x-number-of-items'].each { |k|

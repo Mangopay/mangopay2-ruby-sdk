@@ -40,7 +40,7 @@ shared_context 'users' do
       FirstName: 'John',
       LastName: 'Doe',
       Address: 'Here',
-      Birthday: '',
+      Birthday: 1300186358,
       Birthplace: 'Paris',
       Nationality: 'FR',
       CountryOfResidence: 'FR',
@@ -52,13 +52,14 @@ shared_context 'users' do
   let(:new_legal_user) {
     MangoPay::LegalUser.create({
       Name: 'Super',
+      Email: 'super@email.com',
       LegalPersonType: 'BUSINESS',
       HeadquartersAddress: 'Here',
       LegalRepresentativeFirstName: 'John',
       LegalRepresentativeLastName: 'Doe',
       LegalRepresentativeAdress: 'Here',
       LegalRepresentativeEmail: 'john@doe.com',
-      LegalRepresentativeBirthday: '',
+      LegalRepresentativeBirthday: 1300186358,
       LegalRepresentativeNationality: 'FR',
       LegalRepresentativeCountryOfResidence: 'FR',
       Statute: '',
@@ -109,6 +110,19 @@ shared_context 'bank_accounts' do
       IBAN: 'FR76 1790 6000 3200 0833 5232 973',
       BIC: 'AGRIFRPP879',
       Tag: 'Test bank account'
+    })
+  }
+end
+
+###############################################
+shared_context 'kyc_documents' do
+###############################################
+  include_context 'users'
+
+  let(:new_document) {
+    MangoPay::KycDocument.create(new_natural_user['Id'], {
+      Type: 'IDENTITY_PROOF',
+      Tag: 'Test document'
     })
   }
 end

@@ -5,19 +5,21 @@ describe MangoPay::PayOut::BankWire, type: :feature do
   include_context 'payins'
   include_context 'payouts'
 
-  def check_type_and_status(payout)
+  def check_type_and_status(payout, check_status = true)
     expect(payout['Type']).to eq('PAYOUT')
     expect(payout['Nature']).to eq('REGULAR')
     expect(payout['PaymentType']).to eq('BANK_WIRE')
+    expect(payout['ExecutionDate']).to be_nil
 
     # linked to correct bank account
     expect(payout['BankAccountId']).to eq(new_bank_account['Id'])
 
-    # not SUCCEEDED yet: waiting for processing
-    expect(payout['Status']).to eq('CREATED')
-    expect(payout['ResultCode']).to be_nil
-    expect(payout['ResultMessage']).to be_nil
-    expect(payout['ExecutionDate']).to be_nil
+    if (check_status)
+      # not SUCCEEDED yet: waiting for processing
+      expect(payout['Status']).to eq('CREATED')
+      expect(payout['ResultCode']).to be_nil
+      expect(payout['ResultMessage']).to be_nil
+    end
   end
 
   describe 'CREATE' do
@@ -32,12 +34,11 @@ describe MangoPay::PayOut::BankWire, type: :feature do
 
     it 'fails if not enough money' do
       payin = new_payin_card_web # this payin is NOT processed yet so payout may NOT happen
-      expect {
-        create_new_payout_bankwire(payin)
-      }.to raise_error { |err|
-        err.should be_a MangoPay::ResponseError
-        err.type.should eq 'other'
-      }
+      payout = create_new_payout_bankwire(payin)
+      check_type_and_status(payout, false)
+      expect(payout['Status']).to eq('FAILED')
+      expect(payout['ResultCode']).to eq('001001')
+      expect(payout['ResultMessage']).to eq('Unsufficient wallet balance')
     end
   end
 
