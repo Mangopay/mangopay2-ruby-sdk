@@ -1,9 +1,3 @@
-#### ***
-THE MANGOPAY V2 IS NOT RELEASED YET. 
-
-PLEASE USE THE V1 API FOR NOW: https://github.com/MangoPay/mangopay-ruby-sdk 
-####***
-
 # MangoPay2 Ruby SDK
 
 The gem for interacting with the version 2 of the MangoPay API.
