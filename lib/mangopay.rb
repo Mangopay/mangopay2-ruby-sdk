@@ -78,7 +78,7 @@ module MangoPay
 
     # decode json data
     begin
-      data = MangoPay::JSON.load(res.body)
+      data = MangoPay::JSON.load(res.body.nil? ? '' : res.body)
     rescue MultiJson::LoadError
       data = {}
     end
