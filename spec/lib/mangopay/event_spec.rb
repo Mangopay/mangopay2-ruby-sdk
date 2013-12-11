@@ -27,7 +27,7 @@ describe MangoPay::Event do
       events = MangoPay::Event.fetch({'AfterDate' => payin['CreationDate'], 'BeforeDate' => payin['CreationDate']})
       expect(events).to be_kind_of(Array)
       expect(events.count).to be >= 1
-      expect(events.count {|e| e['RessourceId'] == payin['Id']}).to be >= 1
+      expect(events.count {|e| e['ResourceId'] == payin['Id']}).to be >= 1
     end
   end
 end

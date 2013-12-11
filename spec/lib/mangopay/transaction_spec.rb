@@ -25,10 +25,13 @@ describe MangoPay::Transaction do
       payin = new_payin_card_direct
       payout = create_new_payout_bankwire(payin)
       transactions = MangoPay::Transaction.fetch(new_wallet['Id'])
+
       expect(transactions).to be_kind_of(Array)
       expect(transactions.count).to eq 2
-      expect(transactions[0]['Id']).to eq payout['Id'] # last on top, so payout is before payin
-      expect(transactions[1]['Id']).to eq payin['Id']
+
+      transactions_ids = transactions.map {|t| t['Id']}
+      expect(transactions_ids).to include payin['Id']
+      expect(transactions_ids).to include payout['Id']
     end
 
     it 'accepts filtering params' do
