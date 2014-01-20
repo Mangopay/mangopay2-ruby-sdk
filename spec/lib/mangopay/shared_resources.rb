@@ -204,6 +204,22 @@ shared_context 'payins' do
     })
   end
 
+  ###############################################
+  # card/direct with pre-authorization
+  ###############################################
+
+  let(:new_card_preauthorization) { create_new_card_preauthorization(new_card_registration_completed) }
+  def create_new_card_preauthorization(cardreg, amnt = 1000)
+    MangoPay::PreAuthorization.create({
+      AuthorId: new_natural_user['Id'],
+      DebitedFunds: { Currency: 'EUR', Amount: amnt },
+      CardId: cardreg['CardId'],
+      SecureMode: 'DEFAULT',
+      SecureModeReturnURL: 'http://test.com',
+      Tag: 'Test Card PreAuthorization'
+    })
+  end
+
 end
 
 ###############################################
