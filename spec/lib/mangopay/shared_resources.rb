@@ -220,6 +220,20 @@ shared_context 'payins' do
     })
   end
 
+  let(:new_payin_preauthorized_direct) { create_new_payin_preauthorized_direct(new_wallet) }
+  def create_new_payin_preauthorized_direct(to_wallet, amnt = 1000)
+    preauth = new_card_preauthorization
+    MangoPay::PayIn::PreAuthorized::Direct.create({
+      AuthorId: new_natural_user['Id'],
+      CreditedUserId: to_wallet['Owners'][0],
+      CreditedWalletId: to_wallet['Id'],
+      DebitedFunds: { Currency: 'EUR', Amount: amnt },
+      Fees: { Currency: 'EUR', Amount: 0 },
+      PreauthorizationId: preauth['Id'],
+      Tag: 'Test PayIn/PreAuthorized/Direct'
+    })
+  end
+
 end
 
 ###############################################

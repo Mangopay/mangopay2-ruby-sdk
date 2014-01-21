@@ -23,5 +23,17 @@ module MangoPay
 
     end
 
+    module PreAuthorized
+
+      class Direct < Resource
+        include MangoPay::HTTPCalls::Create
+        private
+        def self.url(*)
+          "/v2/#{MangoPay.configuration.client_id}/payins/preauthorized/direct"
+        end
+      end
+
+    end
+
   end
 end
