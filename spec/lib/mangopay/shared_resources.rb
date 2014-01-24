@@ -234,6 +234,22 @@ shared_context 'payins' do
     })
   end
 
+  ###############################################
+  # bankwire/direct
+  ###############################################
+
+  let(:new_payin_bankwire_direct) { create_new_payin_bankwire_direct(new_wallet) }
+  def create_new_payin_bankwire_direct(to_wallet, amnt = 1000)
+    MangoPay::PayIn::BankWire::Direct.create({
+      AuthorId: new_natural_user['Id'],
+      CreditedUserId: to_wallet['Owners'][0],
+      CreditedWalletId: to_wallet['Id'],
+      DeclaredDebitedFunds: { Currency: 'EUR', Amount: amnt },
+      DeclaredFees: { Currency: 'EUR', Amount: 0 },
+      Tag: 'Test PayIn/BankWire/Direct'
+    })
+  end
+
 end
 
 ###############################################

@@ -35,5 +35,17 @@ module MangoPay
 
     end
 
+    module BankWire
+
+      class Direct < Resource
+        include MangoPay::HTTPCalls::Create
+        private
+        def self.url(*)
+          "/v2/#{MangoPay.configuration.client_id}/payins/bankwire/direct"
+        end
+      end
+
+    end
+
   end
 end
