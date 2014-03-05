@@ -296,3 +296,20 @@ shared_context 'transfers' do
     })
   end
 end
+
+###############################################
+shared_context 'hooks' do
+###############################################
+  let(:new_hook) {
+    hooks = MangoPay::Hook.fetch({'page' => 1, 'per_page' => 1})
+    if hooks.length == 0
+      MangoPay::Hook.create({
+        EventType: 'PAYIN_NORMAL_CREATED',
+        Url: 'http://test.com',
+        Tag: 'Test hook'
+      })
+    else
+      hooks[0]
+    end
+  }
+end

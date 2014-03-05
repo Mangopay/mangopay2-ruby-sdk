@@ -26,6 +26,7 @@ require 'mangopay/preauthorization'
 require 'mangopay/card'
 require 'mangopay/event'
 require 'mangopay/kyc_document'
+require 'mangopay/hook'
 
 module MangoPay
 
