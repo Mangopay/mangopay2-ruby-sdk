@@ -1,7 +1,11 @@
 module MangoPay
   class BankAccount < Resource
-    include MangoPay::HTTPCalls::Create
     include MangoPay::HTTPCalls::Fetch
+
+    def self.create(user_id, params)
+      type = params.fetch(:Type) { |no_symbol_key| params.fetch('Type') }
+      MangoPay.request(:post, "#{url(user_id)}/#{type}", params)
+    end
 
     # Fetches:
     # - list of bank accounts belonging to the given +user_id+

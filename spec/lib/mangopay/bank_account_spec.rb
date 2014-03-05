@@ -2,11 +2,72 @@ require_relative '../../spec_helper'
 
 describe MangoPay::BankAccount do
   include_context 'bank_accounts'
+  
+  def create(params)
+    params_fixed = { OwnerName: 'John', OwnerAddress: 'Here' }.merge(params)
+    MangoPay::BankAccount.create(new_natural_user['Id'], params_fixed)
+  end
 
   describe 'CREATE' do
-    it 'creates a new bank detail' do
+
+    it 'creates a new IBAN bank detail' do
       expect(new_bank_account['Id']).not_to be_nil
     end
+
+    it 'creates a new GB bank detail' do
+      created = create({
+        Type: 'GB',
+        AccountNumber: '234234234234',
+        SortCode: '234334',
+      })
+      expect(created['Id']).not_to be_nil
+      expect(created['Type']).to eq('GB')
+      expect(created['AccountNumber']).to eq('234234234234')
+      expect(created['SortCode']).to eq('234334')
+    end
+
+    it 'creates a new US bank detail' do
+      created = create({
+        Type: 'US',
+        AccountNumber: '234234234234',
+        ABA: '234334789',
+      })
+      expect(created['Id']).not_to be_nil
+      expect(created['Type']).to eq('US')
+      expect(created['AccountNumber']).to eq('234234234234')
+      expect(created['ABA']).to eq('234334789')
+    end
+
+    it 'creates a new CA bank detail' do
+      created = create({
+        Type: 'CA',
+        BankName: 'TestBankName',
+        BranchCode: '12345',
+        AccountNumber: '234234234234',
+        InstitutionNumber: '123',
+      })
+      expect(created['Id']).not_to be_nil
+      expect(created['Type']).to eq('CA')
+      expect(created['BankName']).to eq('TestBankName')
+      expect(created['BranchCode']).to eq('12345')
+      expect(created['AccountNumber']).to eq('234234234234')
+      expect(created['InstitutionNumber']).to eq('123')
+    end
+
+    it 'creates a new OTHER bank detail' do
+      created = create({
+        Type: 'OTHER',
+        Country: 'FR',
+        AccountNumber: '234234234234',
+        BIC: 'BINAADADXXX',
+      })
+      expect(created['Id']).not_to be_nil
+      expect(created['Type']).to eq('OTHER')
+      expect(created['Country']).to eq('FR')
+      expect(created['AccountNumber']).to eq('234234234234')
+      expect(created['BIC']).to eq('BINAADADXXX')
+    end
+
   end
 
   describe 'FETCH' do
