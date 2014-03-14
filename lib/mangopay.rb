@@ -27,6 +27,7 @@ require 'mangopay/card'
 require 'mangopay/event'
 require 'mangopay/kyc_document'
 require 'mangopay/hook'
+require 'mangopay/refund'
 
 module MangoPay
 
