@@ -5,7 +5,7 @@ module MangoPay
 
         def create(*id, params)
           id = id.empty? ? nil : id[0]
-          response = MangoPay.request(:post, url(id), params)
+          MangoPay.request(:post, url(id), params)
         end
       end
 
@@ -17,7 +17,7 @@ module MangoPay
     module Update
       module ClassMethods
         def update(id = nil, params = {})
-          response = MangoPay.request(:put, url(id), params)
+          MangoPay.request(:put, url(id), params)
         end
       end
 

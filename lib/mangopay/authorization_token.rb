@@ -7,23 +7,24 @@ module MangoPay
         def storage
           @@storage ||= StaticStorage.new
         end
+
         def storage= (storage)
           @@storage = storage
         end
-      end
 
-      def self.get_token
-        token = storage.get
-        if token.nil? || token['timestamp'].nil? || token['timestamp'] <= Time.now
-          token = MangoPay.request(:post, '/api/oauth/token', {}, {}, {}, Proc.new do |req|
-            cfg = MangoPay.configuration
-            req.basic_auth cfg.client_id, cfg.client_passphrase
-            req.body = 'grant_type=client_credentials'
-          end)
-          token['timestamp'] = Time.now + token['expires_in'].to_i
-          storage.store token
+        def get_token
+          token = storage.get
+          if token.nil? || token['timestamp'].nil? || token['timestamp'] <= Time.now
+            token = MangoPay.request(:post, '/api/oauth/token', {}, {}, {}, Proc.new do |req|
+              cfg = MangoPay.configuration
+              req.basic_auth cfg.client_id, cfg.client_passphrase
+              req.body = 'grant_type=client_credentials'
+            end)
+            token['timestamp'] = Time.now + token['expires_in'].to_i
+            storage.store token
+          end
+          token
         end
-        token
       end
     end
 
@@ -31,6 +32,7 @@ module MangoPay
       def get
         @@token ||= nil
       end
+
       def store(token)
         @@token = token
       end
