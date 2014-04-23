@@ -7,7 +7,6 @@ module MangoPay
 
       class Web < Resource
         include MangoPay::HTTPCalls::Create
-        private
         def self.url(*)
           "/v2/#{MangoPay.configuration.client_id}/payins/card/#{CGI.escape(class_name.downcase)}"
         end
@@ -15,7 +14,6 @@ module MangoPay
 
       class Direct < Resource
         include MangoPay::HTTPCalls::Create
-        private
         def self.url(*)
           "/v2/#{MangoPay.configuration.client_id}/payins/card/#{CGI.escape(class_name.downcase)}"
         end
@@ -27,7 +25,6 @@ module MangoPay
 
       class Direct < Resource
         include MangoPay::HTTPCalls::Create
-        private
         def self.url(*)
           "/v2/#{MangoPay.configuration.client_id}/payins/preauthorized/direct"
         end
@@ -39,7 +36,6 @@ module MangoPay
 
       class Direct < Resource
         include MangoPay::HTTPCalls::Create
-        private
         def self.url(*)
           "/v2/#{MangoPay.configuration.client_id}/payins/bankwire/direct"
         end

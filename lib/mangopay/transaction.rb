@@ -16,8 +16,6 @@ module MangoPay
       MangoPay.request(:get, url(wallet_id), {}, filters)
     end
 
-    private
-
     def self.url(wallet_id)
       "/v2/#{MangoPay.configuration.client_id}/wallets/#{CGI.escape(wallet_id.to_s)}/transactions"
     end

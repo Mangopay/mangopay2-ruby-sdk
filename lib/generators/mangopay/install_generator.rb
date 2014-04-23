@@ -18,7 +18,7 @@ module Mangopay
           remove_file 'config/initializers/mangopay.rb'
           @client_id = client_id
           @client_passphrase = client['Passphrase']
-          template 'mangopay.rb', 'config/initializers/mangopay.rb'
+          template 'mangopay.rb.erb', 'config/initializers/mangopay.rb'
         rescue => e
           puts e.message
         end

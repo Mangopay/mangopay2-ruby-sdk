@@ -5,8 +5,6 @@ module MangoPay
     class BankWire < Resource
       include MangoPay::HTTPCalls::Create
 
-      private
-
       def self.url(*)
         "/v2/#{MangoPay.configuration.client_id}/payouts/bankwire"
       end

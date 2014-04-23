@@ -36,8 +36,6 @@ module MangoPay
       end
     end
 
-    private
-
     def self.url(user_id, document_id = nil)
       if document_id
         "/v2/#{MangoPay.configuration.client_id}/users/#{CGI.escape(user_id.to_s)}/KYC/documents/#{CGI.escape(document_id.to_s)}"
