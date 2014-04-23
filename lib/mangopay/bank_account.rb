@@ -19,8 +19,6 @@ module MangoPay
       MangoPay.request(:get, url(user_id, bank_account_id), {}, filters)
     end
 
-    private
-
     def self.url(user_id, bank_account_id = nil)
       if bank_account_id
         "/v2/#{MangoPay.configuration.client_id}/users/#{CGI.escape(user_id.to_s)}/bankaccounts/#{CGI.escape(bank_account_id.to_s)}"

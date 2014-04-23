@@ -2,8 +2,6 @@ module MangoPay
   # @abstract
   class Resource
 
-    protected
-
     def self.class_name
       self.name.split('::')[-1]
     end
