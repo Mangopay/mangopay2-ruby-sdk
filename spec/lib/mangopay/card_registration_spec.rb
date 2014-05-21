@@ -59,13 +59,16 @@ describe MangoPay::CardRegistration do
       card = MangoPay::Card.fetch(card_id)
       expect(card['Id']).to eq card_id
 
-      # let's test updating the card too
-      expect(card['Validity']).to eq 'UNKNOWN'
-      card_updated = MangoPay::Card.update(card_id ,{
-        Validity: 'INVALID'
-      })
-      expect(card_updated['Validity']).to eq 'INVALID'
-      expect(MangoPay::Card.fetch(card_id)['Validity']).to eq 'INVALID'
+################################################################################
+# cannot test updating: one can only put a CARD from "VALID" to "INVALID"
+#      # let's test updating the card too
+#      expect(card['Validity']).to eq 'UNKNOWN'
+#      card_updated = MangoPay::Card.update(card_id ,{
+#        Validity: 'INVALID'
+#      })
+#      expect(card_updated['Validity']).to eq 'INVALID'
+#      expect(MangoPay::Card.fetch(card_id)['Validity']).to eq 'INVALID'
+################################################################################
     end
   end
 

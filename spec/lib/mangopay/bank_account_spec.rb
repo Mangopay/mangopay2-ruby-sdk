@@ -17,13 +17,13 @@ describe MangoPay::BankAccount do
     it 'creates a new GB bank detail' do
       created = create({
         Type: 'GB',
-        AccountNumber: '234234234234',
-        SortCode: '234334',
+        AccountNumber: '18329068',
+        SortCode: '306541',
       })
       expect(created['Id']).not_to be_nil
       expect(created['Type']).to eq('GB')
-      expect(created['AccountNumber']).to eq('234234234234')
-      expect(created['SortCode']).to eq('234334')
+      expect(created['AccountNumber']).to eq('18329068')
+      expect(created['SortCode']).to eq('306541')
     end
 
     it 'creates a new US bank detail' do
