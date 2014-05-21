@@ -75,6 +75,8 @@ module MangoPay
     res = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
       req = Net::HTTP::const_get(method.capitalize).new(uri.request_uri, headers)
       req.body = MangoPay::JSON.dump(params)
+      ::Rails.logger.info(uri)
+      ::Rails.logger.info(params)
       before_request_proc.call(req) if before_request_proc
       http.request req
     end
