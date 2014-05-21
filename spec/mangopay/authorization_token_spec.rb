@@ -1,5 +1,3 @@
-require_relative '../../spec_helper'
-
 describe MangoPay::AuthorizationToken do
 
   _default_static_storage = MangoPay::AuthorizationToken::Manager.storage
@@ -28,9 +26,9 @@ describe MangoPay::AuthorizationToken do
   describe MangoPay::AuthorizationToken::StaticStorage do
     it 'shares tokens between calls' do
       MangoPay::AuthorizationToken::Manager.storage = _default_static_storage
-      users1 = MangoPay::User.fetch()
+      users1 = MangoPay::User.fetch
       token1 = MangoPay::AuthorizationToken::Manager.get_token
-      users2 = MangoPay::User.fetch()
+      users2 = MangoPay::User.fetch
       token2 = MangoPay::AuthorizationToken::Manager.get_token
       expect(token1).to eq token2
       expect(token1).to be token2 # moreover, it's the same instance
@@ -41,9 +39,9 @@ describe MangoPay::AuthorizationToken do
     it 'shares tokens between calls' do
       MangoPay::AuthorizationToken::Manager.storage = _new_file_storage
 
-      users1 = MangoPay::User.fetch()
+      users1 = MangoPay::User.fetch
       token1 = MangoPay::AuthorizationToken::Manager.get_token
-      users2 = MangoPay::User.fetch()
+      users2 = MangoPay::User.fetch
       token2 = MangoPay::AuthorizationToken::Manager.get_token
       expect(token1).to eq token2
       expect(token1).not_to be token2 # it's NOT the same instance

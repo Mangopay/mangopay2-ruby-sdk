@@ -1,6 +1,6 @@
 module MangoPay
   class BankAccount < Resource
-    include MangoPay::HTTPCalls::Fetch
+    include HTTPCalls::Fetch
     class << self
       def create(user_id, params)
         type = params.fetch(:Type) { |no_symbol_key| params.fetch('Type') }
@@ -15,15 +15,15 @@ module MangoPay
       # (+page+, +per_page+; see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch)
       #
       def fetch(user_id, bank_account_id_or_filters={})
-        bank_account_id, filters = MangoPay::HTTPCalls::Fetch.parse_id_or_filters(bank_account_id_or_filters)
+        bank_account_id, filters = HTTPCalls::Fetch.parse_id_or_filters(bank_account_id_or_filters)
         MangoPay.request(:get, url(user_id, bank_account_id), {}, filters)
       end
 
       def url(user_id, bank_account_id = nil)
         if bank_account_id
-          "/v2/#{MangoPay.configuration.client_id}/users/#{CGI.escape(user_id.to_s)}/bankaccounts/#{CGI.escape(bank_account_id.to_s)}"
+          "#{MangoPay.api_path}/users/#{CGI.escape(user_id.to_s)}/bankaccounts/#{CGI.escape(bank_account_id.to_s)}"
         else
-          "/v2/#{MangoPay.configuration.client_id}/users/#{CGI.escape(user_id.to_s)}/bankaccounts"
+          "#{MangoPay.api_path}/users/#{CGI.escape(user_id.to_s)}/bankaccounts"
         end
       end
     end

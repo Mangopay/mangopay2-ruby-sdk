@@ -1,5 +1,3 @@
-require_relative '../../spec_helper'
-
 describe MangoPay::Refund do
   include_context 'transfers'
 

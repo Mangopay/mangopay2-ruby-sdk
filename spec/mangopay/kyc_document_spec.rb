@@ -1,5 +1,3 @@
-require_relative '../../spec_helper'
-
 describe MangoPay::KycDocument do
   include_context 'kyc_documents'
 

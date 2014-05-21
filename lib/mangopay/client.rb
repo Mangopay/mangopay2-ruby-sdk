@@ -3,7 +3,7 @@ module MangoPay
 
     def self.create(params)
       MangoPay.request(:post, '/api/clients/', params, {}, {
-        'user_agent' => "MangoPay V2 RubyBindings/#{MangoPay::VERSION}",
+        'user_agent' => "MangoPay V2 RubyBindings/#{VERSION}",
         'Content-Type' => 'application/json'
       })
     end

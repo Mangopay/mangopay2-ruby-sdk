@@ -1,13 +1,11 @@
-require_relative '../../spec_helper'
-
-describe MangoPay::PayIn::Card::Direct, type: :feature do
+describe MangoPay::PayIn::PreAuthorized::Direct, type: :feature do
   include_context 'wallets'
   include_context 'payins'
   
   def check_type_and_status(payin)
     expect(payin['Type']).to eq('PAYIN')
     expect(payin['Nature']).to eq('REGULAR')
-    expect(payin['PaymentType']).to eq('CARD')
+    expect(payin['PaymentType']).to eq('PREAUTHORIZED')
     expect(payin['ExecutionType']).to eq('DIRECT')
 
     # SUCCEEDED
@@ -18,8 +16,8 @@ describe MangoPay::PayIn::Card::Direct, type: :feature do
   end
 
   describe 'CREATE' do
-    it 'creates a card direct payin' do
-      created = new_payin_card_direct
+    it 'creates a preauthorized direct payin' do
+      created = new_payin_preauthorized_direct
       expect(created['Id']).not_to be_nil
       check_type_and_status(created)
     end
@@ -27,7 +25,7 @@ describe MangoPay::PayIn::Card::Direct, type: :feature do
 
   describe 'FETCH' do
     it 'fetches a payin' do
-      created = new_payin_card_direct
+      created = new_payin_preauthorized_direct
       fetched = MangoPay::PayIn.fetch(created['Id'])
       expect(fetched['Id']).to eq(created['Id'])
       expect(fetched['CreationDate']).to eq(created['CreationDate'])
@@ -40,7 +38,7 @@ describe MangoPay::PayIn::Card::Direct, type: :feature do
 
   describe 'REFUND' do
     it 'refunds a payin' do
-      payin = new_payin_card_direct
+      payin = new_payin_preauthorized_direct
       refund = MangoPay::PayIn.refund(payin['Id'], {AuthorId: payin['AuthorId']})
       expect(refund['Id']).not_to be_nil
       expect(refund['Status']).to eq('SUCCEEDED')
@@ -58,7 +56,7 @@ describe MangoPay::PayIn::Card::Direct, type: :feature do
       wallets_check_amounts(wlt, 0)
 
       # payin: feed wlt1 with money
-      payin = create_new_payin_card_direct(wlt, 1000)
+      payin = create_new_payin_preauthorized_direct(wlt, 1000)
       wallets_reload_and_check_amounts(wlt, 1000)
 
       # refund the payin

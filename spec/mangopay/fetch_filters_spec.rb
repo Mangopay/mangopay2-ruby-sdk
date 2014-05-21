@@ -1,5 +1,3 @@
-require_relative '../../spec_helper'
-
 describe 'FETCH WITH FILTERS' do
   include_context 'users'
   include_context 'bank_accounts'

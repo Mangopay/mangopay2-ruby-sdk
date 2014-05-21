@@ -1,7 +1,7 @@
 module MangoPay
   class CardRegistration < Resource
-    include MangoPay::HTTPCalls::Create
-    include MangoPay::HTTPCalls::Update
-    include MangoPay::HTTPCalls::Fetch
+    include HTTPCalls::Create
+    include HTTPCalls::Update
+    include HTTPCalls::Fetch
   end
 end

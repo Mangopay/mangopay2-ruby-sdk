@@ -1,6 +1,6 @@
 module MangoPay
   class Card < Resource
-    include MangoPay::HTTPCalls::Fetch
-    include MangoPay::HTTPCalls::Update
+    include HTTPCalls::Fetch
+    include HTTPCalls::Update
   end
 end

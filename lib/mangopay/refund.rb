@@ -1,5 +1,5 @@
 module MangoPay
   class Refund < Resource
-    include MangoPay::HTTPCalls::Fetch
+    include HTTPCalls::Fetch
   end
 end
