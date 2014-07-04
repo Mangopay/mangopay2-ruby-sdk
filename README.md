@@ -1,3 +1,4 @@
+[ ![Codeship Status for christophe-hidutyfree/mangopay-ruby-sdk](https://codeship.io/projects/ce1d6490-e5a3-0131-6d1f-46277ec996ce/status)](https://codeship.io/projects/25775)
 # MangoPay2 Ruby SDK
 
 The gem for interacting with the version 2 of the MangoPay API.
