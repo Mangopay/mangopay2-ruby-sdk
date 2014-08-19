@@ -76,6 +76,7 @@ module MangoPay
       req = Net::HTTP::const_get(method.capitalize).new(uri.request_uri, headers)
       req.body = MangoPay::JSON.dump(params)
       before_request_proc.call(req) if before_request_proc
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE if configuration.preproduction
       http.request req
     end
 
