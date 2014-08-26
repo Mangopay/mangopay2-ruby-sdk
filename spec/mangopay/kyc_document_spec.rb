@@ -49,9 +49,9 @@ describe MangoPay::KycDocument do
     it 'fails when input string is not base64-encoded' do
       file = 'any file content...'
       expect { create_page(file) }.to raise_error { |err|
-        err.should be_a MangoPay::ResponseError
-        err.code.should eq '400'
-        err.type.should eq 'param_error'
+        expect(err).to be_a MangoPay::ResponseError
+        expect(err.code).to eq '400'
+        expect(err.type).to eq 'param_error'
       }
     end
   end

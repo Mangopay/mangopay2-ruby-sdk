@@ -10,8 +10,8 @@ describe MangoPay::Client do
 
     it 'refuses the client id' do
       expect { wrong_client['errors'] }.to raise_error { |err|
-        err.should be_a MangoPay::ResponseError
-        err.type.should eq 'param_error'
+        expect(err).to be_a MangoPay::ResponseError
+        expect(err.type).to eq 'param_error'
       }
     end
 
