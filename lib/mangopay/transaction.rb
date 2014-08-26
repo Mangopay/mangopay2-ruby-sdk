@@ -17,7 +17,7 @@ module MangoPay
       end
 
       def url(wallet_id)
-        "/v2/#{MangoPay.configuration.client_id}/wallets/#{CGI.escape(wallet_id.to_s)}/transactions"
+        "#{MangoPay.api_path}/wallets/#{CGI.escape(wallet_id.to_s)}/transactions"
       end
     end
   end

@@ -1,5 +1,3 @@
-require_relative '../../spec_helper'
-
 describe MangoPay::PayIn::BankWire::Direct, type: :feature do
   include_context 'wallets'
   include_context 'payins'

@@ -1,5 +1,3 @@
-require_relative '../../spec_helper'
-
 describe MangoPay::Configuration do
 
   it 'fails when calling with wrong client credentials' do

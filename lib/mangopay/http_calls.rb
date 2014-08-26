@@ -46,7 +46,7 @@ module MangoPay
         #   filter # => {"page"=>2, "per_page"=>3, "total_pages"=>1969, "total_items"=>5905}
         #
         def fetch(id_or_filters = nil)
-          id, filters = MangoPay::HTTPCalls::Fetch.parse_id_or_filters(id_or_filters)
+          id, filters = HTTPCalls::Fetch.parse_id_or_filters(id_or_filters)
           response = MangoPay.request(:get, url(id), {}, filters)
         end
       end

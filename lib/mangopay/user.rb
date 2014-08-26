@@ -1,8 +1,8 @@
 module MangoPay
   class User < Resource
-    include MangoPay::HTTPCalls::Create
-    include MangoPay::HTTPCalls::Update
-    include MangoPay::HTTPCalls::Fetch
+    include HTTPCalls::Create
+    include HTTPCalls::Update
+    include HTTPCalls::Fetch
     class << self
       # Fetches list of wallets belonging to the given +user_id+.
       # Optional +filters+ is a hash accepting following keys:

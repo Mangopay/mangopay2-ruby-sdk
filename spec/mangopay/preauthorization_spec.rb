@@ -1,5 +1,3 @@
-require_relative '../../spec_helper'
-
 describe MangoPay::PreAuthorization do
   include_context 'users'
   include_context 'payins'

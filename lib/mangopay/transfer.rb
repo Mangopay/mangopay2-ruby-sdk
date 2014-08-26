@@ -1,7 +1,7 @@
 module MangoPay
   class Transfer < Resource
-    include MangoPay::HTTPCalls::Create
-    include MangoPay::HTTPCalls::Fetch
-    include MangoPay::HTTPCalls::Refund
+    include HTTPCalls::Create
+    include HTTPCalls::Fetch
+    include HTTPCalls::Refund
   end
 end

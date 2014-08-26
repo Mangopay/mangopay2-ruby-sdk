@@ -1,5 +1,3 @@
-require_relative '../../spec_helper'
-
 describe MangoPay::Event do
 
   include_context 'payins'
@@ -11,7 +9,7 @@ describe MangoPay::Event do
 
       # let's have at least 2 events
       payin = new_payin_card_direct
-      payout = create_new_payout_bankwire(payin)
+      create_new_payout_bankwire(payin)
 
       # get all
       events = MangoPay::Event.fetch()
@@ -27,7 +25,7 @@ describe MangoPay::Event do
       events = MangoPay::Event.fetch({'AfterDate' => payin['CreationDate'], 'BeforeDate' => payin['CreationDate']})
       expect(events).to be_kind_of(Array)
       expect(events.count).to be >= 1
-      expect(events.count {|e| e['ResourceId'] == payin['Id']}).to be >= 1
+      expect(events.count { |e| e['ResourceId'] == payin['Id'] }).to be >= 1
     end
   end
 end
