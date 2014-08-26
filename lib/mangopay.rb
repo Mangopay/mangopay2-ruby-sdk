@@ -87,7 +87,7 @@ module MangoPay
 
 
       unless res.is_a?(Net::HTTPOK)
-        fail MangoPay::ResponseError.new(uri, res.code, data)
+        raise MangoPay::ResponseError.new(uri, res.code, data)
       end
 
       # copy pagination info if any

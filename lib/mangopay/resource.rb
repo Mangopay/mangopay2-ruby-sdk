@@ -8,7 +8,7 @@ module MangoPay
 
       def url(id = nil)
         if self == Resource
-          fail NotImplementedError.new('Resource is an abstract class. Do not use it directly.')
+          raise NotImplementedError.new('Resource is an abstract class. Do not use it directly.')
         end
         if id
           "#{MangoPay.api_path}/#{CGI.escape(class_name.downcase)}s/#{CGI.escape(id.to_s)}"
