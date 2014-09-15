@@ -24,5 +24,3 @@ reset_mangopay_configuration
 #HttpLogger.logger            = Logger.new(STDOUT)
 #HttpLogger.colorize          = true
 #HttpLogger.log_headers       = false
-#HttpLogger.log_request_body  = true
-#HttpLogger.log_response_body = true

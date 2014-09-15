@@ -1,10 +1,10 @@
-describe MangoPay::PayIn::Card::Web, type: :feature do
+describe MangoPay::PayIn::DirectDebit::Web, type: :feature do
   include_context 'payins'
 
   def check_type_and_status(payin)
     expect(payin['Type']).to eq('PAYIN')
     expect(payin['Nature']).to eq('REGULAR')
-    expect(payin['PaymentType']).to eq('CARD')
+    expect(payin['PaymentType']).to eq('DIRECT_DEBIT')
     expect(payin['ExecutionType']).to eq('WEB')
 
     # not SUCCEEDED yet: waiting for processing
@@ -15,8 +15,8 @@ describe MangoPay::PayIn::Card::Web, type: :feature do
   end
   
   describe 'CREATE' do
-    it 'creates a card web payin' do
-      created = new_payin_card_web
+    it 'creates a directdebit web payin' do
+      created = new_payin_directdebit_web
       expect(created['Id']).not_to be_nil
       check_type_and_status(created)
     end
@@ -24,7 +24,7 @@ describe MangoPay::PayIn::Card::Web, type: :feature do
 
   describe 'FETCH' do
     it 'fetches a payin' do
-      created = new_payin_card_web
+      created = new_payin_directdebit_web
       fetched = MangoPay::PayIn.fetch(created['Id'])
       expect(fetched['Id']).to eq(created['Id'])
       expect(fetched['CreationDate']).to eq(created['CreationDate'])

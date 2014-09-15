@@ -29,16 +29,18 @@ module MangoPay
     module Fetch
       module ClassMethods
 
-        # - Fetching single entity by +id+:
+        # - Fetching _single_entity_ by +id+:
         # 
         #   MangoPay::User.fetch("user-id") # => {"FirstName"=>"Mango", "LastName"=>"Pay", ...}
         # 
-        # - Fetching multiple entities with _optional_ +filters+ hash,
-        #   including _pagination_ params
-        #   (+page+, +per_page+; see http://docs.mangopay.com/api-references/pagination/):
+        # - or fetching _multiple_entities_ with _optional_ +filters+ hash,
+        #   including _pagination_ and _sorting_ params
+        #   +page+, +per_page+, +sort+ (see http://docs.mangopay.com/api-references/pagination/):
         #   
         #   MangoPay::User.fetch() # => [{...}, ...]: list of user data hashes (10 per page by default)
         #   MangoPay::User.fetch({'page' => 2, 'per_page' => 3}) # => list of 3 hashes from 2nd page
+        #   MangoPay::BankAccount.fetch(user_id, {'sort' => 'CreationDate:desc'}) # => bank accounts by user, sorting by date descending (with default pagination)
+        #   MangoPay::BankAccount.fetch(user_id, {'sort' => 'CreationDate:desc', 'page' => 2, 'per_page' => 3}) # both sorting and pagination params provided
         # 
         # - For paginated queries the +filters+ param will be supplemented by +total_pages+ and +total_items+ info:
         #   
@@ -62,6 +64,9 @@ module MangoPay
 
     module Refund
       module ClassMethods
+
+        # See http://docs.mangopay.com/api-references/refund/%E2%80%A2-refund-a-pay-in/
+        # See http://docs.mangopay.com/api-references/refund/%E2%80%A2-refund-a-transfer/
         def refund(id = nil, params = {})
           MangoPay.request(:post, url(id) + '/refunds', params)
         end

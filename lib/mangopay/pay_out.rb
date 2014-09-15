@@ -2,6 +2,7 @@ module MangoPay
   class PayOut < Resource
     include HTTPCalls::Fetch
 
+    # See http://docs.mangopay.com/api-references/pay-out-bank-wire/
     class BankWire < Resource
       include HTTPCalls::Create
 

@@ -28,6 +28,44 @@ describe MangoPay::KycDocument do
     end
   end
 
+  describe 'FETCH ALL' do
+    it 'fetches a list of documents' do
+      usr1 = create_new_natural_user()
+      usr2 = create_new_natural_user()
+      doc1 = create_new_document(usr1)
+      doc2 = create_new_document(usr1)
+      doc3 = create_new_document(usr2)
+
+      # fetch all docs for user 1
+      docs = MangoPay::KycDocument.fetch_all(usr1['Id'])
+      expect(docs).to be_kind_of(Array)
+      expect(docs.count).to eq 2
+      expect(docs[0]['Id']).to eq doc1['Id']
+      expect(docs[1]['Id']).to eq doc2['Id']
+
+      # fetch all docs for user 2
+      docs = MangoPay::KycDocument.fetch_all(usr2['Id'])
+      expect(docs).to be_kind_of(Array)
+      expect(docs.count).to eq 1
+      expect(docs[0]['Id']).to eq doc3['Id']
+
+      # fetch all docs ever
+      docs = MangoPay::KycDocument.fetch_all()
+      expect(docs).to be_kind_of(Array)
+      expect(docs.count).to be >= 3 # at least last 3 docs, but probably many more
+
+      # fetch last 3 docs (sorting by date descending)
+      docs = MangoPay::KycDocument.fetch_all(nil, filter = {'page' => 1, 'per_page' => 3, 'sort' => 'CreationDate:desc'})
+      expect(docs).to be_kind_of(Array)
+      expect(docs.count).to eq 3
+      # all 3 are at top as lastly created
+      # but may share the same CreationDate
+      # so the order between them is undetermined
+      expect(docs).to include(doc1, doc2, doc3)
+
+    end
+  end
+
   describe 'CREATE PAGE' do
 
     def create_page(file)

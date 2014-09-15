@@ -1,4 +1,6 @@
 module MangoPay
+
+  # See http://docs.mangopay.com/api-references/bank-accounts/
   class BankAccount < Resource
     include HTTPCalls::Fetch
     class << self
@@ -11,8 +13,8 @@ module MangoPay
       # - list of bank accounts belonging to the given +user_id+
       # - or single bank account belonging to the given +user_id+ with the given +bank_account_id+.
       #
-      # In case of list query, optional +filters+ is a hash accepting pagination params
-      # (+page+, +per_page+; see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch)
+      # In case of list query, optional +filters+ is a hash accepting pagination and sorting params
+      # (+page+, +per_page+, +sort+; see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch)
       #
       def fetch(user_id, bank_account_id_or_filters={})
         bank_account_id, filters = HTTPCalls::Fetch.parse_id_or_filters(bank_account_id_or_filters)

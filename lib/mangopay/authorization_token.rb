@@ -1,6 +1,7 @@
 module MangoPay
   module AuthorizationToken
 
+    # See http://docs.mangopay.com/api-references/authenticating/
     class Manager
 
       class << self

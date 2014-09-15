@@ -1,6 +1,8 @@
 require 'base64'
 
 module MangoPay
+
+  # See http://docs.mangopay.com/api-references/kyc/documents/
   class KycDocument < Resource
     class << self
       def create(user_id, params)
@@ -11,8 +13,24 @@ module MangoPay
         MangoPay.request(:put, url(user_id, document_id), params)
       end
 
+      # Fetches the KYC document belonging to the given +user_id+, with the given +document_id+.
       def fetch(user_id, document_id)
         MangoPay.request(:get, url(user_id, document_id))
+      end
+
+      # Fetches list of KYC documents:
+      # - for the particular user if +user_id+ is provided (not nil)
+      # - or for all users otherwise.
+      # 
+      # Optional +filters+ is a hash accepting following keys:
+      # - +page+, +per_page+, +sort+: pagination and sorting params (see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch)
+      # - filters such as +Type+ (e.g. 'IDENTITY_PROOF') and +Status+ (e.g. 'VALIDATED')
+      # - +BeforeDate+ (timestamp): filters documents with CreationDate _before_ this date
+      # - +AfterDate+ (timestamp): filters documents with CreationDate _after_ this date
+      #
+      def fetch_all(user_id = nil, filters = {})
+        url = (user_id) ? url(user_id) : "#{MangoPay.api_path}/KYC/documents"
+        MangoPay.request(:get, url, {}, filters)
       end
 
       # Adds the file page (attachment) to the given document.

@@ -1,4 +1,6 @@
 module MangoPay
+
+  # See http://docs.mangopay.com/api-references/payins/preauthorized-payin/
   class PreAuthorization < Resource
     include HTTPCalls::Update
     include HTTPCalls::Fetch

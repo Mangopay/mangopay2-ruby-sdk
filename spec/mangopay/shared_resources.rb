@@ -33,7 +33,8 @@ end
 shared_context 'users' do
 ###############################################
 
-  let(:new_natural_user) {
+  let(:new_natural_user) { create_new_natural_user }
+  def create_new_natural_user
     MangoPay::NaturalUser.create({
       Tag: 'Test natural user',
       Email: 'my@email.com',
@@ -47,7 +48,7 @@ shared_context 'users' do
       Occupation: 'Worker',
       IncomeRange: 1
     })
-  }
+  end
 
   let(:new_legal_user) {
     MangoPay::LegalUser.create({
@@ -119,12 +120,13 @@ shared_context 'kyc_documents' do
 ###############################################
   include_context 'users'
 
-  let(:new_document) {
-    MangoPay::KycDocument.create(new_natural_user['Id'], {
+  let(:new_document) { create_new_document(new_natural_user) }
+  def create_new_document(user)
+    MangoPay::KycDocument.create(user['Id'], {
       Type: 'IDENTITY_PROOF',
       Tag: 'Test document'
     })
-  }
+  end
 end
 
 ###############################################
@@ -132,6 +134,24 @@ shared_context 'payins' do
 ###############################################
   include_context 'users'
   include_context 'wallets'
+
+  ###############################################
+  # directdebit/web
+  ###############################################
+
+  let(:new_payin_directdebit_web) {
+    MangoPay::PayIn::DirectDebit::Web.create({
+      AuthorId: new_natural_user['Id'],
+      CreditedUserId: new_wallet['Owners'][0],
+      CreditedWalletId: new_wallet['Id'],
+      DebitedFunds: { Currency: 'EUR', Amount: 1000 },
+      Fees: { Currency: 'EUR', Amount: 0 },
+      DirectDebitType: 'GIROPAY',
+      ReturnURL: MangoPay.configuration.root_url,
+      Culture: 'FR',
+      Tag: 'Test PayIn/DirectDebit/Web'
+    })
+  }
 
   ###############################################
   # card/web

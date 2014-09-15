@@ -6,6 +6,9 @@ module MangoPay
   class Error < StandardError
   end
 
+  # See http://docs.mangopay.com/api-references/response-codes-rules/
+  # and http://docs.mangopay.com/api-references/error-codes/
+  # 
   # Thrown from any MangoPay API call whenever
   # it returns response with HTTP code != 200.
   # Check @details hash for further info.

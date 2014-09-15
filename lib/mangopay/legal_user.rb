@@ -1,4 +1,7 @@
 module MangoPay
+
+  # See http://docs.mangopay.com/api-references/users/legal-users/
+  # See also parent class MangoPay::User
   class LegalUser < User
 
     def self.url(id = nil)

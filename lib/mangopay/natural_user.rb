@@ -1,4 +1,6 @@
 module MangoPay
+
+  # See http://docs.mangopay.com/api-references/users/natural-users/
   class NaturalUser < User
 
     def self.url(id = nil)
