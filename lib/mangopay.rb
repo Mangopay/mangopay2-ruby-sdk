@@ -31,6 +31,9 @@ module MangoPay
   autoload :JSON, 'mangopay/json'
   autoload :AuthorizationToken, 'mangopay/authorization_token'
 
+  # temporary
+  autoload :Temp, 'mangopay/temp'
+
   class Configuration
     attr_accessor :preproduction, :root_url,
                   :client_id, :client_passphrase,
