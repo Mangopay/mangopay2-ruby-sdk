@@ -307,7 +307,7 @@ shared_context 'transfers' do
       CreditedUserId: to_wallet['Owners'][0],
       CreditedWalletId: to_wallet['Id'],
       DebitedFunds: { Currency: 'EUR', Amount: amnt},
-      Fees: { Currency: 'EUR', Amout: 0},
+      Fees: { Currency: 'EUR', Amount: 0},
       Tag: 'Test transfer'
     })
   end
