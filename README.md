@@ -40,6 +40,7 @@ MangoPay.configure do |c|
   c.preproduction = true
   c.client_id = 'YOUR_CLIENT_ID'
   c.client_passphrase = 'YOUR_CLIENT_PASSWORD'
+  c.read_timeout = 120 # seconds
 end
 
 
