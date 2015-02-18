@@ -37,10 +37,14 @@ module MangoPay
   class Configuration
     attr_accessor :preproduction, :root_url,
                   :client_id, :client_passphrase,
-                  :temp_dir
+                  :temp_dir, :read_timeout
 
     def preproduction
       @preproduction || false
+    end
+
+    def read_timeout
+      @read_timeout || 60
     end
 
     def root_url
@@ -78,7 +82,7 @@ module MangoPay
       uri = api_uri(url)
       uri.query = URI.encode_www_form(filters) unless filters.empty?
 
-      res = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
+      res = Net::HTTP.start(uri.host, uri.port, use_ssl: true, read_timeout: configuration.read_timeout) do |http|
         req = Net::HTTP::const_get(method.capitalize).new(uri.request_uri, headers)
         req.body = JSON.dump(params)
         before_request_proc.call(req) if before_request_proc
