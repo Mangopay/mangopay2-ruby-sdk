@@ -1,6 +1,6 @@
-# MangoPay2 Ruby SDK
+# Mangopay Ruby SDK
 
-The gem for interacting with the version 2 of the MangoPay API.
+The gem for interacting with the version 2 of the Mangopay API.
 See the [API documentation](http://docs.mangopay.com/api-references/)
 for more details on the API.
 
@@ -10,7 +10,7 @@ Tested on the following versions of Ruby: 1.9.2, 1.9.3, 2.0.0
 
 ### Version 3.*
 ** BREAKING CHANGES **
-This version (3.*) of the gem is targeting the MangoPay API Version 2.
+This version (3.*) of the gem is targeting the Mangopay API Version 2.
 It has a brand new structure to make the api calls easier to use
 and is not backward compatible with 2.* series.
 
@@ -21,11 +21,11 @@ and is not backward compatible with 2.* series.
 or by adding it to your Gemfile ```gem 'mangopay'```
 
 * The Rails users will be happy to know that there is a new generator script
-that will help you configure your access to the MangoPay API version 2.
+that will help you configure your access to the Mangopay API version 2.
 Simply run ``rails generate mangopay:install CLIENT_ID CLIENT_NAME CLIENT_EMAIL``
 where CLIENT_ID is the id you will use to connect to the api
 and CLIENT_NAME is a full name that will be use to identify all communications
-between you and the MangoPay Team.
+between you and the Mangopay Team.
 
 * Otherwise, call ```MangoPay.configure``` in your script as shown in the snippet below.
 
@@ -86,7 +86,7 @@ end
 Make sure that you have run: ```bundle install```
 Then you just have to run rspec ```rspec``` to run all the test suite.
 Feel free to report any test failure by creating an issue
-on the [Gem's Github](https://github.com/MangoPay/mangopay2-ruby-sdk/issues)
+on the [Gem's Github](https://github.com/Mangopay/mangopay2-ruby-sdk/issues)
 
 ## Contributing
 
