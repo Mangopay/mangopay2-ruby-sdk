@@ -72,15 +72,17 @@ describe MangoPay::KycDocument do
       MangoPay::KycDocument.create_page(new_natural_user['Id'], new_document['Id'], file)
     end
 
-    it 'accepts File instance' do
-      file = File.open(__FILE__)
-      ret = create_page(file)
+    it 'accepts Base64 encoded file content' do
+      fnm = __FILE__.sub('.rb', '.png')
+      bts = File.open(fnm, 'rb') { |f| f.read }
+      b64 = Base64.encode64(bts)
+      ret = create_page(b64)
       expect(ret).to be_nil
     end
 
-    it 'accepts base64-encoded string' do
-      file = Base64.encode64('any file content...')
-      ret = create_page(file)
+    it 'accepts file path' do
+      fnm = __FILE__.sub('.rb', '.png')
+      ret = MangoPay::KycDocument.create_page(new_natural_user['Id'], new_document['Id'], nil, fnm)
       expect(ret).to be_nil
     end
 

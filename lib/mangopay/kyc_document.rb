@@ -40,15 +40,18 @@ module MangoPay
       # - You can create as many pages as needed
       # - Change Status to 'VALIDATION_ASKED' to submit KYC documents
       # 
-      # The file_or_base64 param may be:
-      # - either a File instance
-      # - or a string: in this case it has to be Base64 encoded!
+      # The file_content_base64 param may be:
+      # - Base64 encoded file content
+      # - or nil: in this case pass the file path in the next param
       #
-      def create_page(user_id, document_id, file_or_base64)
-        base64 = (file_or_base64.is_a? File) ? Base64.encode64(file_or_base64.read) : file_or_base64;
+      def create_page(user_id, document_id, file_content_base64, file_path = nil)
+        if file_content_base64.nil? && !file_path.nil?
+          bts = File.open(file_path, 'rb') { |f| f.read }
+          file_content_base64 = Base64.encode64(bts)
+        end
         # normally it returns 204 HTTP code on success
         begin
-          MangoPay.request(:post, url(user_id, document_id) + '/pages', {'File' => base64})
+          MangoPay.request(:post, url(user_id, document_id) + '/pages', {'File' => file_content_base64})
         rescue ResponseError => ex
           raise ex unless ex.code == '204'
         end
