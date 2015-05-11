@@ -108,8 +108,8 @@ shared_context 'bank_accounts' do
       Type: 'IBAN',
       OwnerName: 'John',
       OwnerAddress: 'Here',
-      IBAN: 'FR76 1790 6000 3200 0833 5232 973',
-      BIC: 'AGRIFRPP879',
+      IBAN: 'FR7618829754160173622224154',
+      BIC: 'CMBRFR2BCME',
       Tag: 'Test bank account'
     })
   }
