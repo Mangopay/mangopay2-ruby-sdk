@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   You can find more documentation about MangoPay Services at http://docs.mangopay.com/
   EOF
   s.authors     = ['Geoffroy Lorieux', 'Sergiusz Woznicki']
-  s.email       = 'it-support@mangopay.com'
+  s.email       = 'support@mangopay.com'
   s.homepage    = 'http://docs.mangopay.com/'
   s.license     = 'MIT'
 
