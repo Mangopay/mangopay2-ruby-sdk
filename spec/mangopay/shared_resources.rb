@@ -40,7 +40,14 @@ shared_context 'users' do
       Email: 'my@email.com',
       FirstName: 'John',
       LastName: 'Doe',
-      Address: 'Here',
+      Address: {
+        AddressLine1: 'Le Palais Royal',
+        AddressLine2: '8 Rue de Montpensier',
+        City: 'Paris',
+        Region: '',
+        PostalCode: '75001',
+        Country: 'FR'
+      },
       Birthday: 1300186358,
       Birthplace: 'Paris',
       Nationality: 'FR',
@@ -55,10 +62,24 @@ shared_context 'users' do
       Name: 'Super',
       Email: 'super@email.com',
       LegalPersonType: 'BUSINESS',
-      HeadquartersAddress: 'Here',
+      HeadquartersAddress: {
+        AddressLine1: '6 Parvis Notre-Dame',
+        AddressLine2: 'Pl. Jean-Paul II',
+        City: 'Paris',
+        Region: '',
+        PostalCode: '75004',
+        Country: 'FR'
+      },
       LegalRepresentativeFirstName: 'John',
       LegalRepresentativeLastName: 'Doe',
-      LegalRepresentativeAdress: 'Here',
+      LegalRepresentativeAdress: {
+        AddressLine1: '38 Rue de Montpensier',
+        AddressLine2: '',
+        City: 'Paris',
+        Region: '',
+        PostalCode: '75001',
+        Country: 'FR'
+      },
       LegalRepresentativeEmail: 'john@doe.com',
       LegalRepresentativeBirthday: 1300186358,
       LegalRepresentativeNationality: 'FR',
@@ -107,7 +128,14 @@ shared_context 'bank_accounts' do
     MangoPay::BankAccount.create(new_natural_user['Id'], {
       Type: 'IBAN',
       OwnerName: 'John',
-      OwnerAddress: 'Here',
+      OwnerAddress: {
+        AddressLine1: 'Le Palais Royal',
+        AddressLine2: '8 Rue de Montpensier',
+        City: 'Paris',
+        Region: '',
+        PostalCode: '75001',
+        Country: 'FR'
+      },
       IBAN: 'FR7618829754160173622224154',
       BIC: 'CMBRFR2BCME',
       Tag: 'Test bank account'

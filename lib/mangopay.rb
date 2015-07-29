@@ -51,8 +51,12 @@ module MangoPay
   class << self
     attr_accessor :configuration
 
+    def version_code
+      "v2.01"
+    end
+
     def api_path
-      "/v2/#{MangoPay.configuration.client_id}"
+      "/#{version_code}/#{MangoPay.configuration.client_id}"
     end
 
     def configure

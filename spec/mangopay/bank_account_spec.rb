@@ -2,8 +2,9 @@ describe MangoPay::BankAccount do
   include_context 'bank_accounts'
   
   def create(params)
-    params_fixed = { OwnerName: 'John', OwnerAddress: 'Here' }.merge(params)
-    MangoPay::BankAccount.create(new_natural_user['Id'], params_fixed)
+    user = new_natural_user
+    params_fixed = { OwnerName: 'John', OwnerAddress: user['Address'] }.merge(params)
+    MangoPay::BankAccount.create(user['Id'], params_fixed)
   end
 
   describe 'CREATE' do
