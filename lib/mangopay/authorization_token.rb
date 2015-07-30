@@ -16,7 +16,7 @@ module MangoPay
         def get_token
           token = storage.get
           if token.nil? || token['timestamp'].nil? || token['timestamp'] <= Time.now
-            token = MangoPay.request(:post, '/v2/oauth/token', {}, {}, {}, Proc.new do |req|
+            token = MangoPay.request(:post, "/#{MangoPay.version_code}/oauth/token", {}, {}, {}, Proc.new do |req|
               cfg = MangoPay.configuration
               req.basic_auth cfg.client_id, cfg.client_passphrase
               req.body = 'grant_type=client_credentials'
