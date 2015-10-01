@@ -19,17 +19,12 @@ Since [v3.0.17](https://github.com/Mangopay/mangopay2-ruby-sdk/releases/tag/v3.0
 ## Usage
 
 ### Install
+* You can get yourself a [free sandbox account](https://www.mangopay.com/get-started/create-sandbox/) or sign up for a [production account](https://www.mangopay.com/get-started/submit-your-app/create-credentials/) (note that validation of your production account can take a few days, so think about doing it in advance of when you actually want to go live).
+
 * Install the gem by either running ```gem install mangopay```
 or by adding it to your Gemfile ```gem 'mangopay'```
 
-* The Rails users will be happy to know that there is a new generator script
-that will help you configure your access to the Mangopay API version 2.
-Simply run ``rails generate mangopay:install CLIENT_ID CLIENT_NAME CLIENT_EMAIL``
-where CLIENT_ID is the id you will use to connect to the api
-and CLIENT_NAME is a full name that will be use to identify all communications
-between you and the Mangopay Team.
-
-* Otherwise, call ```MangoPay.configure``` in your script as shown in the snippet below.
+* Using the credential info from the signup process above, call ```MangoPay.configure``` in your script as shown in the snippet below.
 
 ### Examples
 
@@ -37,7 +32,7 @@ between you and the Mangopay Team.
 require 'mangopay'
 
 
-# configuration (not required if Rails generator fired as above)
+# configuration
 MangoPay.configure do |c|
   c.preproduction = true
   c.client_id = 'YOUR_CLIENT_ID'
@@ -63,7 +58,7 @@ pagination # => {"page"=>1, "per_page"=>8, "total_pages"=>748, "total_items"=>59
 accounts = MangoPay::BankAccount.fetch(john_id) # => [{...}, ...]: list of accounts data hashes (10 per page by default)
 
 
-# errors handling
+# error handling
 begin
   MangoPay::NaturalUser.create({})
 rescue MangoPay::ResponseError => ex
