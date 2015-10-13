@@ -7,7 +7,7 @@ describe MangoPay::Dispute do
   # In order to get the tests below pass, a bunch of disputes have
   # to be prepared on the API server side - if they're not, you can
   # just skip these tests, as they won't pass.
-  before(:all) do
+  before(:each) do
     @disputes = MangoPay::Dispute.fetch({'per_page' => 100})
   end
 
@@ -212,7 +212,10 @@ describe MangoPay::Dispute do
 
   describe 'CLOSE' do
     it 'closes a dispute' do
-      dispute = @disputes.find {|disp| ['PENDING_CLIENT_ACTION', 'REOPENED_PENDING_CLIENT_ACTION'].include? disp['Status']}
+      dispute = @disputes.find do |disp|
+        ['PENDING_CLIENT_ACTION', 'REOPENED_PENDING_CLIENT_ACTION'].include?(disp['Status']) &&
+        ['CONTESTABLE', 'RETRIEVAL'].include?(disp['DisputeType'])
+      end
       expect(dispute).not_to be_nil, "Cannot test closing dispute because there's no available disputes with expected status in the disputes list."
       id = dispute['Id']
       changed_dispute = MangoPay::Dispute.close(id)
