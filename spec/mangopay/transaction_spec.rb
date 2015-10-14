@@ -48,13 +48,6 @@ describe MangoPay::Transaction do
       expect(by_type_pyout.count).to eq 1
       expect(by_type_pyin.first['Id']).to eq payin['Id']
       expect(by_type_pyout.first['Id']).to eq payout['Id']
-
-      by_dir_cred = MangoPay::Transaction.fetch(wallet_id, {'Direction' => 'CREDIT'})
-      by_dir_debt = MangoPay::Transaction.fetch(wallet_id, {'Direction' => 'DEBIT'})
-      expect(by_dir_cred.count).to eq 1
-      expect(by_dir_debt.count).to eq 1
-      expect(by_dir_cred.first['Id']).to eq payin['Id']
-      expect(by_dir_debt.first['Id']).to eq payout['Id']
     end
 
   end

@@ -9,7 +9,6 @@ module MangoPay
       # - +Status+: TransactionStatus {CREATED, SUCCEEDED, FAILED}
       # - +Type+: TransactionType {PAYIN, PAYOUT, TRANSFER}
       # - +Nature+: TransactionNature {NORMAL, REFUND, REPUDIATION}
-      # - +Direction+: TransactionDirection {DEBIT, CREDIT}
       # - +BeforeDate+ (timestamp): filters transactions with CreationDate _before_ this date
       # - +AfterDate+ (timestamp): filters transactions with CreationDate _after_ this date
       def fetch(wallet_id, filters={})
