@@ -28,6 +28,7 @@ module MangoPay
   autoload :KycDocument, 'mangopay/kyc_document'
   autoload :Hook, 'mangopay/hook'
   autoload :Refund, 'mangopay/refund'
+  autoload :Dispute, 'mangopay/dispute'
   autoload :JSON, 'mangopay/json'
   autoload :AuthorizationToken, 'mangopay/authorization_token'
 
