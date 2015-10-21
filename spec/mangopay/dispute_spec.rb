@@ -8,7 +8,7 @@ describe MangoPay::Dispute do
   # to be prepared on the API server side - if they're not, you can
   # just skip these tests, as they won't pass.
   before(:each) do
-    @disputes = MangoPay::Dispute.fetch({'per_page' => 100})
+    @disputes = MangoPay::Dispute.fetch({'page' => 1, 'per_page' => 100})
   end
 
   describe 'FETCH' do
@@ -210,6 +210,19 @@ describe MangoPay::Dispute do
     end
   end
 
+  describe 'RESUBMIT' do
+    it 'resubmits a dispute' do
+      dispute = @disputes.find do |disp|
+        ['REOPENED_PENDING_CLIENT_ACTION'].include?(disp['Status'])
+      end
+      expect(dispute).not_to be_nil, "Cannot test resubmiting dispute because there's no available disputes with expected status in the disputes list."
+      id = dispute['Id']
+      changed_dispute = MangoPay::Dispute.resubmit(id)
+      expect(changed_dispute['Id']).to eq(id)
+      expect(changed_dispute['Status']).to eq('SUBMITTED')
+    end
+  end
+
   describe 'CLOSE' do
     it 'closes a dispute' do
       dispute = @disputes.find do |disp|
@@ -223,20 +236,5 @@ describe MangoPay::Dispute do
       expect(changed_dispute['Status']).to eq('CLOSED')
     end
   end
-
-# TODO; TEMP COMMENTED-OUT: NO TEST DATA
-#  describe 'RESUBMIT' do
-#    it 'resubmits a dispute' do
-#      dispute = @disputes.find do |disp|
-#        ['REOPENED_PENDING_CLIENT_ACTION'].include?(disp['Status']) &&
-#        ['CONTESTABLE', 'RETRIEVAL'].include?(disp['DisputeType'])
-#      end
-#      expect(dispute).not_to be_nil, "Cannot test resubmiting dispute because there's no available disputes with expected status in the disputes list."
-#      id = dispute['Id']
-#      changed_dispute = MangoPay::Dispute.resubmit(id)
-#      expect(changed_dispute['Id']).to eq(id)
-#      expect(changed_dispute['Status']).to eq('SUBMITTED')
-#    end
-#  end
 
 end
