@@ -10,12 +10,12 @@ def reset_mangopay_configuration
     c.client_id = 'sdk-unit-tests'
 
     # sandbox environment:
-	# c.root_url = 'https://api.sandbox.mangopay.com'
-	# c.client_passphrase = 'cqFfFrWfCcb7UadHNxx2C9Lo6Djw8ZduLi7J9USTmu8bhxxpju'
+    # c.root_url = 'https://api.sandbox.mangopay.com'
+    # c.client_passphrase = 'cqFfFrWfCcb7UadHNxx2C9Lo6Djw8ZduLi7J9USTmu8bhxxpju'
 
     # test environment:
-	c.root_url = 'https://api-test.mangopay.com'
-	c.client_passphrase = '9RMGpwVUwFLK0SurxObJ2yaadDcO0zeKFKxWmthjB93SQjFzy0'
+    c.root_url = 'https://api-test.mangopay.com'
+    c.client_passphrase = '9RMGpwVUwFLK0SurxObJ2yaadDcO0zeKFKxWmthjB93SQjFzy0'
 
     c.temp_dir = File.expand_path('../tmp', __FILE__)
     require 'fileutils'
