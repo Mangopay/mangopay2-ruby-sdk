@@ -74,14 +74,21 @@ module MangoPay
     # - +url+: the part after Configuration#root_url
     # - +params+: hash; entity data for creation, update etc.; will dump it by JSON and assign to Net::HTTPRequest#body
     # - +filters+: hash; pagination params etc.; will encode it by URI and assign to URI#query
-    # - +headers+: hash; request_headers by default
+    # - +headers_or_idempotency_key+: hash of headers; or replaced by request_headers if nil; or added to request_headers as idempotency key otherwise (see https://docs.mangopay.com/api-references/idempotency-support/)
     # - +before_request_proc+: optional proc; will call it passing the Net::HTTPRequest instance just before Net::HTTPRequest#request
     #
     # Raises MangoPay::ResponseError if response code != 200.
     #
-    def request(method, url, params={}, filters={}, headers = request_headers, before_request_proc = nil)
+    def request(method, url, params={}, filters={}, headers_or_idempotency_key = nil, before_request_proc = nil)
       uri = api_uri(url)
       uri.query = URI.encode_www_form(filters) unless filters.empty?
+
+      if headers_or_idempotency_key.is_a?(Hash)
+        headers = headers_or_idempotency_key
+      else
+        headers = request_headers
+        headers['Idempotency-Key'] = headers_or_idempotency_key if headers_or_idempotency_key != nil
+      end
 
       res = Net::HTTP.start(uri.host, uri.port, use_ssl: true) do |http|
         req = Net::HTTP::const_get(method.capitalize).new(uri.request_uri, headers)
@@ -93,7 +100,6 @@ module MangoPay
       # decode json data
       data = JSON.load(res.body.to_s) rescue {}
 
-
       unless res.is_a?(Net::HTTPOK)
         raise MangoPay::ResponseError.new(uri, res.code, data)
       end
@@ -104,6 +110,13 @@ module MangoPay
       }
 
       data
+    end
+
+    # Retrieve a previous response by idempotency_key
+    # See https://docs.mangopay.com/api-references/idempotency-support/
+    def fetch_response(idempotency_key)
+      url = "#{api_path}/responses/#{idempotency_key}"
+      request(:get, url)
     end
 
     private

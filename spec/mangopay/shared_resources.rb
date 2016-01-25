@@ -34,8 +34,8 @@ shared_context 'users' do
 ###############################################
 
   let(:new_natural_user) { create_new_natural_user }
-  def create_new_natural_user
-    MangoPay::NaturalUser.create({
+  def define_new_natural_user
+    {
       Tag: 'Test natural user',
       Email: 'my@email.com',
       FirstName: 'John',
@@ -54,7 +54,10 @@ shared_context 'users' do
       CountryOfResidence: 'FR',
       Occupation: 'Worker',
       IncomeRange: 1
-    })
+    }
+  end
+  def create_new_natural_user
+    MangoPay::NaturalUser.create(define_new_natural_user)
   end
 
   let(:new_legal_user) {

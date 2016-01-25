@@ -4,9 +4,9 @@ module MangoPay
   class BankAccount < Resource
     include HTTPCalls::Fetch
     class << self
-      def create(user_id, params)
+      def create(user_id, params, idempotency_key = nil)
         type = params.fetch(:Type) { |no_symbol_key| params.fetch('Type') }
-        MangoPay.request(:post, "#{url(user_id)}/#{type}", params)
+        MangoPay.request(:post, "#{url(user_id)}/#{type}", params, {}, idempotency_key)
       end
 
       # Fetches:

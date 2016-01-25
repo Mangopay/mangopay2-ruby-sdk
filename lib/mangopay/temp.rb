@@ -57,9 +57,9 @@ module MangoPay
       # Received data:
       # Normal card web payin transaction, with the addition of:
       # - PaymentCardId e.g. "322311"
-      def self.immediate_payin(params)
+      def self.immediate_payin(params, idempotency_key = nil)
         url = "#{MangoPay.api_path}/temp/immediate-payins"
-        MangoPay.request(:post, url, params)
+        MangoPay.request(:post, url, params, {}, idempotency_key)
       end
 
       def self.url(id = nil)

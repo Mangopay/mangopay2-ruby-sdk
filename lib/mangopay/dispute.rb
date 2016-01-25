@@ -51,9 +51,9 @@ module MangoPay
       end
 
       # +params+: hash; see https://docs.mangopay.com/api-references/disputes/settlement-transfers/
-      def create_settlement_transfer(repudiation_id, params)
+      def create_settlement_transfer(repudiation_id, params, idempotency_key = nil)
         url = "#{MangoPay.api_path}/repudiations/#{repudiation_id}/settlementtransfer/"
-        MangoPay.request(:post, url, params)
+        MangoPay.request(:post, url, params, {}, idempotency_key)
       end
       
       #####################################################
@@ -61,9 +61,9 @@ module MangoPay
       #####################################################
 
       # +params+: hash; see https://docs.mangopay.com/api-references/disputes/dispute-documents/
-      def create_document(dispute_id, params)
+      def create_document(dispute_id, params, idempotency_key = nil)
         url = url(dispute_id) + "/documents/"
-        MangoPay.request(:post, url, params)
+        MangoPay.request(:post, url, params, {}, idempotency_key)
       end
 
       def fetch_document(document_id)
@@ -105,7 +105,7 @@ module MangoPay
       # - Base64 encoded file content
       # - or nil: in this case pass the file path in the next param
       #
-      def create_document_page(dispute_id, document_id, file_content_base64, file_path = nil)
+      def create_document_page(dispute_id, document_id, file_content_base64, file_path = nil, idempotency_key = nil)
         if file_content_base64.nil? && !file_path.nil?
           bts = File.open(file_path, 'rb') { |f| f.read }
           file_content_base64 = Base64.encode64(bts)
@@ -113,7 +113,7 @@ module MangoPay
         # normally it returns 204 HTTP code on success
         begin
           url = url(dispute_id) + "/documents/#{document_id}/pages"
-          MangoPay.request(:post, url, {'File' => file_content_base64})
+          MangoPay.request(:post, url, {'File' => file_content_base64}, {}, idempotency_key)
         rescue ResponseError => ex
           raise ex unless ex.code == '204'
         end

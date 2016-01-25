@@ -5,8 +5,8 @@ module MangoPay
   # See http://docs.mangopay.com/api-references/kyc/documents/
   class KycDocument < Resource
     class << self
-      def create(user_id, params)
-        MangoPay.request(:post, url(user_id), params)
+      def create(user_id, params, idempotency_key = nil)
+        MangoPay.request(:post, url(user_id), params, {}, idempotency_key)
       end
 
       def update(user_id, document_id, params = {})
@@ -44,14 +44,14 @@ module MangoPay
       # - Base64 encoded file content
       # - or nil: in this case pass the file path in the next param
       #
-      def create_page(user_id, document_id, file_content_base64, file_path = nil)
+      def create_page(user_id, document_id, file_content_base64, file_path = nil, idempotency_key = nil)
         if file_content_base64.nil? && !file_path.nil?
           bts = File.open(file_path, 'rb') { |f| f.read }
           file_content_base64 = Base64.encode64(bts)
         end
         # normally it returns 204 HTTP code on success
         begin
-          MangoPay.request(:post, url(user_id, document_id) + '/pages', {'File' => file_content_base64})
+          MangoPay.request(:post, url(user_id, document_id) + '/pages', {'File' => file_content_base64}, {}, idempotency_key)
         rescue ResponseError => ex
           raise ex unless ex.code == '204'
         end

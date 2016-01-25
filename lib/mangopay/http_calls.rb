@@ -3,9 +3,14 @@ module MangoPay
     module Create
       module ClassMethods
 
-        def create(*id, params)
-          id = id.empty? ? nil : id[0]
-          MangoPay.request(:post, url(id), params)
+        def create(params, id = nil, idempotency_key = nil)
+          # LEGACY SUPPORT FOR OLD SIGNATURE: def create(*id, params)
+          if !params.is_a?(Hash) && id.is_a?(Hash)
+            temp = params
+            params = id
+            id = temp
+          end
+          MangoPay.request(:post, url(id), params, {}, idempotency_key)
         end
       end
 
@@ -67,8 +72,8 @@ module MangoPay
 
         # See http://docs.mangopay.com/api-references/refund/%E2%80%A2-refund-a-pay-in/
         # See http://docs.mangopay.com/api-references/refund/%E2%80%A2-refund-a-transfer/
-        def refund(id = nil, params = {})
-          MangoPay.request(:post, url(id) + '/refunds', params)
+        def refund(id = nil, params = {}, idempotency_key = nil)
+          MangoPay.request(:post, url(id) + '/refunds', params, {}, idempotency_key)
         end
       end
 
