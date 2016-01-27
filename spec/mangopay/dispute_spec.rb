@@ -25,7 +25,8 @@ describe MangoPay::Dispute do
 
   describe 'TRANSACTIONS' do
     it 'fetches transactions for dispute' do
-      id = @disputes.first['Id']
+      dispute = @disputes.find { |d| d['DisputeType'] == 'NOT_CONTESTABLE' }
+      id = dispute['Id']
       transactions = MangoPay::Dispute.transactions(id, {'per_page' => 1})
       expect(transactions).to be_kind_of(Array)
       expect(transactions).not_to be_empty
@@ -34,7 +35,8 @@ describe MangoPay::Dispute do
 
   describe 'FETCH FOR USER AND WALLET' do
     it 'fetches disputes for user' do
-      id = @disputes.first['Id']
+      dispute = @disputes.find { |d| d['DisputeType'] == 'NOT_CONTESTABLE' }
+      id = dispute['Id']
       transactions = MangoPay::Dispute.transactions(id, {'per_page' => 1})
       user_id = transactions[0]['AuthorId']
       disputes = MangoPay::Dispute.fetch_for_user(user_id, {'per_page' => 1})
@@ -64,8 +66,8 @@ describe MangoPay::Dispute do
 
   describe 'FETCH REPUDIATION' do
     it 'fetches a repudiation' do
-      dispute = @disputes.find {|disp| disp['InitialTransactionId'] != nil}
-      expect(dispute).not_to be_nil, "Cannot test closing dispute because there's no disputes with transaction ID in the disputes list."
+      dispute = @disputes.find {|disp| disp['InitialTransactionId'] != nil && disp['DisputeType'] == 'NOT_CONTESTABLE'}
+      expect(dispute).not_to be_nil, "Cannot test closing dispute because there's no not contestable disputes with transaction ID in the disputes list."
       transactions = MangoPay::Dispute.transactions(dispute['Id'], {'per_page' => 1})
       repudiation_id = transactions[0]['Id']
       repudiation = MangoPay::Dispute.fetch_repudiation(repudiation_id)
@@ -74,10 +76,10 @@ describe MangoPay::Dispute do
     end
   end
 
-  describe 'CREATE SETTLEMENT TRANSFER' do
-    it 'creates settlement transfer' do
-      dispute = @disputes.find {|disp| disp['Status'] == 'CLOSED'}
-      expect(dispute).not_to be_nil, "Cannot test creating settlement transfer because there's no closed disputes in the disputes list."
+  describe 'CREATE AND FETCH SETTLEMENT TRANSFER' do
+    it 'creates and fetches settlement transfer' do
+      dispute = @disputes.find {|disp| disp['Status'] == 'CLOSED' && disp['DisputeType'] == 'NOT_CONTESTABLE'}
+      expect(dispute).not_to be_nil, "Cannot test creating settlement transfer because there's no closed, not contestable disputes in the disputes list."
       transactions = MangoPay::Dispute.transactions(dispute['Id'], {'per_page' => 1})
       repudiation_id = transactions[0]['Id']
       repudiation = MangoPay::Dispute.fetch_repudiation(repudiation_id)
@@ -87,9 +89,14 @@ describe MangoPay::Dispute do
         Fees: {Currency: 'EUR', Amount: 0},
         Tag: 'Custom tag data'
       }
+
       transfer = MangoPay::Dispute.create_settlement_transfer(repudiation_id, params)
       expect(transfer['Type']).to eq('TRANSFER')
       expect(transfer['Nature']).to eq('SETTLEMENT')
+
+      fetched_transfer = MangoPay::Dispute.fetch_settlement_transfer(transfer['Id'])
+      expect(fetched_transfer['Id']).to eq(transfer['Id'])
+      expect(fetched_transfer['CreationDate']).to eq(transfer['CreationDate'])
     end
   end
 
@@ -136,7 +143,10 @@ describe MangoPay::Dispute do
     end
 
     it 'fetches a list of documents' do
-      disp = find_dispute
+      disp = @disputes.find {|disp| disp['Status'] == 'SUBMITTED'}
+      disp = test_contest_dispute if disp == nil
+      expect(disp).not_to be_nil, "Cannot test fetching dispute documents because there's no dispute with expected status in the disputes list."
+
       doc1 = create_doc(disp)
       doc2 = create_doc(disp) # for the same dispute
 
@@ -195,8 +205,7 @@ describe MangoPay::Dispute do
     end
   end
 
-  describe 'CONTEST' do
-    it 'contests a dispute' do
+  def test_contest_dispute
       dispute = @disputes.find do |disp|
         ['PENDING_CLIENT_ACTION', 'REOPENED_PENDING_CLIENT_ACTION'].include?(disp['Status']) &&
         ['CONTESTABLE', 'RETRIEVAL'].include?(disp['DisputeType'])
@@ -207,6 +216,12 @@ describe MangoPay::Dispute do
       changed_dispute = MangoPay::Dispute.contest(id, contested_funds)
       expect(changed_dispute['Id']).to eq(id)
       expect(changed_dispute['Status']).to eq('SUBMITTED')
+      changed_dispute
+  end
+
+  describe 'CONTEST' do
+    it 'contests a dispute' do
+      test_contest_dispute
     end
   end
 
@@ -236,5 +251,4 @@ describe MangoPay::Dispute do
       expect(changed_dispute['Status']).to eq('CLOSED')
     end
   end
-
 end

@@ -55,6 +55,12 @@ module MangoPay
         url = "#{MangoPay.api_path}/repudiations/#{repudiation_id}/settlementtransfer/"
         MangoPay.request(:post, url, params, {}, idempotency_key)
       end
+
+      # see https://docs.mangopay.com/api-references/disputes/settlement-transfers/
+      def fetch_settlement_transfer(transfer_id)
+        url = "#{MangoPay.api_path}/settlements/#{transfer_id}"
+        MangoPay.request(:get, url)
+      end
       
       #####################################################
       # documents
