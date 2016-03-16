@@ -1,5 +1,6 @@
 require 'net/http'
 require 'cgi/util'
+require 'digest/md5'
 require 'multi_json'
 
 # helpers
