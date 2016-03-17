@@ -26,6 +26,11 @@ describe MangoPay::KycDocument do
       document = MangoPay::KycDocument.fetch(new_natural_user['Id'], new_document['Id'])
       expect(document['Id']).to eq(new_document['Id'])
     end
+
+    it 'fetches a document just by id' do
+      document = MangoPay::KycDocument.fetch(nil, new_document['Id'])
+      expect(document['Id']).to eq(new_document['Id'])
+    end
   end
 
   describe 'FETCH ALL' do
