@@ -15,7 +15,8 @@ module MangoPay
 
       # Fetches the KYC document belonging to the given +user_id+, with the given +document_id+.
       def fetch(user_id, document_id)
-        MangoPay.request(:get, url(user_id, document_id))
+        url = (user_id) ? url(user_id, document_id) : "#{MangoPay.api_path}/KYC/documents/#{CGI.escape(document_id.to_s)}"
+        MangoPay.request(:get, url)
       end
 
       # Fetches list of KYC documents:
