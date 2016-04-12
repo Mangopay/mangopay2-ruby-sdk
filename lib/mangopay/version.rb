@@ -1,3 +1,2 @@
 module MangoPay
-  VERSION = '3.0.20' # idempotency support
-end
+  VERSION = '3.0.21' # Direct debit
