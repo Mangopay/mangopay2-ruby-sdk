@@ -6,7 +6,7 @@ module MangoPay
     class << self
 
       def create(params)
-        MangoPay.request(:post, '/api/clients/', params, {}, {
+        MangoPay.request(:post, '/clients/', params, {}, {
           'user_agent' => "MangoPay V2 RubyBindings/#{VERSION}",
           'Content-Type' => 'application/json'
         })
