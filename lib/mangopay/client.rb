@@ -36,6 +36,46 @@ module MangoPay
         end
       end
 
+      # Fetch all your client wallets;
+      # +funds_type+ may be:
+      #   - nil: all wallets
+      #   - 'fees': fees wallets
+      #   - 'credit': credit wallets
+      # see https://docs.mangopay.com/api-references/client-wallets/
+      def fetch_wallets(funds_type = nil)
+        MangoPay.request(:get, url() + "/wallets/#{funds_type}")
+      end
+
+      # Fetch one of your client wallets (fees or credit) with a particular currency;
+      # +funds_type+ may be:
+      #   - nil: all wallets
+      #   - 'fees': fees wallets
+      #   - 'credit': credit wallets
+      # +currency_iso_code+ is currncy ISO code
+      # see https://docs.mangopay.com/api-references/client-wallets/
+      def fetch_wallet(funds_type, currency_iso_code)
+        MangoPay.request(:get, url() + "/wallets/#{funds_type}/#{currency_iso_code}")
+      end
+
+      # Fetch transactions for all your client wallets.
+      # Optional +filters+ hash: see MangoPay::Transaction.fetch
+      # See https://docs.mangopay.com/api-references/client-wallets/
+      def fetch_wallets_transactions(filters = {})
+        MangoPay.request(:get, url() + "/transactions", {}, filters)
+      end
+
+      # Fetch transactions for one of your client wallets (fees or credit) with a particular currency;
+      # +funds_type+ may be:
+      #   - nil: all wallets
+      #   - 'fees': fees wallets
+      #   - 'credit': credit wallets
+      # +currency_iso_code+ is currncy ISO code
+      # Optional +filters+ hash: see MangoPay::Transaction.fetch
+      # See https://docs.mangopay.com/api-references/client-wallets/
+      def fetch_wallet_transactions(funds_type, currency_iso_code, filters = {})
+        MangoPay.request(:get, url() + "/wallets/#{funds_type}/#{currency_iso_code}/transactions", {}, filters)
+      end
+
     end
   end
 end
