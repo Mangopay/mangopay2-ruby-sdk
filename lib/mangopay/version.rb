@@ -1,3 +1,3 @@
 module MangoPay
-  VERSION = '3.0.21' # Direct debit
+  VERSION = '3.0.22'
 end

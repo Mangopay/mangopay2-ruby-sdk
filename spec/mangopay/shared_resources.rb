@@ -1,35 +1,4 @@
 ###############################################
-shared_context 'clients' do
-###############################################
-
-  require 'securerandom'
-
-  let(:client_id) {
-    SecureRandom.hex(10)
-  }
-
-  let(:wrong_client_id) {
-    SecureRandom.hex(20)
-  }
-
-  let(:wrong_client) {
-    MangoPay::Client.create({
-      'ClientID' => wrong_client_id,
-      'Name' => 'What a nice name',
-      'Email' => 'clientemail@email.com'
-    })
-  }
-
-  let(:new_client) {
-    MangoPay::Client.create({
-      'ClientID' => client_id,
-      'Name' => 'What a nice name',
-      'Email' => 'clientemail@email.com'
-    })
-  }
-end
-
-###############################################
 shared_context 'users' do
 ###############################################
 

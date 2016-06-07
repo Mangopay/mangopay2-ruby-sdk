@@ -21,6 +21,11 @@ module MangoPay
         MangoPay.request(:get, url(user_id, bank_account_id), {}, filters)
       end
 
+      # see https://docs.mangopay.com/endpoints/v2.01/bank-accounts#e306_disactivate-a-bank-account
+      def update(user_id, bank_account_id, params = {})
+        MangoPay.request(:put, url(user_id, bank_account_id), params)
+      end
+
       def url(user_id, bank_account_id = nil)
         if bank_account_id
           "#{MangoPay.api_path}/users/#{CGI.escape(user_id.to_s)}/bankaccounts/#{CGI.escape(bank_account_id.to_s)}"
