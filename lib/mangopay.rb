@@ -31,6 +31,7 @@ module MangoPay
   autoload :Refund, 'mangopay/refund'
   autoload :Dispute, 'mangopay/dispute'
   autoload :Mandate, 'mangopay/mandate'
+  autoload :Report, 'mangopay/report'
   autoload :JSON, 'mangopay/json'
   autoload :AuthorizationToken, 'mangopay/authorization_token'
 
