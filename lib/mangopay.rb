@@ -2,6 +2,8 @@ require 'net/http'
 require 'cgi/util'
 require 'digest/md5'
 require 'multi_json'
+require 'benchmark'
+require 'logger'
 
 # helpers
 require 'mangopay/version'
@@ -41,7 +43,7 @@ module MangoPay
   class Configuration
     attr_accessor :preproduction, :root_url,
                   :client_id, :client_passphrase,
-                  :temp_dir
+                  :temp_dir, :log_file
 
     def preproduction
       @preproduction || false
@@ -97,7 +99,7 @@ module MangoPay
         req = Net::HTTP::const_get(method.capitalize).new(uri.request_uri, headers)
         req.body = JSON.dump(params)
         before_request_proc.call(req) if before_request_proc
-        http.request req
+        do_request(http, req, uri)
       end
 
       # decode json data
@@ -152,6 +154,42 @@ module MangoPay
       rescue => e
         headers.update('x_mangopay_client_raw_user_agent' => user_agent.inspect, error: "#{e} (#{e.class})")
       end
+    end
+
+    def do_request(http, req, uri)
+      if configuration.log_file.nil?
+        do_request_without_log(http, req)
+      else
+        do_request_with_log(http, req, uri)
+      end
+    end
+
+    def do_request_with_log(http, req, uri)
+      res, time = nil, nil
+      line = "[#{Time.now.iso8601}] #{req.method.upcase} \"#{uri.to_s}\" #{req.body}"
+      begin
+        time = Benchmark.realtime { res = do_request_without_log(http, req) }
+        res
+      ensure
+        body = JSON.load(res.body.to_s)
+        line += "\n  [#{(time * 1000).round(1)}ms] #{res.code} #{body}\n"
+        logger.info { line }
+      end
+    end
+
+    def do_request_without_log(http, req)
+      http.request(req)
+    end
+
+    def logger
+      raise NotImplementedError if configuration.log_file.nil?
+      if @logger.nil?
+        @logger = Logger.new(configuration.log_file)
+        @logger.formatter = proc do |severity, datetime, progname, msg|
+          "#{msg}\n"
+        end
+      end
+      @logger
     end
 
   end
