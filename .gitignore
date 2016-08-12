@@ -24,3 +24,5 @@ doc/
 /mangopay-*.gem
 
 /nbproject/
+
+/*.sublime-*
