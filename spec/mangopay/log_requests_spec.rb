@@ -1,5 +1,4 @@
 describe MangoPay do
-
   include_context 'users'
 
   describe 'all requests' do
@@ -20,6 +19,7 @@ describe MangoPay do
       MangoPay.configuration.log_file = log_file
       new_natural_user
       expect(File.exists? log_file).to be(true)
+      FileUtils.rm_f(log_file)
     end
 
   end
