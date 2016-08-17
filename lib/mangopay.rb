@@ -36,8 +36,7 @@ module MangoPay
   autoload :Report, 'mangopay/report'
   autoload :JSON, 'mangopay/json'
   autoload :AuthorizationToken, 'mangopay/authorization_token'
-  autoload :FilterRequestParameters, 'mangopay/filter_request_parameters'
-  autoload :FilterResponseParameters, 'mangopay/filter_response_parameters'
+  autoload :FilterParameters, 'mangopay/filter_parameters'
 
   # temporary
   autoload :Temp, 'mangopay/temp'
@@ -168,14 +167,14 @@ module MangoPay
 
     def do_request_with_log(http, req, uri)
       res, time = nil, nil
-      req_filter = FilterRequestParameters.new(req)
-      line = "[#{Time.now.iso8601}] #{req.method.upcase} \"#{uri.to_s}\" #{req_filter.body}"
+      params = FilterParameters.request(req.body)
+      line = "[#{Time.now.iso8601}] #{req.method.upcase} \"#{uri.to_s}\" #{params}"
       begin
         time = Benchmark.realtime { res = do_request_without_log(http, req) }
         res
       ensure
-        res_filter = FilterResponseParameters.new(res)
-        line += "\n  [#{(time * 1000).round(1)}ms] #{res.code} #{res_filter.body}\n"
+        params = FilterParameters.response(res.body)
+        line += "\n  [#{(time * 1000).round(1)}ms] #{res.code} #{params}\n"
         logger.info { line }
       end
     end
