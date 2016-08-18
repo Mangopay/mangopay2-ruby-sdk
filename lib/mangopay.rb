@@ -174,6 +174,7 @@ module MangoPay
         res
       ensure
         params = FilterParameters.response(res.body)
+        line = "#{log_severity(res)} #{line}"
         line += "\n  [#{(time * 1000).round(1)}ms] #{res.code} #{params}\n"
         logger.info { line }
       end
@@ -181,6 +182,11 @@ module MangoPay
 
     def do_request_without_log(http, req)
       http.request(req)
+    end
+
+    def log_severity(res)
+      errors = [Net::HTTPClientError, Net::HTTPServerError, Net::HTTPUnknownResponse]
+      errors.any? { |klass| res.is_a?(klass) } ? 'E' : 'I'
     end
 
     def logger
