@@ -104,7 +104,7 @@ module MangoPay
       end
 
       # decode json data
-      data = JSON.load(res.body.to_s) rescue {}
+      data = res.body.to_s.empty? ? {} : JSON.load(res.body.to_s)
 
       unless res.is_a?(Net::HTTPOK)
         raise MangoPay::ResponseError.new(uri, res.code, data)

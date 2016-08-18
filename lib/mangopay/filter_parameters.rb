@@ -7,7 +7,7 @@ module MangoPay
       rescue MultiJson::LoadError => e
         return body
       end
-      filter_hash(body, res_confidential_params)
+      filter_hash(body, req_confidential_params)
       JSON.dump(body)
     end
 
