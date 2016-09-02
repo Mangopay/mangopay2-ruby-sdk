@@ -41,6 +41,7 @@ MangoPay.configure do |c|
   c.preproduction = true
   c.client_id = 'YOUR_CLIENT_ID'
   c.client_passphrase = 'YOUR_CLIENT_PASSWORD'
+  c.log_file = File.join('mypath', 'mangopay.log')
 end
 
 
@@ -82,6 +83,11 @@ rescue MangoPay::ResponseError => ex
              # }
 end
 ```
+
+### Log requests and responses
+You can easily enable logs by setting the ```log_file``` configuration option (see the section **configuration** above). If you don't want logs, remove the ```log_file``` line.
+
+Requests and responses are filtered, so confidential data is not saved in logs.
 
 ### Tests
 Make sure that you have run: ```bundle install```
