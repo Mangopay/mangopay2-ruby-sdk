@@ -16,6 +16,14 @@ module MangoPay
         MangoPay.request(:get, url(user_id) + '/wallets', {}, filters)
       end
 
+      # Fetches list of bank accounts belonging to the given +user_id+.
+      # Optional +filters+ is a hash accepting following keys:
+      # - +page+, +per_page+, +sort+: pagination and sorting params
+      # (see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch)
+      def bank_accounts(user_id, filters={})
+        MangoPay.request(:get, url(user_id) + '/bankaccounts', {}, filters)
+      end
+
       # Fetches list of cards belonging to the given +user_id+.
       # Optional +filters+ is a hash accepting following keys:
       # - +page+, +per_page+, +sort+: pagination and sorting params (see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch)
