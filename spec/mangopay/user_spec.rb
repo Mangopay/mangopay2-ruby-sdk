@@ -119,4 +119,19 @@ describe MangoPay::User do
     end
   end
 
+  describe 'FETCH BANK ACCOUNTS' do
+    it 'fetches empty list of bank accounts if no bank_accounts created' do
+      bank_accounts = MangoPay::User.bank_accounts(new_natural_user['Id'])
+      expect(bank_accounts).to be_kind_of(Array)
+      expect(bank_accounts).to be_empty
+    end
+
+    it 'fetches list with single bank_account after created' do
+      bank_account = new_bank_account
+      bank_accounts = MangoPay::User.bank_accounts(new_natural_user['Id'])
+      expect(bank_accounts).to be_kind_of(Array)
+      expect(bank_accounts.count).to eq 1
+      expect(bank_accounts.first['Id']).to eq bank_account['Id']
+    end
+  end
 end
