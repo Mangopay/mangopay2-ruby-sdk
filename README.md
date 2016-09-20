@@ -9,10 +9,7 @@ Tested on the following versions of Ruby: 1.9.2, 1.9.3, 2.0.0
 ## NEWS
 
 ### Version 3.*
-** BREAKING CHANGES **
-This version (3.*) of the gem is targeting the Mangopay API Version 2.
-It has a brand new structure to make the api calls easier to use
-and is not backward compatible with 2.* series.
+**BREAKING CHANGES:** This version (3.\*) of the gem is targeting the Mangopay API Version 2. It has a brand new structure to make the api calls easier to use and is not backward compatible with 2.\* series.
 
 Since [v3.0.17](https://github.com/Mangopay/mangopay2-ruby-sdk/releases/tag/v3.0.17) of the SDK, you must be using at least v2.01 of the API (more information about the changes required [here](https://docs.mangopay.com/api-v2-01-overview/))
 
