@@ -16,6 +16,10 @@ describe MangoPay::Configuration do
   end
 
   context 'with multithreading' do
+    after :all do
+      reset_mangopay_configuration
+    end
+
     before :all do
       MangoPay.configuration.client_id = 'default'
 
