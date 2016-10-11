@@ -56,8 +56,6 @@ module MangoPay
   end
 
   class << self
-    attr_accessor :configuration
-
     def version_code
       "v2.01"
     end
@@ -66,13 +64,36 @@ module MangoPay
       "/#{version_code}/#{MangoPay.configuration.client_id}"
     end
 
-    def configure
-      self.configuration ||= Configuration.new
-      yield configuration
-    end
-
     def api_uri(url='')
       URI(configuration.root_url + url)
+    end
+
+    def configuration=(value)
+      Thread.current[:mangopay_configuration] = value
+      @last_configuration_set = value
+    end
+
+    def configuration
+      config = Thread.current[:mangopay_configuration]
+
+      config                                                ||
+      ( @last_configuration_set &&
+        (self.configuration = @last_configuration_set.dup)) ||
+      (self.configuration = MangoPay::Configuration.new)
+    end
+
+    def configure
+      config = self.configuration
+      yield config
+      self.configuration = config
+    end
+
+    def with_configuration(config)
+      original_config = MangoPay.configuration
+      MangoPay.configuration = config
+      yield
+    ensure
+      MangoPay.configuration = original_config
     end
 
     #
