@@ -69,5 +69,17 @@ module MangoPay
 
     end
 
+    module PayPal
+
+      # See https://docs.mangopay.com/api-references/payins/paypal-payin/
+      class Web < Resource
+        include HTTPCalls::Create
+        def self.url(*)
+          "#{MangoPay.api_path}/payins/paypal/#{CGI.escape(class_name.downcase)}"
+        end
+      end
+
+    end
+
   end
 end
