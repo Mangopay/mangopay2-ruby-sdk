@@ -23,6 +23,7 @@ reset_mangopay_configuration
 
 ################################################################################
 # uncomment it for logging all http calls in tests
+# require 'pp'
 # require 'http_logger'
 # require 'logger'
 # HttpLogger.logger            = Logger.new(STDOUT)

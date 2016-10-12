@@ -1,5 +1,10 @@
 describe MangoPay::Dispute do
 
+=begin
+comment out all Dispute related unit tests please
+these require manual actions on our side
+and it's infact not suitable like that
+
   # IMPORTANT NOTE!
   # 
   # Due to the fact the disputes CANNOT be created on user's side,
@@ -251,4 +256,7 @@ describe MangoPay::Dispute do
       expect(changed_dispute['Status']).to eq('CLOSED')
     end
   end
+
+=end
+
 end

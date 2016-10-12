@@ -1,35 +1,4 @@
 ###############################################
-shared_context 'clients' do
-###############################################
-
-  require 'securerandom'
-
-  let(:client_id) {
-    SecureRandom.hex(10)
-  }
-
-  let(:wrong_client_id) {
-    SecureRandom.hex(20)
-  }
-
-  let(:wrong_client) {
-    MangoPay::Client.create({
-      'ClientID' => wrong_client_id,
-      'Name' => 'What a nice name',
-      'Email' => 'clientemail@email.com'
-    })
-  }
-
-  let(:new_client) {
-    MangoPay::Client.create({
-      'ClientID' => client_id,
-      'Name' => 'What a nice name',
-      'Email' => 'clientemail@email.com'
-    })
-  }
-end
-
-###############################################
 shared_context 'users' do
 ###############################################
 
@@ -147,6 +116,22 @@ shared_context 'bank_accounts' do
 end
 
 ###############################################
+shared_context 'mandates' do
+###############################################
+  include_context 'bank_accounts'
+
+  let(:new_mandate) { create_new_mandate() }
+  def create_new_mandate()
+    MangoPay::Mandate.create({
+      BankAccountId: new_bank_account['Id'],
+      Culture: 'FR',
+      ReturnURL: MangoPay.configuration.root_url,
+      Tag: 'Test mandate'
+    })
+  end
+end
+
+###############################################
 shared_context 'kyc_documents' do
 ###############################################
   include_context 'users'
@@ -165,6 +150,7 @@ shared_context 'payins' do
 ###############################################
   include_context 'users'
   include_context 'wallets'
+  include_context 'mandates'
 
   ###############################################
   # directdebit/web
@@ -199,7 +185,24 @@ shared_context 'payins' do
       Tag: 'Test PayIn/PayPal/Web'
     })
   }
+  
+    ###############################################
+  # directdebit/direct
+  ###############################################
 
+  let(:new_payin_directdebit_direct) {
+    MangoPay::PayIn::DirectDebit::Direct.create({
+      AuthorId: new_natural_user['Id'],
+      CreditedUserId: new_wallet['Owners'][0],
+      CreditedWalletId: new_wallet['Id'],
+      DebitedFunds: { Currency: 'EUR', Amount: 1000 },
+      Fees: { Currency: 'EUR', Amount: 0 },
+      MandateId: new_mandate['Id'],
+      ReturnURL: MangoPay.configuration.root_url,
+      Tag: 'Test PayIn/DirectDebit/Direct'
+    })
+  }
+  
   ###############################################
   # card/web
   ###############################################

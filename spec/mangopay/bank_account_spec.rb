@@ -1,6 +1,6 @@
 describe MangoPay::BankAccount do
   include_context 'bank_accounts'
-  
+
   def create(params)
     user = new_natural_user
     params_fixed = { OwnerName: 'John', OwnerAddress: user['Address'] }.merge(params)
@@ -80,6 +80,18 @@ describe MangoPay::BankAccount do
     it 'fetches single bank detail' do
       single = MangoPay::BankAccount.fetch(new_bank_account['UserId'], new_bank_account['Id'])
       expect(single['Id']).to eq(new_bank_account['Id'])
+    end
+  end
+
+  describe 'UPDATE' do
+    it 'disactivates a bank account' do
+      usr_id = new_bank_account['UserId']
+      acc_id = new_bank_account['Id']
+
+      changed = MangoPay::BankAccount.update(usr_id, acc_id, {Active: false})
+      fetched = MangoPay::BankAccount.fetch(usr_id, acc_id)
+      expect(changed['Active']).to eq(false)
+      expect(fetched['Active']).to eq(false)
     end
   end
 end

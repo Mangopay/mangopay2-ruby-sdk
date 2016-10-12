@@ -1,28 +1,110 @@
 describe MangoPay::Client do
-  include_context 'clients'
 
-  describe 'CREATE' do
-    it 'creates a new client' do
-      expect(new_client['ClientId']).to eq(client_id)
-      expect(new_client['Email']).not_to be_nil
-      expect(new_client['Passphrase']).not_to be_nil
+  describe 'FETCH' do
+    it 'fetches the current client details' do
+      clnt = MangoPay::Client.fetch
+      expect(clnt['ClientId']).to eq(MangoPay.configuration.client_id)
+    end
+  end
+
+  describe 'UPDATE' do
+    it 'updates the current client details' do
+      clnt = MangoPay::Client.fetch
+      before = clnt['PrimaryThemeColour']
+      after = before == '#aaaaaa' ? '#bbbbbb' : '#aaaaaa' # change the color
+      clnt['PrimaryThemeColour'] = after
+
+      updated = MangoPay::Client.update(clnt)
+      expect(updated['ClientId']).to eq(MangoPay.configuration.client_id)
+      expect(updated['PrimaryThemeColour']).to eq(after)
+    end
+  end
+
+  describe 'UPLOAD LOGO' do
+    it 'accepts Base64 encoded file content' do
+      fnm = __FILE__.sub('.rb', '.png')
+      bts = File.open(fnm, 'rb') { |f| f.read }
+      b64 = Base64.encode64(bts)
+      ret = MangoPay::Client.upload_logo(b64)
+      expect(ret).to be_nil
     end
 
-    it 'refuses the client id' do
-      expect { wrong_client['errors'] }.to raise_error { |err|
+    it 'accepts file path' do
+      fnm = __FILE__.sub('.rb', '.png')
+      ret = MangoPay::Client.upload_logo(nil, fnm)
+      expect(ret).to be_nil
+    end
+
+    it 'fails when input string is not base64-encoded' do
+      file = 'any file content...'
+      expect { MangoPay::Client.upload_logo(file) }.to raise_error { |err|
         expect(err).to be_a MangoPay::ResponseError
+        expect(err.code).to eq '400'
         expect(err.type).to eq 'param_error'
       }
     end
+  end
 
-    it "ClientId_already_exist" do
-      expect {
-        MangoPay::Client.create({
-          'ClientId' => new_client['ClientId'],
-          'Name' => 'What a nice name',
-          'Email' => 'clientemail@email.com'
-        })
-      }.to raise_error MangoPay::ResponseError
+  describe 'fetch_wallets' do
+    it 'fetches all client wallets' do
+      wlts = MangoPay::Client.fetch_wallets
+      expect(wlts).to be_kind_of(Array)
+      expect(wlts).not_to be_empty
+    end
+
+    it 'fetches all client fees wallets' do
+      wlts = MangoPay::Client.fetch_wallets('fees')
+      expect(wlts).to be_kind_of(Array)
+      expect(wlts).not_to be_empty
+      expect((wlts.map {|m| m['FundsType']}).uniq).to eq(['FEES'])
+    end
+
+    it 'fetches all client credit wallets' do
+      wlts = MangoPay::Client.fetch_wallets('credit')
+      expect(wlts).to be_kind_of(Array)
+      expect(wlts).not_to be_empty
+      expect((wlts.map {|m| m['FundsType']}).uniq).to eq(['CREDIT'])
     end
   end
+
+  describe 'fetch_wallet' do
+    it 'fetches one of client wallets by funds type (fees) and currency' do
+      wlt = MangoPay::Client.fetch_wallet('fees', 'EUR')
+      expect(wlt).to be_kind_of(Hash)
+      expect(wlt['FundsType']).to eq('FEES')
+      expect(wlt['Currency']).to eq('EUR')
+    end
+
+    it 'fetches one of client wallets by funds type (credit) and currency' do
+      wlt = MangoPay::Client.fetch_wallet('credit', 'EUR')
+      expect(wlt).to be_kind_of(Hash)
+      expect(wlt['FundsType']).to eq('CREDIT')
+      expect(wlt['Currency']).to eq('EUR')
+    end
+  end
+
+  describe 'fetch_wallets_transactions' do
+    it 'fetches transactions for all client wallets' do
+      trns = MangoPay::Client.fetch_wallets_transactions
+      expect(trns).to be_kind_of(Array)
+      expect(trns).not_to be_empty
+    end
+  end
+
+  describe 'fetch_wallets_transactions' do
+    it 'fetches transactions of one of client wallets by funds type (fees) and currency' do
+      trns = MangoPay::Client.fetch_wallet_transactions('fees', 'EUR')
+      expect(trns).to be_kind_of(Array)
+      expect(trns).not_to be_empty
+      expect((trns.map {|m| m['DebitedWalletId']}).uniq).to eq(['FEES_EUR'])
+    end
+
+    it 'fetches transactions of one of client wallets by funds type (credit) and currency' do
+      trns = MangoPay::Client.fetch_wallet_transactions('credit', 'EUR')
+      expect(trns).to be_kind_of(Array)
+      expect(trns).not_to be_empty
+      expect((trns.map {|m| m['DebitedWalletId']}).uniq).to eq(['CREDIT_EUR'])
+    end
+  end
+
 end

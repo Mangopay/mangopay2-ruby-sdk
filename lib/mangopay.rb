@@ -2,6 +2,8 @@ require 'net/http'
 require 'cgi/util'
 require 'digest/md5'
 require 'multi_json'
+require 'benchmark'
+require 'logger'
 
 # helpers
 require 'mangopay/version'
@@ -30,8 +32,11 @@ module MangoPay
   autoload :Hook, 'mangopay/hook'
   autoload :Refund, 'mangopay/refund'
   autoload :Dispute, 'mangopay/dispute'
+  autoload :Mandate, 'mangopay/mandate'
+  autoload :Report, 'mangopay/report'
   autoload :JSON, 'mangopay/json'
   autoload :AuthorizationToken, 'mangopay/authorization_token'
+  autoload :FilterParameters, 'mangopay/filter_parameters'
 
   # temporary
   autoload :Temp, 'mangopay/temp'
@@ -39,7 +44,7 @@ module MangoPay
   class Configuration
     attr_accessor :preproduction, :root_url,
                   :client_id, :client_passphrase,
-                  :temp_dir
+                  :temp_dir, :log_file
 
     def preproduction
       @preproduction || false
@@ -51,8 +56,6 @@ module MangoPay
   end
 
   class << self
-    attr_accessor :configuration
-
     def version_code
       "v2.01"
     end
@@ -61,13 +64,36 @@ module MangoPay
       "/#{version_code}/#{MangoPay.configuration.client_id}"
     end
 
-    def configure
-      self.configuration ||= Configuration.new
-      yield configuration
-    end
-
     def api_uri(url='')
       URI(configuration.root_url + url)
+    end
+
+    def configuration=(value)
+      Thread.current[:mangopay_configuration] = value
+      @last_configuration_set = value
+    end
+
+    def configuration
+      config = Thread.current[:mangopay_configuration]
+
+      config                                                ||
+      ( @last_configuration_set &&
+        (self.configuration = @last_configuration_set.dup)) ||
+      (self.configuration = MangoPay::Configuration.new)
+    end
+
+    def configure
+      config = self.configuration
+      yield config
+      self.configuration = config
+    end
+
+    def with_configuration(config)
+      original_config = MangoPay.configuration
+      MangoPay.configuration = config
+      yield
+    ensure
+      MangoPay.configuration = original_config
     end
 
     #
@@ -95,11 +121,11 @@ module MangoPay
         req = Net::HTTP::const_get(method.capitalize).new(uri.request_uri, headers)
         req.body = JSON.dump(params)
         before_request_proc.call(req) if before_request_proc
-        http.request req
+        do_request(http, req, uri)
       end
 
       # decode json data
-      data = JSON.load(res.body.to_s) rescue {}
+      data = res.body.to_s.empty? ? {} : JSON.load(res.body.to_s)
 
       unless res.is_a?(Net::HTTPOK)
         raise MangoPay::ResponseError.new(uri, res.code, data)
@@ -150,6 +176,49 @@ module MangoPay
       rescue => e
         headers.update('x_mangopay_client_raw_user_agent' => user_agent.inspect, error: "#{e} (#{e.class})")
       end
+    end
+
+    def do_request(http, req, uri)
+      if configuration.log_file.nil?
+        do_request_without_log(http, req)
+      else
+        do_request_with_log(http, req, uri)
+      end
+    end
+
+    def do_request_with_log(http, req, uri)
+      res, time = nil, nil
+      params = FilterParameters.request(req.body)
+      line = "[#{Time.now.iso8601}] #{req.method.upcase} \"#{uri.to_s}\" #{params}"
+      begin
+        time = Benchmark.realtime { res = do_request_without_log(http, req) }
+        res
+      ensure
+        params = FilterParameters.response(res.body)
+        line = "#{log_severity(res)} #{line}"
+        line += "\n  [#{(time * 1000).round(1)}ms] #{res.code} #{params}\n"
+        logger.info { line }
+      end
+    end
+
+    def do_request_without_log(http, req)
+      http.request(req)
+    end
+
+    def log_severity(res)
+      errors = [Net::HTTPClientError, Net::HTTPServerError, Net::HTTPUnknownResponse]
+      errors.any? { |klass| res.is_a?(klass) } ? 'E' : 'I'
+    end
+
+    def logger
+      raise NotImplementedError if configuration.log_file.nil?
+      if @logger.nil?
+        @logger = Logger.new(configuration.log_file)
+        @logger.formatter = proc do |severity, datetime, progname, msg|
+          "#{msg}\n"
+        end
+      end
+      @logger
     end
 
   end

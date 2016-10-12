@@ -22,7 +22,7 @@ module MangoPay
               req.basic_auth cfg.client_id, cfg.client_passphrase
               req.body = 'grant_type=client_credentials'
             end)
-            token['timestamp'] = Time.now + token['expires_in'].to_i
+            token['timestamp'] = Time.now + (token['expires_in'].to_i - 10)
             token['environment_key'] = env_key
             storage.store token
           end

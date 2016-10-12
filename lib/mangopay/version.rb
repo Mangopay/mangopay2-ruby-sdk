@@ -1,3 +1,3 @@
 module MangoPay
-  VERSION = '3.0.20' # idempotency support
+  VERSION = '3.0.24'
 end

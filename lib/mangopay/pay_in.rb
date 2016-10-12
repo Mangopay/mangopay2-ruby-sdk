@@ -59,6 +59,14 @@ module MangoPay
         end
       end
 
+      # See https://docs.mangopay.com/api-references/payins/direct-debit-pay-in-direct/
+      class Direct < Resource
+        include HTTPCalls::Create
+        def self.url(*)
+          "#{MangoPay.api_path}/payins/directdebit/#{CGI.escape(class_name.downcase)}"
+        end
+      end
+
     end
 
     module PayPal

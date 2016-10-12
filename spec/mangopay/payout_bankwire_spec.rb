@@ -7,13 +7,13 @@ describe MangoPay::PayOut::BankWire, type: :feature do
     expect(payout['Type']).to eq('PAYOUT')
     expect(payout['Nature']).to eq('REGULAR')
     expect(payout['PaymentType']).to eq('BANK_WIRE')
-    expect(payout['ExecutionDate']).to be_nil
 
     # linked to correct bank account
     expect(payout['BankAccountId']).to eq(new_bank_account['Id'])
 
     if (check_status)
       # not SUCCEEDED yet: waiting for processing
+      expect(payout['ExecutionDate']).to be_nil
       expect(payout['Status']).to eq('CREATED')
       expect(payout['ResultCode']).to be_nil
       expect(payout['ResultMessage']).to be_nil

@@ -1,4 +1,4 @@
-# Mangopay Ruby SDK
+# Mangopay Ruby SDK [![Build Status](https://travis-ci.org/Mangopay/mangopay2-ruby-sdk.svg?branch=master)](https://travis-ci.org/Mangopay/mangopay2-ruby-sdk)
 
 The gem for interacting with the version 2 of the Mangopay API.
 See the [API documentation](http://docs.mangopay.com/api-references/)
@@ -9,10 +9,7 @@ Tested on the following versions of Ruby: 1.9.2, 1.9.3, 2.0.0
 ## NEWS
 
 ### Version 3.*
-** BREAKING CHANGES **
-This version (3.*) of the gem is targeting the Mangopay API Version 2.
-It has a brand new structure to make the api calls easier to use
-and is not backward compatible with 2.* series.
+**BREAKING CHANGES:** This version (3.\*) of the gem is targeting the Mangopay API Version 2. It has a brand new structure to make the api calls easier to use and is not backward compatible with 2.\* series.
 
 Since [v3.0.17](https://github.com/Mangopay/mangopay2-ruby-sdk/releases/tag/v3.0.17) of the SDK, you must be using at least v2.01 of the API (more information about the changes required [here](https://docs.mangopay.com/api-v2-01-overview/))
 
@@ -41,6 +38,7 @@ MangoPay.configure do |c|
   c.preproduction = true
   c.client_id = 'YOUR_CLIENT_ID'
   c.client_passphrase = 'YOUR_CLIENT_PASSWORD'
+  c.log_file = File.join('mypath', 'mangopay.log')
 end
 
 
@@ -83,6 +81,11 @@ rescue MangoPay::ResponseError => ex
 end
 ```
 
+### Log requests and responses
+You can easily enable logs by setting the ```log_file``` configuration option (see the section **configuration** above). If you don't want logs, remove the ```log_file``` line.
+
+Requests and responses are filtered, so confidential data is not saved in logs.
+
 ### Tests
 Make sure that you have run: ```bundle install```
 Then you just have to run rspec ```rspec``` to run all the test suite.
@@ -94,7 +97,7 @@ on the [Gem's Github](https://github.com/Mangopay/mangopay2-ruby-sdk/issues)
 1. Fork the repo.
 
 2. Run the tests. We only take pull requests with passing tests, and it's great
-to know that you have a clean slate: `bundle && bundle exec rake`
+to know that you have a clean slate: `bundle && bundle exec rspec`
 
 3. Add a test for your change. Only refactoring and documentation changes
 require no new tests. If you are adding functionality or fixing a bug, we need

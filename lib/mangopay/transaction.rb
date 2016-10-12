@@ -11,6 +11,7 @@ module MangoPay
       # - +Nature+: TransactionNature {NORMAL, REFUND, REPUDIATION}
       # - +BeforeDate+ (timestamp): filters transactions with CreationDate _before_ this date
       # - +AfterDate+ (timestamp): filters transactions with CreationDate _after_ this date
+      # See https://docs.mangopay.com/api-references/sort-lists/
       def fetch(wallet_id, filters={})
         MangoPay.request(:get, url(wallet_id), {}, filters)
       end
