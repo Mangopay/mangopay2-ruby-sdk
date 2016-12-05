@@ -1,4 +1,13 @@
 language: ruby
 rvm:
-  - 2.0.0
+- 2.0.0
 script: bundle exec rspec
+deploy:
+  provider: rubygems
+  api_key:
+    secure: gvlnYEh9cyL+mYeudKzlD+2Po+LgIzCjHzggJH+WDcbtgxlGAFpxbVJOOm/KY8VKhMgIudNV7FJl4Gl4rrG8JjNxbb+qM57ypU3yyDcUesQ+uj0DnN+xszv7M+XtcRQMlhkStawoj/E0QMYBPkAAr1lBpPIFQdC17GDkdn5XvaQ=
+  gem: mangopay
+  on:
+    tags: false
+    repo: Mangopay/mangopay2-ruby-sdk
+    branch: MPSDK-23-configure-gem-deployment
