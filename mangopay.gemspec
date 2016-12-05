@@ -5,7 +5,6 @@ require 'mangopay/version'
 Gem::Specification.new do |s|
   s.name        = 'mangopay'
   s.version     = MangoPay::VERSION
-  s.version = "#{s.version}-alpha-#{ENV['TRAVIS_BUILD_NUMBER']}" if ENV['TRAVIS']
   s.summary     = "Ruby bindings for the version 2 of the MANGOPAY API"
   s.description = <<-EOF
   The mangopay Gem makes interacting with MANGOPAY Services much easier.
