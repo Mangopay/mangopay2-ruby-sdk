@@ -8,6 +8,6 @@ deploy:
     secure: gvlnYEh9cyL+mYeudKzlD+2Po+LgIzCjHzggJH+WDcbtgxlGAFpxbVJOOm/KY8VKhMgIudNV7FJl4Gl4rrG8JjNxbb+qM57ypU3yyDcUesQ+uj0DnN+xszv7M+XtcRQMlhkStawoj/E0QMYBPkAAr1lBpPIFQdC17GDkdn5XvaQ=
   gem: mangopay
   on:
-    tags: true
+    tags: false
     repo: Mangopay/mangopay2-ruby-sdk
     branch: release
