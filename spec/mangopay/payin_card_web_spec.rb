@@ -22,6 +22,15 @@ describe MangoPay::PayIn::Card::Web, type: :feature do
     end
   end
 
+  describe 'EXTENDED' do
+    context 'when resource not exists' do
+      it 'fetches extended information' do
+        expect { MangoPay::PayIn::Card::Web.extended(1000000) }.to \
+          raise_error(MangoPay::ResponseError)
+      end
+    end
+  end
+
   describe 'FETCH' do
     it 'fetches a payin' do
       created = new_payin_card_web
