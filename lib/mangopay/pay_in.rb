@@ -13,6 +13,17 @@ module MangoPay
         def self.url(*)
           "#{MangoPay.api_path}/payins/card/#{CGI.escape(class_name.downcase)}"
         end
+
+        def self.extended(pay_in_id)
+          MangoPay.request(:get, extended_url(pay_in_id), {}, {})
+        end
+
+        # See https://docs.mangopay.com/endpoints/v2.01/payins#e847_view-card-details-for-a-payin-web
+        # example: data = MangoPay::PayIn::Card::Web.extended(12639078)
+        def self.extended_url(pay_in_id)
+          escaped_pay_in_id = CGI.escape(pay_in_id.to_s)
+          "#{MangoPay.api_path}/payins/card/web/#{escaped_pay_in_id}/extended"
+        end
       end
 
       # See http://docs.mangopay.com/api-references/payins/payindirectcard/
