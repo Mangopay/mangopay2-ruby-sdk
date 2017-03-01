@@ -21,7 +21,6 @@ describe MangoPay::BankingAliases do
   describe 'FETCH' do
     it 'fetches all the banking aliases for a wallet' do
       bankingaliases = MangoPay::BankingAliases.fetch_for_wallet(new_banking_alias['WalletId'])
-      print bankingaliases.inspect
       expect(bankingaliases).to be_kind_of(Array)
       expect(bankingaliases).not_to be_empty
     end
