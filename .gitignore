@@ -26,3 +26,5 @@ doc/
 /nbproject/
 
 /*.sublime-*
+
+.idea

@@ -379,3 +379,19 @@ shared_context 'hooks' do
     end
   }
 end
+
+###############################################
+shared_context 'bankigaliases' do
+###############################################
+  include_context 'users'
+  include_context 'wallets'
+
+  let(:new_banking_alias) {
+    MangoPay::BankingAliasesIBAN.create({
+                                        CreditedUserId: new_natural_user['Id'],
+                                        WalletId: new_wallet['Id'],
+                                        OwnerName: new_natural_user['FirstName'],
+                                        Country: 'LU'
+                                    }, new_wallet['Id'])
+  }
+end
