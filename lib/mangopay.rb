@@ -4,6 +4,7 @@ require 'digest/md5'
 require 'multi_json'
 require 'benchmark'
 require 'logger'
+require 'time'
 
 # helpers
 require 'mangopay/version'
@@ -37,6 +38,8 @@ module MangoPay
   autoload :JSON, 'mangopay/json'
   autoload :AuthorizationToken, 'mangopay/authorization_token'
   autoload :FilterParameters, 'mangopay/filter_parameters'
+  autoload :BankingAliases, 'mangopay/bankingaliases'
+  autoload :BankingAliasesIBAN, 'mangopay/bankingaliases_iban'
 
   # temporary
   autoload :Temp, 'mangopay/temp'
