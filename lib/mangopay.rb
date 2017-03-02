@@ -60,7 +60,7 @@ module MangoPay
 
   class << self
     def version_code
-      "v2.01"
+      "v2.1"
     end
 
     def api_path
