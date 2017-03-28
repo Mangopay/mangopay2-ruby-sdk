@@ -134,4 +134,15 @@ describe MangoPay::User do
       expect(bank_accounts.first['Id']).to eq bank_account['Id']
     end
   end
+
+  describe 'FETCH EMONEY' do
+    it 'fetches emoney for the user' do
+      emoney = MangoPay::User.emoney(new_natural_user['Id'])
+      expect(emoney['UserId']).to eq new_natural_user['Id']
+      expect(emoney['CreditedEMoney']['Amount']).to eq 0
+      expect(emoney['CreditedEMoney']['Currency']).to eq 'EUR'
+      expect(emoney['DebitedEMoney']['Amount']).to eq 0
+      expect(emoney['DebitedEMoney']['Currency']).to eq 'EUR'
+    end
+  end
 end
