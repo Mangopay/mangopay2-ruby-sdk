@@ -55,6 +55,9 @@ pagination = {'page' => 1, 'per_page' => 8} # get 1st page, 8 items per page
 users = MangoPay::User.fetch(pagination) # => [{...}, ...]: list of 8 users data hashes
 pagination # => {"page"=>1, "per_page"=>8, "total_pages"=>748, "total_items"=>5978}
 
+# pass custom filters (transactions reporting filters)
+filters = {'MinFeesAmount' => 1, 'MinFeesCurrency' => 'EUR', 'MaxFeesAmount' => 1000, 'MaxFeesCurrency' => 'EUR'}
+reports = MangoPay::Report.fetch(filters) # => [{...}, ...]: list of transaction reports between 1 and 1000 EUR
 
 # get John's bank accounts
 accounts = MangoPay::BankAccount.fetch(john_id) # => [{...}, ...]: list of accounts data hashes (10 per page by default)
