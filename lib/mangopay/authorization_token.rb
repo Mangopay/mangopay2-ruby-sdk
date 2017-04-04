@@ -21,6 +21,7 @@ module MangoPay
               cfg = MangoPay.configuration
               req.basic_auth cfg.client_id, cfg.client_passphrase
               req.body = 'grant_type=client_credentials'
+              req.add_field('Content-Type', 'application/x-www-form-urlencoded')
             end)
             token['timestamp'] = Time.now + (token['expires_in'].to_i - 10)
             token['environment_key'] = env_key
