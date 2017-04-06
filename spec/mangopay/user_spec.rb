@@ -117,6 +117,16 @@ describe MangoPay::User do
       expect(cards.count).to eq 1
       expect(cards.first['Id']).to eq card['CardId']
     end
+
+    it 'fetches card details' do
+        card = new_card_registration_completed
+        fetched = MangoPay::Card.fetch(card['CardId'])
+
+        expect(fetched['Id']).not_to be_nil
+        expect(fetched['Id'].to_i).to be > 0
+        expect(fetched['UserId']).to eq(new_natural_user["Id"])
+        expect(fetched['Currency']).to eq('EUR')
+      end
   end
 
   describe 'FETCH BANK ACCOUNTS' do
