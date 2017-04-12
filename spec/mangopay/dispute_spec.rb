@@ -140,6 +140,10 @@ and it's infact not suitable like that
 
     it 'updates dispute document' do
       created_doc = create_doc
+      
+      fnm = __FILE__.sub('.rb', '.png')
+      ret = MangoPay::Dispute.create_document_page(created_doc['dispute']['Id'], created_doc['Id'], nil, fnm)
+      
       changed_doc = MangoPay::Dispute.update_document(created_doc['dispute']['Id'], created_doc['Id'], {
         Status: 'VALIDATION_ASKED'
       })
