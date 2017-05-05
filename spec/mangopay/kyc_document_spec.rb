@@ -13,6 +13,9 @@ describe MangoPay::KycDocument do
 
   describe 'UPDATE' do
     it 'updates a document' do
+      fnm = __FILE__.sub('.rb', '.png')
+      ret = MangoPay::KycDocument.create_page(new_natural_user['Id'], new_document['Id'], nil, fnm)
+      
       updated_document = MangoPay::KycDocument.update(new_natural_user['Id'], new_document['Id'], {
         Status: 'VALIDATION_ASKED'
       })

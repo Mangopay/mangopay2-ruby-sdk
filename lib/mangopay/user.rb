@@ -38,6 +38,15 @@ module MangoPay
       def transactions(user_id, filters={})
         MangoPay.request(:get, url(user_id) + '/transactions', {}, filters)
       end
+
+      # View EMoney belonging to the given +user_id+.
+      # Optional +filters+ is a hash accepting following keys:
+      # - +page+, +per_page+, +sort+: pagination and sorting params (see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch)
+      # - other keys specific for transactions filtering (see MangoPay::Transaction#fetch)
+      def emoney(user_id, filters={})
+        MangoPay.request(:get, url(user_id) + '/emoney', {}, filters)
+      end
+
     end
   end
 end
