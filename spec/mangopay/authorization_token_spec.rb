@@ -54,15 +54,15 @@ describe MangoPay::AuthorizationToken do
 
       file_path = _new_file_storage.file_path
       dir_path = MangoPay.configuration.temp_dir
-      expect(file_path.start_with? dir_path).to be(true)
+      expect(file_path.start_with? dir_path).to be_truthy
 
       token = MangoPay::AuthorizationToken::Manager.get_token
-      expect(File.exists? file_path).to be(true)
+      expect(File.exists? file_path).to be_truthy
 
       f = File.open(file_path, File::RDONLY)
       txt = f.read
       f.close
-      expect(txt.include? token['access_token']).to be(true)
+      expect(txt.include? token['access_token']).to be_truthy
 
       MangoPay::AuthorizationToken::Manager.storage = _default_static_storage # cleanup
     end
