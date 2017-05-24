@@ -84,6 +84,25 @@ rescue MangoPay::ResponseError => ex
 end
 ```
 
+### Accessing RateLimit Headers
+Along with each request, the rate limiting headers are automatically updated in MangoPay object:
+
+* X-RateLimit-Limit
+* X-RateLimit-Remaining
+* X-RateLimit-Reset
+
+```
+  MangoPay.ratelimit
+
+  {
+    :limit=>["74", "74", "75", "908"], 
+    :remaining=>["2226", "4426", "8725", "104692"], 
+    :reset=>["1495615620", "1495616520", "1495618320", "1495701060"]
+  }
+```
+
+Read more about rate limiting on [our documetiation](https://docs.mangopay.com/guide/rate-limiting).
+
 ### Log requests and responses
 You can easily enable logs by setting the ```log_file``` configuration option (see the section **configuration** above). If you don't want logs, remove the ```log_file``` line.
 
