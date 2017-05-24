@@ -11,7 +11,7 @@ module MangoPay
         if params[:ReportType] == 'transactions'
           url = url() + '/transactions/'
         elsif params[:ReportType] == 'wallets'
-          url = url() + '/wallet/'
+          url = url() + '/wallets/'
         else
           raise 'When creating a report, ReportType is required. Ex: ("transactions", "wallets")'
         end
