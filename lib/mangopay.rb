@@ -99,6 +99,14 @@ module MangoPay
       MangoPay.configuration = original_config
     end
 
+    def ratelimit
+      @ratelimit
+    end
+
+    def ratelimit=(obj)
+      @ratelimit = obj
+    end
+
     #
     # - +method+: HTTP method; lowercase symbol, e.g. :get, :post etc.
     # - +url+: the part after Configuration#root_url
@@ -138,6 +146,14 @@ module MangoPay
       ['x-number-of-pages', 'x-number-of-items'].each { |k|
         filters[k.gsub('x-number-of-', 'total_')] = res[k].to_i if res[k]
       }
+
+      if res['x-ratelimit']
+        self.ratelimit = {
+          limit: res['x-ratelimit'].split(", "),
+          remaining: res['x-ratelimit-remaining'].split(", "),
+          reset: res['x-ratelimit-reset'].split(", ")
+        } 
+      end
 
       data
     end
