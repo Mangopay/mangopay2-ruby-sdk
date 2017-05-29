@@ -9,7 +9,7 @@ describe MangoPay::Report do
       Preview: false,
       Filters: {},
       Columns: [ 'Id', 'CreationDate' ],
-      ReportType: 'transactions'
+      ReportType: 'wallets'
     }
     MangoPay::Report.create(params)
   end
