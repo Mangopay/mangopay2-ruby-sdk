@@ -39,6 +39,7 @@ MangoPay.configure do |c|
   c.client_id = 'YOUR_CLIENT_ID'
   c.client_passphrase = 'YOUR_CLIENT_PASSWORD'
   c.log_file = File.join('mypath', 'mangopay.log')
+  c.http_timeout = 10000
 end
 
 
