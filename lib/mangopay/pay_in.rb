@@ -58,6 +58,9 @@ module MangoPay
         end
       end
 
+      class ExternalInstruction < Resource
+      end
+
     end
 
     module DirectDebit
