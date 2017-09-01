@@ -102,5 +102,16 @@ describe MangoPay::KycDocument do
         expect(err.type).to eq 'param_error'
       }
     end
+
+    describe 'CREATE CONSULT' do
+      it 'creates document pages consult' do
+        fnm = __FILE__.sub('.rb', '.png')
+        MangoPay::KycDocument.create_page(new_natural_user['Id'], new_document['Id'], nil, fnm)
+
+        consult = MangoPay::KycDocument.create_documents_consult(new_document['Id'])
+        expect(consult).not_to be_nil
+        expect(consult).to be_kind_of(Array)
+      end
+    end
   end
 end
