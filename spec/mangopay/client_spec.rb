@@ -7,12 +7,18 @@ describe MangoPay::Client do
     end
   end
 
-  describe 'UPDATE' do
+  describe 'UPDATE', :focus do
     it 'updates the current client details' do
       clnt = MangoPay::Client.fetch
       before = clnt['PrimaryThemeColour']
       after = before == '#aaaaaa' ? '#bbbbbb' : '#aaaaaa' # change the color
       clnt['PrimaryThemeColour'] = after
+      clnt['HeadquartersAddress'] = {
+        AddressLine1: 'Rue Dandelion, n. 17',
+        City: 'Lyon',
+        Country: 'FR',
+        PostalCode: '150770'
+      }
 
       updated = MangoPay::Client.update(clnt)
       expect(updated['ClientId']).to eq(MangoPay.configuration.client_id)
