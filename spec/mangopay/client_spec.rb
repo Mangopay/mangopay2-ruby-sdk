@@ -7,7 +7,7 @@ describe MangoPay::Client do
     end
   end
 
-  describe 'UPDATE', :focus do
+  describe 'UPDATE' do
     it 'updates the current client details' do
       clnt = MangoPay::Client.fetch
       before = clnt['PrimaryThemeColour']
