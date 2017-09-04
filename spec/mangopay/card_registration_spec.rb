@@ -68,6 +68,21 @@ describe MangoPay::CardRegistration do
 #      expect(MangoPay::Card.fetch(card_id)['Validity']).to eq 'INVALID'
 ################################################################################
     end
+
+    describe '.get_by_fingerprint' do
+      it 'retrieves list of cards having same fingerprint' do
+        completed = new_card_registration_completed
+        card_id = completed['CardId']
+        card = MangoPay::Card.fetch(card_id)
+        fingerprint = card['Fingerprint']
+        result = MangoPay::Card.get_by_fingerprint(fingerprint)
+
+        expect(result).to be_kind_of(Array)
+        result.each do |card|
+          expect(card['Fingerprint']).to eq fingerprint
+        end
+      end
+    end
   end
 
 end
