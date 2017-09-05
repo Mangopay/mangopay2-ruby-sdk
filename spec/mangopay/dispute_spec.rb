@@ -214,6 +214,18 @@ and it's infact not suitable like that
     end
   end
 
+  # TODO: Run this test when possible
+  it 'create_document_consult fetches a list of document page consults' do
+    fnm = __FILE__.sub('.rb', '.png')
+    disp = find_dispute
+    doc = create_doc(disp)
+    MangoPay::Dispute.create_document_page(disp['Id'], doc['Id'], nil, fnm)
+    consults = MangoPay::Dispute.create_document_consult(doc['Id'])
+
+    expect(consults).not_to be_nil
+    expect(consults).to be_kind_of(Array)
+  end
+
   def test_contest_dispute
       dispute = @disputes.find do |disp|
         ['PENDING_CLIENT_ACTION', 'REOPENED_PENDING_CLIENT_ACTION'].include?(disp['Status']) &&
