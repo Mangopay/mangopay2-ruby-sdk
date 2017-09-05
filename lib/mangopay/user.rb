@@ -46,7 +46,6 @@ module MangoPay
       def emoney(user_id, filters={})
         MangoPay.request(:get, url(user_id) + '/emoney', {}, filters)
       end
-
     end
   end
 end

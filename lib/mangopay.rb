@@ -40,6 +40,7 @@ module MangoPay
   autoload :FilterParameters, 'mangopay/filter_parameters'
   autoload :BankingAliases, 'mangopay/bankingaliases'
   autoload :BankingAliasesIBAN, 'mangopay/bankingaliases_iban'
+  autoload :UboDeclaration, 'mangopay/ubo_declaration'
 
   # temporary
   autoload :Temp, 'mangopay/temp'
