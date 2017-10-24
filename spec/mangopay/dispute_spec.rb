@@ -105,6 +105,19 @@ and it's infact not suitable like that
     end
   end
 
+  # NOTE: This test has not been run. Please check it if you have the chance.
+  describe 'GET DISPUTES PENDING SETTLEMENT' do
+    it 'retrieves disputes awaiting settlement actions' do
+      disputes_pending = MangoPay::Dispute.fetch_pending_settlement
+
+      expect(disputes_pending).to be_kind_of Array
+      disputes_pending.each do |dispute|
+        expect(dispute['Id']).not_to be_nil
+        # TODO: Maybe check for corresponding status
+      end
+    end
+  end
+
   describe 'DISPUTE DOCUMENTS API' do
 
     def find_dispute
