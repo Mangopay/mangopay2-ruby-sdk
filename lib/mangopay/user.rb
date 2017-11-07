@@ -46,6 +46,13 @@ module MangoPay
       def emoney(user_id, filters={})
         MangoPay.request(:get, url(user_id) + '/emoney', {}, filters)
       end
+
+      # Fetches list of kyc documents belonging to the given +user_id+.
+      # Optional +filters+ is a hash accepting following keys:
+      # - +page+, +per_page+, +sort+, +BeforeDate+, +AfterDate+, +Status+: pagination and sorting params (see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch)
+      def kyc_documents(user_id, filters={})
+        MangoPay.request(:get, url(user_id) + '/KYC/documents', {}, filters)
+      end
     end
   end
 end
