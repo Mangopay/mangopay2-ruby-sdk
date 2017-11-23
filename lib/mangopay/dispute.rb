@@ -39,6 +39,11 @@ module MangoPay
         url = "#{MangoPay.api_path}/wallets/#{wallet_id}/disputes"
         MangoPay.request(:get, url, {}, filters)
       end
+
+      def fetch_pending_settlement(filters = {})
+        url = "#{MangoPay.api_path}/disputes/pendingsettlement"
+        MangoPay.request(:get, url, {}, filters)
+      end
       
       #####################################################
       # repudiations / settlement transfers
