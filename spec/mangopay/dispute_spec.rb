@@ -105,6 +105,19 @@ and it's infact not suitable like that
     end
   end
 
+  # NOTE: This test has not been run. Please check it if you have the chance.
+  describe 'GET DISPUTES PENDING SETTLEMENT' do
+    it 'retrieves disputes awaiting settlement actions' do
+      disputes_pending = MangoPay::Dispute.fetch_pending_settlement
+
+      expect(disputes_pending).to be_kind_of Array
+      disputes_pending.each do |dispute|
+        expect(dispute['Id']).not_to be_nil
+        # TODO: Maybe check for corresponding status
+      end
+    end
+  end
+
   describe 'DISPUTE DOCUMENTS API' do
 
     def find_dispute
@@ -212,6 +225,18 @@ and it's infact not suitable like that
         expect(err.type).to eq 'param_error'
       }
     end
+  end
+
+  # TODO: Run this test when possible
+  it 'create_document_consult fetches a list of document page consults' do
+    fnm = __FILE__.sub('.rb', '.png')
+    disp = find_dispute
+    doc = create_doc(disp)
+    MangoPay::Dispute.create_document_page(disp['Id'], doc['Id'], nil, fnm)
+    consults = MangoPay::Dispute.create_document_consult(doc['Id'])
+
+    expect(consults).not_to be_nil
+    expect(consults).to be_kind_of(Array)
   end
 
   def test_contest_dispute

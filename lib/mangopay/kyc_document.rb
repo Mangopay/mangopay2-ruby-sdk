@@ -65,6 +65,19 @@ module MangoPay
           "#{MangoPay.api_path}/users/#{CGI.escape(user_id.to_s)}/KYC/documents"
         end
       end
+
+      # Creates temporary URLs where each page of
+      # a KYC document can be viewed.
+      #
+      # @param +document_id+ ID of the document whose pages to consult
+      # @return Array of consults for viewing the KYC document's pages
+      def create_documents_consult(document_id)
+        MangoPay.request(:post, consult_url(document_id), {}, {})
+      end
+
+      def consult_url(document_id)
+        "#{MangoPay.api_path}/KYC/documents/#{document_id}/consult"
+      end
     end
   end
 end

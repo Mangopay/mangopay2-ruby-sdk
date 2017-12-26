@@ -39,6 +39,11 @@ module MangoPay
         url = "#{MangoPay.api_path}/wallets/#{wallet_id}/disputes"
         MangoPay.request(:get, url, {}, filters)
       end
+
+      def fetch_pending_settlement(filters = {})
+        url = "#{MangoPay.api_path}/disputes/pendingsettlement"
+        MangoPay.request(:get, url, {}, filters)
+      end
       
       #####################################################
       # repudiations / settlement transfers
@@ -125,6 +130,18 @@ module MangoPay
         end
       end
 
+      # Creates temporary URLs where each page of
+      # a dispute document can be viewed.
+      #
+      # @param +document_id+ ID of the document whose pages to consult
+      # @return Array of consults for viewing the dispute document's pages
+      def create_document_consult(document_id)
+        MangoPay.request(:get, consult_url(document_id), {}, {})
+      end
+
+      def consult_url(document_id)
+        "#{MangoPay.api_path}/dispute-documents/#{document_id}/consult"
+      end
     end
   end
 end
