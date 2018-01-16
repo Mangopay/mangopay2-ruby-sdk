@@ -3,6 +3,7 @@ describe MangoPay::User do
   include_context 'payins'
   include_context 'payouts'
   include_context 'wallets'
+  include_context 'kyc_documents'
 
   describe 'CREATE' do
     it 'creates a new natural user' do
@@ -153,6 +154,22 @@ describe MangoPay::User do
       expect(emoney['CreditedEMoney']['Currency']).to eq 'EUR'
       expect(emoney['DebitedEMoney']['Amount']).to eq 0
       expect(emoney['DebitedEMoney']['Currency']).to eq 'EUR'
+    end
+  end
+
+  describe 'FETCH Kyc Document' do
+    it 'fetches empty list of kyc documents if no kyc document created' do
+      documents = MangoPay::User.kyc_documents(new_natural_user['Id'])
+      expect(documents).to be_kind_of(Array)
+      expect(documents).to be_empty
+    end
+
+    it 'fetches list with single kyc document after created' do
+      document = new_document
+      documents = MangoPay::User.kyc_documents(document['UserId'])
+      expect(documents).to be_kind_of(Array)
+      expect(documents.count).to eq 1
+      expect(documents.first['Id']).to eq document['Id']
     end
   end
 
