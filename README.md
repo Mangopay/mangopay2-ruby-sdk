@@ -4,7 +4,7 @@ The gem for interacting with the version 2 of the Mangopay API.
 See the [API documentation](http://docs.mangopay.com/api-references/)
 for more details on the API.
 
-Tested on the following versions of Ruby: 1.9.2, 1.9.3, 2.0.0
+Tested on the following versions of Ruby: 1.9.2, 1.9.3, 2.0.0 and 2.x up to 2.5
 
 ## NEWS
 
