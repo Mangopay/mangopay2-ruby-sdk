@@ -7,8 +7,8 @@ module MangoPay
   # Provides logger objects.
   class LogProvider
 
-    ENABLE_LOGGING = true
-    ENABLE_HTTP_LOGGING = true
+    ENABLE_LOGGING = false
+    ENABLE_HTTP_LOGGING = false
 
     class << self
 
