@@ -2,8 +2,8 @@
 
 irb = RUBY_PLATFORM =~ /(:?mswin|mingw)/ ? 'irb.bat' : 'irb'
 
-libs = " -r irb/completion"
+libs = ' -r irb/completion'
 libs <<  " -r #{File.dirname(__FILE__) + '/../lib/mangopay'}"
 
-puts "Loading MangoPay gem"
+puts 'Loading MangoPay gem'
 exec "#{irb} #{libs}"
