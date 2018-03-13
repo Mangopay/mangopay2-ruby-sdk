@@ -39,4 +39,13 @@ describe MangoPay::PreAuthorization do
     end
   end
 
+  describe 'FETCH FOR CARD' do
+    it "fetches a card's pre-authorizations" do
+      created = new_card_preauthorization
+      fetched = MangoPay::Card.get_pre_authorizations(created['CardId'])
+
+      expect(fetched).to be_an(Array)
+    end
+  end
+
 end
