@@ -5,6 +5,17 @@ module MangoPay
     include HTTPCalls::Fetch
     include HTTPCalls::Refund
 
+    # Fetches list of refunds belonging to the given +pay_in_id+.
+    #
+    # Optional +filters+ is a hash accepting following keys:
+    # - +page+, +per_page+, +sort+: pagination and sorting params (see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch)
+    # - +Status+: TransactionStatus {CREATED, SUCCEEDED, FAILED}
+    # - +ResultCode+: string representing the transaction result
+    def self.refunds(pay_in_id, filters = {})
+      url = url(pay_in_id) + '/refunds'
+      MangoPay.request(:get, url, {}, filters)
+    end
+
     module Card
 
       # See http://docs.mangopay.com/api-references/payins/payins-card-web/

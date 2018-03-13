@@ -44,4 +44,12 @@ describe MangoPay::PayIn::Card::Web, type: :feature do
     end
   end
 
+  describe 'FETCH Refunds' do
+    it "fetches the pay-in's refunds" do
+      payin = new_payin_card_web
+      refunds = MangoPay::PayIn.refunds(payin['Id'])
+      expect(refunds).to be_an(Array)
+    end
+  end
+
 end
