@@ -51,4 +51,12 @@ describe MangoPay::PayOut::BankWire, type: :feature do
     end
   end
 
+  describe 'GET Refunds' do
+    it "fetches the pay-out's refunds" do
+      payout = new_payout_bankwire
+      refunds = MangoPay::PayOut.refunds(payout['Id'])
+      expect(refunds).to be_an(Array)
+    end
+  end
+
 end
