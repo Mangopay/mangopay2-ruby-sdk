@@ -190,4 +190,12 @@ describe MangoPay::User do
       expect(ubo_declaration['DeclaredUBOs'][0]['UserId']).to eq natural_user['Id']
     end
   end
+
+  describe 'FETCH Pre-Authorizations' do
+    it "fetches list of user's pre-authorizations belonging" do
+      legal_user = new_legal_user
+      pre_authorizations = MangoPay::User.pre_authorizations(legal_user['Id'])
+      expect(pre_authorizations).to be_an(Array)
+    end
+  end
 end

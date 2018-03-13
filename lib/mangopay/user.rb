@@ -53,6 +53,13 @@ module MangoPay
       def kyc_documents(user_id, filters={})
         MangoPay.request(:get, url(user_id) + '/KYC/documents', {}, filters)
       end
+
+      # Fetches list of pre-authorizations belonging to the given +user_id+.
+      # Optional +filters+ is a hash accepting the following keys:
+      # - +page+, +per_page+, +sort+, +Status+, +ResultCode+, +PaymentStatus+: pagination and sorting/filtering params (see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch)
+      def pre_authorizations(user_id, filters={})
+        MangoPay.request(:get, url(user_id) + '/preauthorizations', {}, filters)
+      end
     end
   end
 end
