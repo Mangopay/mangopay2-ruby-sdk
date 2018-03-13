@@ -20,6 +20,10 @@ module MangoPay
       def fingerprint_url(fingerprint)
         "#{MangoPay.api_path}/cards/fingerprints/#{fingerprint}"
       end
+
+      def get_pre_authorizations(card_id, filters = {})
+        MangoPay.request(:get, "#{MangoPay.api_path}/cards/#{card_id}/preauthorizations")
+      end
     end
   end
 end
