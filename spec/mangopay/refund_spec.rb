@@ -18,4 +18,11 @@ describe MangoPay::Refund do
       expect(refund['CreditedWalletId']).to eq(transfer['DebitedWalletId'])
     end
   end
+
+  describe 'FETCH for Repudiation' do
+    it "fetches a repudiation's refunds" do
+      refunds = MangoPay::Refund.of_repudiation('40842223')
+      expect(refunds).to be_an(Array)
+    end
+  end
 end
