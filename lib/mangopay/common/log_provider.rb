@@ -8,7 +8,7 @@ module MangoPay
   class LogProvider
 
     ENABLE_LOGGING = false
-    ENABLE_HTTP_LOGGING = false
+    ENABLE_HTTP_LOGGING = true
 
     class << self
 

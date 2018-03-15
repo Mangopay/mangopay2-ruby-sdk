@@ -49,6 +49,7 @@ describe MangoApi::Clients do
 
         expect(retrieved).to be_kind_of MangoModel::Client
         expect(retrieved.client_id).to eq MangoPay.configuration.client_id
+        expect(retrieved.platform_categorization).to be_kind_of MangoModel::PlatformCategorization
       end
     end
   end
