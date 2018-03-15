@@ -21,7 +21,7 @@ describe MangoPay::Refund do
 
   describe 'FETCH for Repudiation' do
     it "fetches a repudiation's refunds" do
-      refunds = MangoPay::Refund.of_repudiation('45135438')
+      refunds = MangoPay::Refund.of_repudiation('45026109')
       expect(refunds).to be_an(Array)
     end
   end
