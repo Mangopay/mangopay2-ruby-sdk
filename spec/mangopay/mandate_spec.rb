@@ -89,4 +89,11 @@ describe MangoPay::Mandate do
     end
   end
 
+  describe 'FETCH Transactions' do
+    it "fetches a mandate's transactions" do
+      mandate = new_mandate
+      transactions = MangoPay::Mandate.transactions(mandate['Id'])
+      expect(transactions).to be_an(Array)
+    end
+  end
 end

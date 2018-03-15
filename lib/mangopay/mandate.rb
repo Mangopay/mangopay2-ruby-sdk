@@ -27,6 +27,16 @@ module MangoPay
         MangoPay.request(:get, url, {}, filters)
       end
 
+      # Fetches list of transactions belonging to given +mandate_id+.
+      #
+      # Optional +filters+ is a hash accepting following keys:
+      # - +page+, +per_page+, +sort+: pagination and sorting params (see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch)
+      # - +Status+: TransactionStatus {CREATED, SUCCEEDED, FAILED}
+      # - +ResultCode+: string representing the transaction result
+      def transactions(mandate_id, filters = {})
+        url = url(mandate_id) + '/transactions'
+        MangoPay.request(:get, url, {}, filters)
+      end
     end
   end
 end
