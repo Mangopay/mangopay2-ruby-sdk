@@ -26,6 +26,17 @@ module MangoPay
         MangoPay.request(:put, url(user_id, bank_account_id), params)
       end
 
+      # Fetches list of transactions belonging to given +bank_account_id+.
+      #
+      # Optional +filters+ is a hash accepting following keys:
+      # - +page+, +per_page+, +sort+: pagination and sorting params (see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch)
+      # - +Status+: TransactionStatus {CREATED, SUCCEEDED, FAILED}
+      # - +ResultCode+: string representing the transaction result
+      def transactions(bank_account_id, filters = {})
+        url = "#{MangoPay.api_path}/bankaccounts/#{bank_account_id}/transactions"
+        MangoPay.request(:get, url, {}, filters)
+      end
+
       def url(user_id, bank_account_id = nil)
         if bank_account_id
           "#{MangoPay.api_path}/users/#{CGI.escape(user_id.to_s)}/bankaccounts/#{CGI.escape(bank_account_id.to_s)}"

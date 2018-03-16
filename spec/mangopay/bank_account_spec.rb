@@ -94,4 +94,12 @@ describe MangoPay::BankAccount do
       expect(fetched['Active']).to eq(false)
     end
   end
+
+  describe 'FETCH Transaction' do
+    it "fetches a bank account's transactions" do
+      bank_account = new_bank_account
+      transactions = MangoPay::BankAccount.transactions(bank_account['Id'])
+      expect(transactions).to be_an(Array)
+    end
+  end
 end
