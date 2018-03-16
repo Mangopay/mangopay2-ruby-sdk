@@ -17,6 +17,17 @@ module MangoPay
         MangoPay.request(:get, fingerprint_url(fingerprint), {}, filters)
       end
 
+      # Retrieves a list of transactions belonging to given +card_id+.
+      #
+      # Optional +filters+ is a hash accepting following keys:
+      # - +page+, +per_page+, +sort+: pagination and sorting params (see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch)
+      # - +Status+: TransactionStatus {CREATED, SUCCEEDED, FAILED}
+      # - +ResultCode+: string representing the transaction result
+      def transactions(card_id, filters = {})
+        url = url(card_id) + '/transactions'
+        MangoPay.request(:get, url, {}, filters)
+      end
+
       def fingerprint_url(fingerprint)
         "#{MangoPay.api_path}/cards/fingerprints/#{fingerprint}"
       end

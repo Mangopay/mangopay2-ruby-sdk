@@ -85,4 +85,11 @@ describe MangoPay::CardRegistration do
     end
   end
 
+  describe 'FETCH Transactions' do
+    it "retrieves list of card's transactions" do
+      card_id = new_card_registration_completed['CardId']
+      transactions = MangoPay::Card.transactions(card_id)
+      expect(transactions).to be_an(Array)
+    end
+  end
 end
