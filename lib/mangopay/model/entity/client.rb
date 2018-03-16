@@ -44,8 +44,8 @@ module MangoModel
     # [String] Description of what its implementing platform does
     attr_accessor :platform_description
 
-    # [PlatformType] Its implementing platform type
-    attr_accessor :platform_type
+    # [PlatformCategorization] Categorization details of the platform
+    attr_accessor :platform_categorization
 
     # [String] Its implementing platform's website URL
     attr_accessor :platform_url
