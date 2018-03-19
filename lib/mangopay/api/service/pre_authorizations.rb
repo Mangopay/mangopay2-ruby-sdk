@@ -42,6 +42,29 @@ module MangoApi
         parse response
       end
 
+      # Retrieves pages of pre-authorization entities belonging to a certain
+      # user. Allows configuration of paging and sorting parameters
+      # by yielding a filtering object to a provided block. When no filters
+      # are specified, will retrieve the first page of 10 newest results.
+      #
+      # Allowed +FilterRequest+ params:
+      # * page
+      # * per_page
+      # * sort_field and sort_direction
+      # * status
+      # * result_code
+      # * payment_status
+      #
+      # @param +id+ [String] ID of the dispute whose transactions to retrieve
+      # @return [Array] the requested Transaction entity objects
+      def of_user(id)
+        uri = provide_uri(:get_users_pre_authorizations, id)
+        filter_request = nil
+        yield filter_request = FilterRequest.new if block_given?
+        results = HttpClient.get(uri, filter_request)
+        parse_results results
+      end
+
       # Cancels a Pre-Authorization entity.
       #
       # @param +id+ [String] ID of the pre-authorization to cancel

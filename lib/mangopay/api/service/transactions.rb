@@ -138,7 +138,7 @@ module MangoApi
       end
 
       # Retrieves pages of transaction entities belonging to a certain
-      # pre-authorization.Allows configuration of paging and sorting parameters
+      # pre-authorization. Allows configuration of paging and sorting parameters
       # by yielding a filtering object to a provided block. When no filters
       # are specified, will retrieve the first page of 10 newest results.
       #
