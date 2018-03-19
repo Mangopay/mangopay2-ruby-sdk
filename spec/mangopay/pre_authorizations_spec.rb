@@ -2,6 +2,8 @@ require_relative '../context/pre_authorization_context'
 require_relative '../context/pre_authorization_context'
 require_relative '../../lib/mangopay/api/service/pre_authorizations'
 require_relative '../../lib/mangopay/model/enum/payment_status'
+require_relative '../../lib/mangopay/common/sort_field'
+require_relative '../../lib/mangopay/common/sort_direction'
 
 describe MangoApi::PreAuthorizations do
   include_context 'pre_authorization_context'
@@ -34,6 +36,42 @@ describe MangoApi::PreAuthorizations do
         expect(retrieved).to be_kind_of MangoModel::PreAuthorization
         expect(retrieved.id).to eq id
         expect(its_the_same_pre_auth(pre_auth, retrieved)).to be_truthy
+      end
+    end
+  end
+
+  describe '.of_user' do
+
+    context "given an existing entity's ID" do
+      id = NATURAL_USER_PERSISTED.id
+
+      context 'not having specified filters' do
+        results = MangoApi::PreAuthorizations.of_user id
+
+        it 'retrieves list with default parameters' do
+          expect(results).to be_kind_of Array
+          results.each do |result|
+            expect(result).to be_kind_of MangoModel::PreAuthorization
+            expect(result.id).not_to be_nil
+          end
+        end
+      end
+
+      context 'having specified filters' do
+        results = MangoApi::PreAuthorizations.of_user id do |filter|
+          filter.page = 1
+          filter.per_page = 10
+          filter.sort_field = MangoPay::SortField::CREATION_DATE
+          filter.sort_direction = MangoPay::SortDirection::ASC
+        end
+
+        it 'retrieves list with specified parameters' do
+          expect(results).to be_kind_of Array
+          results.each do |result|
+            expect(result).to be_kind_of MangoModel::PreAuthorization
+            expect(result.id).not_to be_nil
+          end
+        end
       end
     end
   end
