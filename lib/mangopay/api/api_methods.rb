@@ -123,6 +123,7 @@ module MangoApi
         consult_dispute_document: %w[POST %(dispute-documents/#{_param1}/consult)],
 
         get_repudiation: %w[GET %(repudiations/#{_param1})],
+        get_repudiations_refunds: %w[GET %(repudiations/#{_param1}/refunds)],
 
         create_settlement_transfer: %w[POST %(repudiations/#{_param1}/settlementtransfer)],
         get_settlement_transfer: %w[GET %(settlements/#{_param1})],
