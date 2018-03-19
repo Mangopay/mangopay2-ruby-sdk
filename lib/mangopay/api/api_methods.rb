@@ -46,6 +46,7 @@ module MangoApi
         create_direct_debit_web_pay_in: %w[POST payins/directdebit/web],
         create_direct_debit_direct_pay_in: %w[POST payins/directdebit/direct],
         get_pay_in: %w[GET %(payins/#{_param1})],
+        get_payins_refunds: %w[GET %(payins/#{_param1}/refunds)],
 
         get_extended_card_view: %w[GET %(payins/card/web/#{_param1}/extended)],
 

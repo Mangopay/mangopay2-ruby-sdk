@@ -37,4 +37,40 @@ describe MangoApi::Refunds do
       end
     end
   end
+
+  describe '.of_pay_in' do
+
+    context "given an existing entity's ID" do
+      id = CARD_WEB_PAY_IN_PERSISTED.id
+
+      context 'not having specified filters' do
+        results = MangoApi::Refunds.of_pay_in id
+
+        it 'retrieves list with default parameters' do
+          expect(results).to be_kind_of Array
+          results.each do |result|
+            expect(result).to be_kind_of MangoModel::Refund
+            expect(result.id).not_to be_nil
+          end
+        end
+      end
+
+      context 'having specified filters' do
+        results = MangoApi::Refunds.of_pay_in id do |filter|
+          filter.page = 1
+          filter.per_page = 3
+          filter.status = MangoModel::TransactionStatus::CREATED
+        end
+
+        it 'retrieves list with specified parameters' do
+          expect(results).to be_kind_of Array
+          results.each do |result|
+            expect(result).to be_kind_of MangoModel::Refund
+            expect(result.id).not_to be_nil
+            expect(result.status).to be MangoModel::TransactionStatus::CREATED
+          end
+        end
+      end
+    end
+  end
 end
