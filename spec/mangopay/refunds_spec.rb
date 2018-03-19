@@ -1,10 +1,12 @@
 require_relative '../../lib/mangopay/api/service/refunds'
 require_relative '../context/refund_context'
 require_relative '../context/transfer_context'
+require_relative '../context/pay_out_context'
 
 describe MangoApi::Refunds do
   include_context 'refund_context'
   include_context 'transfer_context'
+  include_context 'pay_out_context'
 
   describe '.create_for_pay_in' do
 
@@ -34,6 +36,41 @@ describe MangoApi::Refunds do
         expect(created).to be_kind_of MangoModel::Refund
         expect(created.id).not_to be_nil
         expect(created.status).to be MangoModel::TransactionStatus::SUCCEEDED
+      end
+    end
+  end
+
+  describe '.of_pay_out' do
+
+    context "given an existing entity's ID" do
+      id = PAY_OUT_PERSISTED.id
+
+      context 'not having specified filters' do
+        results = MangoApi::Refunds.of_pay_out id
+
+        it 'retrieves list with default parameters' do
+          expect(results).to be_kind_of Array
+          results.each do |result|
+            expect(result).to be_kind_of MangoModel::Refund
+            expect(result.id).not_to be_nil
+          end
+        end
+      end
+
+      context 'having specified filters' do
+        results = MangoApi::Refunds.of_pay_out id do |filter|
+          filter.page = 1
+          filter.per_page = 3
+          filter.status = MangoModel::TransactionStatus::CREATED
+        end
+
+        it 'retrieves list with specified parameters' do
+          expect(results).to be_kind_of Array
+          results.each do |result|
+            expect(result).to be_kind_of MangoModel::Refund
+            expect(result.id).not_to be_nil
+          end
+        end
       end
     end
   end

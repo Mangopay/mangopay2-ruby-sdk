@@ -1,5 +1,6 @@
 require_relative 'bank_account_context'
 require_relative 'pay_in_context'
+require_relative '../../lib/mangopay/api/service/pay_outs'
 require_relative '../../lib/mangopay/model/entity/pay_out'
 
 shared_context 'pay_out_context' do

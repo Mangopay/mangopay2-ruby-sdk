@@ -70,6 +70,7 @@ module MangoApi
         create_pre_authorization: %w[POST preauthorizations/card/direct],
         get_pre_authorization: %w[GET %(preauthorizations/#{_param1})],
         cancel_pre_authorization: %w[PUT %(preauthorizations/#{_param1})],
+        get_users_pre_authorizations: %w[GET %(users/#{_param1}/preauthorizations)],
 
         create_mandate: %w[POST mandates/directdebit/web],
         get_mandate: %w[GET %(mandates/#{_param1})],
@@ -101,6 +102,7 @@ module MangoApi
 
         create_pay_in_refund: %w[POST %(payins/#{_param1}/refunds)],
         create_transfer_refund: %w[POST %(transfers/#{_param1}/refunds)],
+        get_payouts_refunds: %w[GET %(payouts/#{_param1}/refunds)],
 
         update_dispute: %w[PUT %(disputes/#{_param1})],
         close_dispute: %w[PUT %(disputes/#{_param1}/close)],
