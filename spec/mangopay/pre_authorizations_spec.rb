@@ -1,5 +1,5 @@
 require_relative '../context/pre_authorization_context'
-require_relative '../context/pre_authorization_context'
+require_relative '../context/card_context'
 require_relative '../../lib/mangopay/api/service/pre_authorizations'
 require_relative '../../lib/mangopay/model/enum/payment_status'
 require_relative '../../lib/mangopay/common/sort_field'
@@ -7,6 +7,7 @@ require_relative '../../lib/mangopay/common/sort_direction'
 
 describe MangoApi::PreAuthorizations do
   include_context 'pre_authorization_context'
+  include_context 'card_context'
 
   describe '.create' do
 
@@ -90,6 +91,42 @@ describe MangoApi::PreAuthorizations do
         expect(canceled.status).to be MangoModel::PreAuthorizationStatus::SUCCEEDED
         expect(canceled.payment_status).to be MangoModel::PaymentStatus::CANCELED
         expect(its_the_same_pre_auth(pre_auth, canceled)).to be_truthy
+      end
+    end
+  end
+
+  describe '.of_card' do
+
+    context "given an existing entity's ID" do
+      id = CARD.id
+
+      context 'not having specified filters' do
+        it 'retrieves list with default parameters' do
+          results = MangoApi::PreAuthorizations.of_card id
+
+          expect(results).to be_kind_of Array
+          results.each do |result|
+            expect(result).to be_kind_of MangoModel::PreAuthorization
+            expect(result.id).not_to be_nil
+          end
+        end
+      end
+
+      context 'having specified filters' do
+        it 'retrieves list with specified parameters' do
+          results = MangoApi::PreAuthorizations.of_card id do |filter|
+            filter.page = 1
+            filter.per_page = 5
+            filter.status = MangoModel::PreAuthorizationStatus::CREATED
+          end
+
+          expect(results).to be_kind_of Array
+          results.each do |result|
+            expect(result).to be_kind_of MangoModel::PreAuthorization
+            expect(result.id).not_to be_nil
+            expect(result.status).to be  MangoModel::PreAuthorizationStatus::CREATED
+          end
+        end
       end
     end
   end

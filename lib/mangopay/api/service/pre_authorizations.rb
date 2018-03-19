@@ -77,6 +77,30 @@ module MangoApi
         parse response
       end
 
+      # Retrieves pre-authorization entities belonging to a certain card.
+      # Allows configuration of paging and sorting parameters by
+      # yielding a filtering object to a provided block. When no
+      # filters are specified, will retrieve the first page of
+      # 10 newest results.
+      #
+      # Allowed +FilterRequest+ params:
+      # * page
+      # * per_page
+      # * sort_field and sort_direction
+      # * result_code
+      # * status
+      # * payment_status
+      #
+      # @param +id+ [String] ID of the card whose pre-authorizations to retrieve
+      # @return [Array] corresponding PreAuthorization entity objects
+      def of_card(id)
+        uri = provide_uri(:get_preauthorizations_for_card, id)
+        filter_request = nil
+        yield filter_request = FilterRequest.new if block_given?
+        results = HttpClient.get(uri, filter_request)
+        parse_results results
+      end
+
       private
 
       # Parses a JSON-originating hash into the corresponding

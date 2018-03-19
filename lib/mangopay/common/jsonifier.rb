@@ -140,6 +140,8 @@ module MangoPay
                           MangoModel::RefundReason.new.dejsonify value
                         when *MangoModel.fields_of_type(MangoModel::DisputeReason)
                           MangoModel::DisputeReason.new.dejsonify value
+                        when *MangoModel.fields_of_type(MangoModel::PlatformCategorization)
+                          MangoModel::PlatformCategorization.new.dejsonify value
                         when *MangoModel.fields_of_type(MangoModel::PersonType)
                           MangoModel::PersonType.value_of value
                         when *MangoModel.fields_of_type(MangoModel::KycLevel)
@@ -200,6 +202,10 @@ module MangoPay
                           MangoModel::DownloadFormat.value_of value
                         when *MangoModel.fields_of_type(MangoModel::ReportType)
                           MangoModel::ReportType.value_of value
+                        when *MangoModel.fields_of_type(MangoModel::BusinessType)
+                          MangoModel::BusinessType.value_of value
+                        when *MangoModel.fields_of_type(MangoModel::Sector)
+                          MangoModel::Sector.value_of value
                         when *MangoModel.fields_of_type(DateTime)
                           DateTime.parse value
                         else
