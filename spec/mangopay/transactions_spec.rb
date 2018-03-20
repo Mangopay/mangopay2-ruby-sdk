@@ -230,4 +230,40 @@ describe MangoApi::Transactions do
       end
     end
   end
+
+  describe '.of_card' do
+
+    describe "given a valid card entity's ID" do
+      id = CARD.id
+
+      context 'not having specified filters' do
+        results = MangoApi::Transactions.of_card id
+
+        it 'retrieves list with default parameters' do
+          expect(results).to be_kind_of Array
+          results.each do |result|
+            expect(result).to be_kind_of MangoModel::Transaction
+            expect(result.id).not_to be_nil
+          end
+        end
+      end
+
+      context 'having specified filters' do
+        results = MangoApi::Transactions.of_card id do |filter|
+          filter.page = 1
+          filter.per_page = 3
+          filter.sort_field = MangoPay::SortField::CREATION_DATE
+          filter.sort_direction = MangoPay::SortDirection::ASC
+        end
+
+        it 'retrieves list with specified parameters' do
+          expect(results).to be_kind_of Array
+          results.each do |result|
+            expect(result).to be_kind_of MangoModel::Transaction
+            expect(result.id).not_to be_nil
+          end
+        end
+      end
+    end
+  end
 end
