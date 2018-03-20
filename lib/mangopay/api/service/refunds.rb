@@ -91,6 +91,28 @@ module MangoApi
         parse_results results
       end
 
+      # Retrieves pages of refund entities belonging to a certain repudiation.
+      # Allows configuration of paging and sorting parameters by yielding
+      # a filtering object to a provided block. When no filters are specified,
+      # will retrieve the first page of 10 newest results.
+      #
+      # Allowed +FilterRequest+ params:
+      # * page
+      # * per_page
+      # * sort_field and sort_direction
+      # * status
+      # * result_code
+      #
+      # @param +id+ [String] ID of the repudiation whose refunds to retrieve
+      # @return [Array] the requested Refund entity objects
+      def of_repudiation(id)
+        uri = provide_uri(:get_repudiations_refunds, id)
+        filter_request = nil
+        yield filter_request = FilterRequest.new if block_given?
+        results = HttpClient.get(uri, filter_request)
+        parse_results results
+      end
+
       private
 
       # Parses a JSON-originating hash into the corresponding
