@@ -49,6 +49,7 @@ module MangoPay
     # @param +hash+ [Hash] hash converted from an API-returned JSON string
     # @return [Object] corresponding object (typed)
     def dejsonify(hash)
+      return nil unless hash
       hash.each do |tag, value|
         field = JsonTagConverter.from_json_tag tag
         field_value = nil
@@ -130,8 +131,7 @@ module MangoPay
                           raise 'Unrecognized bank account type: ' + value['Type']
                         end
         end
-        unless field_value
-          field_value = case field
+        field_value ||= case field
                         when *MangoModel.fields_of_type(MangoModel::Address)
                           MangoModel::Address.new.dejsonify value
                         when *MangoModel.fields_of_type(MangoModel::Money)
@@ -142,6 +142,10 @@ module MangoPay
                           MangoModel::DisputeReason.new.dejsonify value
                         when *MangoModel.fields_of_type(MangoModel::PlatformCategorization)
                           MangoModel::PlatformCategorization.new.dejsonify value
+                        when *MangoModel.fields_of_type(MangoModel::Billing)
+                          MangoModel::Billing.new.dejsonify value
+                        when *MangoModel.fields_of_type(MangoModel::SecurityInfo)
+                          MangoModel::SecurityInfo.new.dejsonify value
                         when *MangoModel.fields_of_type(MangoModel::PersonType)
                           MangoModel::PersonType.value_of value
                         when *MangoModel.fields_of_type(MangoModel::KycLevel)
@@ -206,12 +210,13 @@ module MangoPay
                           MangoModel::BusinessType.value_of value
                         when *MangoModel.fields_of_type(MangoModel::Sector)
                           MangoModel::Sector.value_of value
+                        when *MangoModel.fields_of_type(MangoModel::AvsResult)
+                          MangoModel::AvsResult.value_of value
                         when *MangoModel.fields_of_type(DateTime)
                           DateTime.parse value
                         else
                           value
                         end
-        end
         instance_variable_set "@#{field}", field_value
       end
       LOG.debug 'DE-JSONIFIED {}', hash

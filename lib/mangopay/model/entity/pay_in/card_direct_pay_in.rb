@@ -29,5 +29,11 @@ module MangoModel
     # [String] The URL where to redirect users to proceed to
     # 3D secure validation
     attr_accessor :secure_mode_redirect_url
+
+    # [Billing] Billing information
+    attr_accessor :billing
+
+    # [SecurityInfo] Security & Validation information
+    attr_accessor :security_info
   end
 end

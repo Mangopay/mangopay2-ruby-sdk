@@ -93,6 +93,10 @@ def build_card_direct_pay_in
   pay_in.card_id = CARD.id
   pay_in.secure_mode = MangoModel::SecureMode::DEFAULT
   pay_in.statement_descriptor = 'Mar2016'
+  billing = MangoModel::Billing.new
+  billing.address = build_address
+  billing.address.postal_code = '68400'
+  pay_in.billing = billing
   pay_in
 end
 

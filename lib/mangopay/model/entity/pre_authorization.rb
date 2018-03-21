@@ -64,5 +64,12 @@ module MangoModel
 
     # [String] ID of the associated Pay-in
     attr_accessor :pay_in_id
+
+    # [Billing] Billing information
+    attr_accessor :billing
+
+    # [SecurityInfo] Security & validation information
+    attr_accessor :security_info
+
   end
 end
