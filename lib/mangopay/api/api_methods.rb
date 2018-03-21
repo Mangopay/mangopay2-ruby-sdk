@@ -66,6 +66,7 @@ module MangoApi
         get_clients_transactions: %w[GET %(clients/transactions)],
         get_client_wallets_transactions: %w[GET %(clients/wallets/#{_param1.to_s}/#{_param2.to_s}/transactions)],
         get_pre_authorizations_transactions: %w[GET %(preauthorizations/#{_param1}/transactions)],
+        get_bank_accounts_transactions: %w[GET %(bankaccounts/#{_param1}/transactions)],
 
         create_pre_authorization: %w[POST preauthorizations/card/direct],
         get_pre_authorization: %w[GET %(preauthorizations/#{_param1})],
