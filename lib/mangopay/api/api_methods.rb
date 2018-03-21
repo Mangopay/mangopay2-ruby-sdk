@@ -103,6 +103,7 @@ module MangoApi
         create_pay_in_refund: %w[POST %(payins/#{_param1}/refunds)],
         create_transfer_refund: %w[POST %(transfers/#{_param1}/refunds)],
         get_payouts_refunds: %w[GET %(payouts/#{_param1}/refunds)],
+        get_transfers_refunds: %w[GET %(transfers/#{_param1}/refunds)],
 
         update_dispute: %w[PUT %(disputes/#{_param1})],
         close_dispute: %w[PUT %(disputes/#{_param1}/close)],
