@@ -25,6 +25,10 @@ def build_pre_authorization
   pre_auth.secure_mode = MangoModel::SecureMode::DEFAULT
   pre_auth.card_id = CARD.id
   pre_auth.secure_mode_return_url = 'http://www.my-site.com/returnURL'
+  billing = MangoModel::Billing.new
+  billing.address = build_address
+  billing.address.postal_code = '68400'
+  pre_auth.billing = billing
   pre_auth
 end
 
