@@ -18,4 +18,17 @@ describe MangoPay::Refund do
       expect(refund['CreditedWalletId']).to eq(transfer['DebitedWalletId'])
     end
   end
+
+  describe 'FETCH for Repudiation' do
+    it "fetches a repudiation's refunds" do
+      disputes = MangoPay::Dispute.fetch
+      dispute = disputes.find do |dispute|
+        dispute['DisputeType'] == 'NOT_CONTESTABLE'\
+           && !dispute['InitialTransactionId'].nil?
+      end
+      repudiation_id = MangoPay::Dispute.transactions(dispute['Id'])[0]['Id']
+      refunds = MangoPay::Refund.of_repudiation(repudiation_id)
+      expect(refunds).to be_an(Array)
+    end
+  end
 end

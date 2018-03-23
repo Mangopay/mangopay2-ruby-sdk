@@ -66,4 +66,12 @@ describe MangoPay::Transfer, type: :feature do
       wallets_reload_and_check_amounts(wlt1, 1000, wlt2, 0)
     end
   end
+
+  describe 'FETCH Refunds' do
+    it "fetches a transfer's refunds" do
+      transfer = new_transfer
+      refunds = MangoPay::Transfer.refunds(transfer['Id'])
+      expect(refunds).to be_an(Array)
+    end
+  end
 end
