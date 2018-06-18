@@ -15,6 +15,12 @@ module MangoApi
         token_valid? && storage.retrieve_for(client_id) || refresh_token
       end
 
+      # Returns true if the current client's
+      # authorization token is valid
+      def token_valid?
+        !token_invalid?
+      end
+
       private
 
       # Retrieves authorization token storage object.
@@ -34,12 +40,6 @@ module MangoApi
         LOG.info 'Using {}{} for {} client\'s OAuth tokens',
                  strategy, location_if_file, client_id
         @storage
-      end
-
-      # Returns true if the current client's
-      # authorization token is valid
-      def token_valid?
-        !token_invalid?
       end
 
       # Returns true if the current client's

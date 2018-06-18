@@ -92,7 +92,7 @@ module MangoApi
 
       # Provides a hash containing necessary headers for API calls.
       def api_headers
-        initialize_headers unless @default_headers
+        initialize_headers if header_initialization_needed
         @default_headers
       end
 
@@ -279,6 +279,16 @@ module MangoApi
           LOG.debug 'Response header: {} -> {}', k, v
         end
         LOG.debug 'Response body: {}', response.body if response.body
+      end
+
+      # Checks whether the default headers need to be initialized
+      # Normally this is true on first run and afterwards whenever
+      # the token expires.
+      def header_initialization_needed
+        needed = !(@default_headers && MangoApi::AuthTokenManager.token_valid?)
+        if needed
+          something = 'something'
+        end
       end
 
       # Initializes the default headers necessary for API calls.
