@@ -15,7 +15,7 @@ describe MangoPay::PayIn::BankWire::ExternalInstruction, type: :feature do
         c.preproduction = true
         c.client_id = 'sdk-unit-tests'   
         c.root_url = 'https://api-test.mangopay.com'
-        c.client_passphrase = '9RMGpwVUwFLK0SurxObJ2yaadDcO0zeKFKxWmthjB93SQjFzy0'
+        c.client_apiKey = '9RMGpwVUwFLK0SurxObJ2yaadDcO0zeKFKxWmthjB93SQjFzy0'
         c.http_timeout = 10000
       end
 
