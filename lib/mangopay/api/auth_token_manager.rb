@@ -55,7 +55,7 @@ module MangoApi
       # Provides a configuration-specific hash key.
       def environment_key
         config = MangoPay.configuration
-        key = [config.root_url, config.client_id, config.client_passphrase]
+        key = [config.root_url, config.client_id, config.client_apiKey]
               .join('|')
         Digest::MD5.hexdigest(key)
       end
@@ -64,8 +64,8 @@ module MangoApi
       def refresh_token
         LOG.info 'Refreshing OAuth token'
         config = MangoPay.configuration
-        unless config.client_id && config.client_passphrase
-          raise 'You must specify your client ID and passphrase'
+        unless config.client_id && config.client_apiKey
+          raise 'You must specify your client ID and apiKey'
         end
         token = MangoApi::OAuthTokens.create(config)
         append_data token

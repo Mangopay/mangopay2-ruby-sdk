@@ -40,7 +40,7 @@ require 'mangopay'
 
 MangoPay.configure do |config|
  config.client_id = :CLIENT_ID
- config.client_passphrase = :CLIENT_PASS
+ config.client_apiKey = :CLIENT_PASS
  end
  ```
 
@@ -346,12 +346,12 @@ require 'mangopay'
 MangoPay.use_environment :env_id # Symbol
 MangoPay.configure do |config|
   config.client_id = 'first_id'
-  config.client_passphrase = 'first_pass'
+  config.client_apiKey = 'first_pass'
 end
 MangoPay.use_environment :env2
 MangoPay.configure do |config|
   config.client_id = 'second_id'
-  config.client_passphrase = 'second_pass'
+  config.client_apiKey = 'second_pass'
 end
 MangoPay.use_environment :env1
 config = MangoPay.configuration
