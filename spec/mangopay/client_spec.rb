@@ -7,6 +7,13 @@ describe MangoPay::Client do
     end
   end
 
+  describe 'FETCH' do
+    it "fetches the client headquarter's phone number" do
+      client = MangoPay::Client.fetch
+      expect(client['HeadquartersPhoneNumber']).to_not be_nil
+    end
+  end
+
   describe 'UPDATE' do
     it 'updates the current client details' do
       clnt = MangoPay::Client.fetch
@@ -14,22 +21,25 @@ describe MangoPay::Client do
       after = before == '#aaaaaa' ? '#bbbbbb' : '#aaaaaa' # change the color
       clnt['PrimaryThemeColour'] = after
       clnt['HeadquartersAddress'] = {
-        AddressLine1: 'Rue Dandelion, n. 17',
-        City: 'Lyon',
-        Country: 'FR',
-        PostalCode: '150770'
+          AddressLine1: 'Rue Dandelion, n. 17',
+          City: 'Lyon',
+          Country: 'FR',
+          PostalCode: '150770'
       }
+      phoneNumber = rand(99999999).to_s
+      clnt['HeadquartersPhoneNumber'] = phoneNumber
 
       updated = MangoPay::Client.update(clnt)
       expect(updated['ClientId']).to eq(MangoPay.configuration.client_id)
       expect(updated['PrimaryThemeColour']).to eq(after)
+      expect(updated['HeadquartersPhoneNumber']).to eq(phoneNumber)
     end
   end
 
   describe 'UPLOAD LOGO' do
     it 'accepts Base64 encoded file content' do
       fnm = __FILE__.sub('.rb', '.png')
-      bts = File.open(fnm, 'rb') { |f| f.read }
+      bts = File.open(fnm, 'rb') {|f| f.read}
       b64 = Base64.encode64(bts)
       ret = MangoPay::Client.upload_logo(b64)
       expect(ret).to be_nil
@@ -43,7 +53,7 @@ describe MangoPay::Client do
 
     it 'fails when input string is not base64-encoded' do
       file = 'any file content...'
-      expect { MangoPay::Client.upload_logo(file) }.to raise_error { |err|
+      expect {MangoPay::Client.upload_logo(file)}.to raise_error {|err|
         expect(err).to be_a MangoPay::ResponseError
         expect(err.code).to eq '400'
         expect(err.type).to eq 'param_error'
