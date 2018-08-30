@@ -17,6 +17,7 @@ describe MangoApi::Clients do
         expect(updated.name).not_to be_nil
         expect(updated.client_id).not_to be_nil
         expect(updated.logo).not_to be_nil
+        expect(updated.headquarters_phone_number).not_to be_nil
         expect(its_the_same_client(client, updated)).to be_truthy
       end
     end
