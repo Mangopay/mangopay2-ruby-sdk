@@ -11,7 +11,7 @@ def reset_mangopay_configuration
 
     # sandbox environment:
     c.root_url = 'https://api.sandbox.mangopay.com'
-    c.client_passphrase = 'cqFfFrWfCcb7UadHNxx2C9Lo6Djw8ZduLi7J9USTmu8bhxxpju'
+    c.client_apiKey = 'cqFfFrWfCcb7UadHNxx2C9Lo6Djw8ZduLi7J9USTmu8bhxxpju'
 
     c.temp_dir = File.expand_path('../tmp', __FILE__)
     require 'fileutils'
