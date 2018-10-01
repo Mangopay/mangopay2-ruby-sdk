@@ -20,7 +20,7 @@ def reconfig_mangopay
   MangoPay.configure do |config|
     config.preproduction = true
     config.client_id = 'sdk-unit-tests'
-    config.client_passphrase = 'cqFfFrWfCcb7UadHNxx2C9Lo6Djw8ZduLi7J9USTmu8bhxxpju'
+    config.client_apiKey = 'cqFfFrWfCcb7UadHNxx2C9Lo6Djw8ZduLi7J9USTmu8bhxxpju'
     # config.temp_dir = 'oauth' # uncomment to use file storage for OAuth tokens
     config.http_timeout = 10_000
   end

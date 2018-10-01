@@ -12,8 +12,8 @@ module MangoPay
     # [String] Your client ID
     attr_accessor :client_id
 
-    # [String] Your client passphrase
-    attr_accessor :client_passphrase
+    # [String] Your client apiKey
+    attr_accessor :client_apiKey
 
     # [String] Path to directory in which to store authorization token
     #          If nil, tokens will be stored in-memory.

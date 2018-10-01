@@ -30,23 +30,23 @@ describe MangoPay::Configuration do
         MangoPay.use_environment :env1
         MangoPay.configure do |config|
           config.client_id = CLIENT_ID1
-          config.client_passphrase = CLIENT_PASS1
+          config.client_apiKey = CLIENT_PASS1
         end
         MangoPay.use_environment :env2
         MangoPay.configure do |config|
           config.client_id = CLIENT_ID2
-          config.client_passphrase = CLIENT_PASS2
+          config.client_apiKey = CLIENT_PASS2
         end
 
         MangoPay.use_environment :env1
         config = MangoPay.configuration
         expect(config.client_id).to be CLIENT_ID1
-        expect(config.client_passphrase).to be CLIENT_PASS1
+        expect(config.client_apiKey).to be CLIENT_PASS1
 
         MangoPay.use_environment :env2
         config = MangoPay.configuration
         expect(config.client_id).to be CLIENT_ID2
-        expect(config.client_passphrase).to be CLIENT_PASS2
+        expect(config.client_apiKey).to be CLIENT_PASS2
       end
     end
 
