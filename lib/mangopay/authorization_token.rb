@@ -19,7 +19,7 @@ module MangoPay
           if token.nil? || token['timestamp'].nil? || token['timestamp'] <= Time.now || token['environment_key'] != env_key
             token = MangoPay.request(:post, "/#{MangoPay.version_code}/oauth/token", {}, {}, {}, Proc.new do |req|
               cfg = MangoPay.configuration
-              req.basic_auth cfg.client_id, cfg.client_passphrase
+              req.basic_auth cfg.client_id, cfg.client_apiKey
               req.body = 'grant_type=client_credentials'
               req.add_field('Content-Type', 'application/x-www-form-urlencoded')
             end)
@@ -32,7 +32,7 @@ module MangoPay
 
         def get_environment_key_for_token
           cfg = MangoPay.configuration
-          key = "#{cfg.root_url}|#{cfg.client_id}|#{cfg.client_passphrase}"
+          key = "#{cfg.root_url}|#{cfg.client_id}|#{cfg.client_apiKey}"
           key = Digest::MD5.hexdigest(key)
           key
         end
