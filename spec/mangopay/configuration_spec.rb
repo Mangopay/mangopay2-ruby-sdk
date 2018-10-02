@@ -4,7 +4,7 @@ describe MangoPay::Configuration do
     expect {
       c = MangoPay.configuration
       c.client_id = 'test_asd'
-      c.client_passphrase = '00000'
+      c.client_apiKey = '00000'
       MangoPay::User.fetch()
     }.to raise_error(MangoPay::ResponseError)
   end
