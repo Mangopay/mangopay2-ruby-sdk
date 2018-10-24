@@ -1,7 +1,8 @@
 describe MangoPay::PayIn::BankWire::ExternalInstruction, type: :feature do
   include_context 'wallets'
   include_context 'payins'
-  
+
+
   def check_type_and_status(payin)
     expect(payin['Type']).to eq('PAYIN')
     expect(payin['Nature']).to eq('REGULAR')
@@ -11,9 +12,10 @@ describe MangoPay::PayIn::BankWire::ExternalInstruction, type: :feature do
 
   describe 'FETCH' do
     it 'fetches a payin' do
+      backupConfig = MangoPay.configuration.clone
       MangoPay.configure do |c|
         c.preproduction = true
-        c.client_id = 'sdk-unit-tests'   
+        c.client_id = 'sdk-unit-tests'
         c.root_url = 'https://api-test.mangopay.com'
         c.client_apiKey = '9RMGpwVUwFLK0SurxObJ2yaadDcO0zeKFKxWmthjB93SQjFzy0'
         c.http_timeout = 10000
@@ -23,6 +25,7 @@ describe MangoPay::PayIn::BankWire::ExternalInstruction, type: :feature do
       payIn = MangoPay::PayIn.fetch(id)
       expect(payIn['Id']).to eq(id)
       check_type_and_status(payIn)
+      MangoPay.configuration = backupConfig
     end
   end
 
