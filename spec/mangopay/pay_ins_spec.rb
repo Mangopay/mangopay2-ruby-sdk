@@ -37,6 +37,7 @@ describe MangoApi::PayIns do
           expect(created.execution_type).to be MangoModel::PayInExecutionType::DIRECT
           expect(created.security_info.avs_result).to be MangoModel::AvsResult::FULL_MATCH
           expect(its_the_same_card_direct(pay_in, created)).to be_truthy
+          expect(created.culture).not_to be_nil
         end
       end
     end
@@ -54,6 +55,7 @@ describe MangoApi::PayIns do
           expect(created.payment_type).to be MangoModel::PayInPaymentType::PREAUTHORIZED
           expect(created.execution_type).to be MangoModel::PayInExecutionType::DIRECT
           expect(its_the_same_card_pre_auth(pay_in, created)).to be_truthy
+          expect(created.culture).not_to be_nil
         end
       end
     end
@@ -74,6 +76,7 @@ describe MangoApi::PayIns do
             expect(created.execution_type).to be MangoModel::PayInExecutionType::DIRECT
             expect(created.bank_account).to be_kind_of MangoModel::BankAccount
             expect(its_the_same_bank_wire_direct(pay_in, created)).to be_truthy
+            expect(created.culture).not_to be_nil
           end
         end
       end
