@@ -49,6 +49,7 @@ require_relative 'enum/report_type'
 require_relative 'enum/report_status'
 require_relative 'enum/business_type'
 require_relative 'enum/sector'
+require_relative 'enum/avs_result'
 require_relative 'entity/user/user'
 require_relative 'entity/user/natural_user'
 require_relative 'entity/user/legal_user'
@@ -68,6 +69,8 @@ require_relative 'refund_reason'
 require_relative 'document_page_consult'
 require_relative 'dispute_reason'
 require_relative 'platform_categorization'
+require_relative 'billing'
+require_relative 'security_info'
 
 # Module for model classes.
 module MangoModel
@@ -126,7 +129,10 @@ module MangoModel
     ReportType => %w[report_type],
     Sector => %w[sector],
     BusinessType => %w[business_type],
-    PlatformCategorization => %w[platform_categorization]
+    PlatformCategorization => %w[platform_categorization],
+    Billing => %w[billing],
+    SecurityInfo => %w[security_info],
+    AvsResult => %w[avs_result]
   }
 
   class << self

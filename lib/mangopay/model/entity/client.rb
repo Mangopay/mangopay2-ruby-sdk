@@ -59,5 +59,8 @@ module MangoModel
     # [String] Its company's unique MangoPay reference to be used when
     # contacting the MangoPay team
     attr_accessor :company_reference
+
+    # [String] It's company's headquarter's phone number
+    attr_accessor :headquarters_phone_number
   end
 end

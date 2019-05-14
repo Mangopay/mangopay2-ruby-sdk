@@ -2,12 +2,14 @@ require_relative '../../lib/mangopay/api/service/transactions'
 require_relative '../../lib/mangopay/api/service/clients'
 require_relative '../context/dispute_context'
 require_relative '../context/pre_authorization_context'
+require_relative '../context/bank_account_context'
 require_relative '../../lib/mangopay/common/sort_field'
 require_relative '../../lib/mangopay/common/sort_direction'
 
 describe MangoApi::Transactions do
   include_context 'dispute_context'
   include_context 'pre_authorization_context'
+  include_context 'bank_account_context'
 
   describe '.of_user' do
 
@@ -61,7 +63,7 @@ describe MangoApi::Transactions do
             expect(result).to be_kind_of MangoModel::Transaction
             expect(result.id).not_to be_nil
             expect(result.credited_wallet_id == id \
-                     || result.debited_wallet_id == id).to be_truthy
+                      || result.debited_wallet_id == id).to be_truthy
           end
         end
       end
@@ -80,7 +82,7 @@ describe MangoApi::Transactions do
             expect(result).to be_kind_of MangoModel::Transaction
             expect(result.id).not_to be_nil
             expect(result.credited_wallet_id == id \
-                     || result.debited_wallet_id == id).to be_truthy
+                      || result.debited_wallet_id == id).to be_truthy
           end
         end
       end
@@ -105,7 +107,7 @@ describe MangoApi::Transactions do
       end
 
       context 'having specified filters' do
-        results = MangoApi::Transactions.of_dispute  id do |filter|
+        results = MangoApi::Transactions.of_dispute id do |filter|
           filter.page = 1
           filter.per_page = 3
           filter.sort_field = MangoPay::SortField::CREATION_DATE
@@ -162,8 +164,8 @@ describe MangoApi::Transactions do
     describe 'from a correctly-configured environment' do
       context 'not having specified filters' do
         results = MangoApi::Transactions
-                  .of_client_wallet MangoModel::FundsType::FEES,
-                                    MangoModel::CurrencyIso::EUR
+                      .of_client_wallet MangoModel::FundsType::FEES,
+                                        MangoModel::CurrencyIso::EUR
 
         it 'retrieves list with default parameters' do
           expect(results).to be_kind_of Array
@@ -176,8 +178,8 @@ describe MangoApi::Transactions do
 
       context 'having specified filters' do
         results = MangoApi::Transactions
-                  .of_client_wallet(MangoModel::FundsType::CREDIT,
-                                    MangoModel::CurrencyIso::EUR) do |filter|
+                      .of_client_wallet(MangoModel::FundsType::CREDIT,
+                                        MangoModel::CurrencyIso::EUR) do |filter|
           filter.page = 1
           filter.per_page = 3
           filter.sort_field = MangoPay::SortField::CREATION_DATE
@@ -231,7 +233,7 @@ describe MangoApi::Transactions do
     end
   end
 
-  describe '.of_card' do
+describe '.of_card' do
 
     describe "given a valid card entity's ID" do
       id = CARD.id
@@ -261,6 +263,44 @@ describe MangoApi::Transactions do
           results.each do |result|
             expect(result).to be_kind_of MangoModel::Transaction
             expect(result.id).not_to be_nil
+          end
+        end
+      end
+    end
+  end
+  
+    describe '.of_bank_account' do
+
+    describe "given a valid bank account entity's ID" do
+      id = IBAN_ACCOUNT_PERSISTED.id
+
+      context 'not having specified filters' do
+        results = MangoApi::Transactions.of_bank_account id
+
+        it 'retrieves list with default parameters' do
+          expect(results).to be_kind_of Array
+          results.each do |result|
+            expect(result).to be_kind_of MangoModel::Transaction
+            expect(result.id).not_to be_nil
+          end
+        end
+      end
+
+      context 'having specified filters' do
+        results = MangoApi::Transactions.of_bank_account id do |filter|
+          filter.page = 1
+          filter.per_page = 3
+          filter.sort_field = MangoPay::SortField::CREATION_DATE
+          filter.sort_direction = MangoPay::SortDirection::ASC
+          filter.status = MangoModel::TransactionStatus::CREATED
+        end
+
+        it 'retrieves list with specified parameters' do
+          expect(results).to be_kind_of Array
+          results.each do |result|
+            expect(result).to be_kind_of MangoModel::Transaction
+            expect(result.id).not_to be_nil
+            expect(result.status).to be MangoModel::TransactionStatus::CREATED
           end
         end
       end

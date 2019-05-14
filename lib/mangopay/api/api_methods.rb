@@ -67,6 +67,7 @@ module MangoApi
         get_client_wallets_transactions: %w[GET %(clients/wallets/#{_param1.to_s}/#{_param2.to_s}/transactions)],
         get_pre_authorizations_transactions: %w[GET %(preauthorizations/#{_param1}/transactions)],
         get_cards_transactions: %w[GET %(cards/#{_param1}/transactions)],
+        get_bank_accounts_transactions: %w[GET %(bankaccounts/#{_param1}/transactions)],
 
         create_pre_authorization: %w[POST preauthorizations/card/direct],
         get_pre_authorization: %w[GET %(preauthorizations/#{_param1})],
@@ -104,6 +105,7 @@ module MangoApi
         create_pay_in_refund: %w[POST %(payins/#{_param1}/refunds)],
         create_transfer_refund: %w[POST %(transfers/#{_param1}/refunds)],
         get_payouts_refunds: %w[GET %(payouts/#{_param1}/refunds)],
+        get_transfers_refunds: %w[GET %(transfers/#{_param1}/refunds)],
 
         update_dispute: %w[PUT %(disputes/#{_param1})],
         close_dispute: %w[PUT %(disputes/#{_param1}/close)],
@@ -124,6 +126,7 @@ module MangoApi
         consult_dispute_document: %w[POST %(dispute-documents/#{_param1}/consult)],
 
         get_repudiation: %w[GET %(repudiations/#{_param1})],
+        get_repudiations_refunds: %w[GET %(repudiations/#{_param1}/refunds)],
 
         create_settlement_transfer: %w[POST %(repudiations/#{_param1}/settlementtransfer)],
         get_settlement_transfer: %w[GET %(settlements/#{_param1})],
