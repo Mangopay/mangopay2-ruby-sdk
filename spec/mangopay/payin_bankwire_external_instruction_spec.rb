@@ -19,7 +19,7 @@ describe MangoPay::PayIn::BankWire::ExternalInstruction, type: :feature do
         c.http_timeout = 10000
       end
 
-      id = "66141823"
+      id = "66142029"
       payIn = MangoPay::PayIn.fetch(id)
       expect(payIn['Id']).to eq(id)
       check_type_and_status(payIn)
