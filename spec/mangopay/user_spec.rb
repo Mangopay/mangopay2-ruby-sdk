@@ -173,20 +173,20 @@ describe MangoPay::User do
     end
   end
 
-  describe 'CREATE UBO DECLARATION' do
-    it 'creates a UBO declaration' do
-      legal_user = new_legal_user
-      natural_user = define_new_natural_user
-      natural_user['Capacity'] = 'DECLARATIVE'
-      natural_user = MangoPay::NaturalUser.create(natural_user)
-      ubo_declaration = MangoPay::LegalUser.create_ubo_declaration(legal_user['Id'])
+  #describe 'CREATE UBO DECLARATION' do
+  #  it 'creates a UBO declaration' do
+  #    legal_user = new_legal_user
+  #    natural_user = define_new_natural_user
+  #    natural_user['Capacity'] = 'DECLARATIVE'
+  #    natural_user = MangoPay::NaturalUser.create(natural_user)
+  #    ubo_declaration = MangoPay::LegalUser.create_ubo_declaration(legal_user['Id'])
 
-      expect(ubo_declaration).not_to be_nil
-      expect(ubo_declaration['Status']).to eq 'CREATED'
-      expect(ubo_declaration['UserId']).to eq legal_user['Id']
-      expect(ubo_declaration['DeclaredUBOs'][0]['UserId']).to eq natural_user['Id']
-    end
-  end
+  #   expect(ubo_declaration).not_to be_nil
+  #    expect(ubo_declaration['Status']).to eq 'CREATED'
+  #    expect(ubo_declaration['UserId']).to eq legal_user['Id']
+  #    expect(ubo_declaration['DeclaredUBOs'][0]['UserId']).to eq natural_user['Id']
+  #  end
+  #end
 
   describe 'FETCH Pre-Authorizations' do
     it "fetches list of user's pre-authorizations belonging" do
