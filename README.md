@@ -37,7 +37,7 @@ require 'mangopay'
 MangoPay.configure do |c|
   c.preproduction = true
   c.client_id = 'YOUR_CLIENT_ID'
-  c.client_apiKey = 'YOUR_CLIENT_PASSWORD'
+  c.client_passphrase = 'YOUR_CLIENT_PASSWORD'
   c.log_file = File.join('mypath', 'mangopay.log')
   c.http_timeout = 10000
 end
@@ -96,8 +96,8 @@ Along with each request, the rate limiting headers are automatically updated in 
   MangoPay.ratelimit
 
   {
-    :limit=>["74", "74", "75", "908"], 
-    :remaining=>["2226", "4426", "8725", "104692"], 
+    :limit=>["74", "74", "75", "908"],
+    :remaining=>["2226", "4426", "8725", "104692"],
     :reset=>["1495615620", "1495616520", "1495618320", "1495701060"]
   }
 ```

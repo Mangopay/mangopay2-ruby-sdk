@@ -13,14 +13,6 @@ module MangoPay
     end
 
     class << self
-
-      # Create a UBO declaration.
-      # @param +user_id+ ID of the legal user owning the declaration
-      # @param +ubo_declaration+ Object containing UBO declaration data
-      # @return Newly-created UBO declaration entity data
-      def create_ubo_declaration(user_id, ubo_declaration)
-        MangoPay.request(:post, "#{url(user_id)}/ubodeclarations", ubo_declaration)
-      end
     end
   end
 end
