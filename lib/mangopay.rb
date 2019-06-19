@@ -41,6 +41,7 @@ module MangoPay
   autoload :BankingAliases, 'mangopay/bankingaliases'
   autoload :BankingAliasesIBAN, 'mangopay/bankingaliases_iban'
   autoload :UboDeclaration, 'mangopay/ubo_declaration'
+  autoload :Ubo, 'mangopay/ubo'
 
   # temporary
   autoload :Temp, 'mangopay/temp'
