@@ -13,12 +13,24 @@ describe MangoPay::PayIn::PayPal::Web, type: :feature do
     expect(payin['ResultMessage']).to be_nil
     expect(payin['ExecutionDate']).to be_nil
   end
-  
+
   describe 'CREATE' do
     it 'creates a paypal web payin' do
       created = new_payin_paypal_web
       expect(created['Id']).not_to be_nil
       check_type_and_status(created)
+    end
+  end
+
+  describe "FETCH" do
+    it 'FETCHES a payIn with PayPal account email' do
+      payin_id = "54088959"
+      buyer_account_email = "paypal-buyer-user@mangopay.com"
+      payin = MangoPay::PayIn.fetch(id = payin_id)
+
+      expect(payin).not_to be_nil
+      expect(payin["PaypalBuyerAccountEmail"]).not_to be_nil
+      expect(payin["PaypalBuyerAccountEmail"]).to eq(buyer_account_email)
     end
   end
 

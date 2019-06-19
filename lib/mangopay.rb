@@ -41,13 +41,14 @@ module MangoPay
   autoload :BankingAliases, 'mangopay/bankingaliases'
   autoload :BankingAliasesIBAN, 'mangopay/bankingaliases_iban'
   autoload :UboDeclaration, 'mangopay/ubo_declaration'
+  autoload :Ubo, 'mangopay/ubo'
 
   # temporary
   autoload :Temp, 'mangopay/temp'
 
   class Configuration
     attr_accessor :preproduction, :root_url,
-                  :client_id, :client_passphrase,
+                  :client_id, :client_apiKey,
                   :temp_dir, :log_file, :http_timeout
 
     def preproduction
