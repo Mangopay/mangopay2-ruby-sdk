@@ -57,6 +57,7 @@ shared_context 'users' do
         LegalRepresentativeBirthday: 1_300_186_358,
         LegalRepresentativeNationality: 'FR',
         LegalRepresentativeCountryOfResidence: 'FR',
+        CompanyNumber: 'LU123456789',
         Statute: '',
         ProofOfRegistration: '',
         ShareholderDeclaration: ''

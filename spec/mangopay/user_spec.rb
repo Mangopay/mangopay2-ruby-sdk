@@ -13,6 +13,10 @@ describe MangoPay::User do
     it 'creates a new legal user' do
       expect(new_legal_user["LegalRepresentativeFirstName"]).to eq('John')
     end
+
+    it 'creates a new legal user' do
+      expect(new_legal_user["CompanyNumber"]).to eq('LU123456789')
+    end
   end
 
   describe 'UPDATE' do
