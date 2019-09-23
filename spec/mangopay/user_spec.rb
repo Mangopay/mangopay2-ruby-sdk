@@ -13,6 +13,10 @@ describe MangoPay::User do
     it 'creates a new legal user' do
       expect(new_legal_user["LegalRepresentativeFirstName"]).to eq('John')
     end
+
+    it 'creates a new legal user' do
+      expect(new_legal_user["CompanyNumber"]).to eq('LU123456789')
+    end
   end
 
   describe 'UPDATE' do
@@ -147,8 +151,17 @@ describe MangoPay::User do
   end
 
   describe 'FETCH EMONEY' do
-    it 'fetches emoney for the user' do
-      emoney = MangoPay::User.emoney(new_natural_user['Id'])
+    it 'fetches emoney for the user for year 2019' do
+      emoney = MangoPay::User.emoney(new_natural_user['Id'], 2019)
+      expect(emoney['UserId']).to eq new_natural_user['Id']
+      expect(emoney['CreditedEMoney']['Amount']).to eq 0
+      expect(emoney['CreditedEMoney']['Currency']).to eq 'EUR'
+      expect(emoney['DebitedEMoney']['Amount']).to eq 0
+      expect(emoney['DebitedEMoney']['Currency']).to eq 'EUR'
+    end
+
+    it 'fetches emoney for the user for date 08/2019' do
+      emoney = MangoPay::User.emoney(new_natural_user['Id'], 2019, 8)
       expect(emoney['UserId']).to eq new_natural_user['Id']
       expect(emoney['CreditedEMoney']['Amount']).to eq 0
       expect(emoney['CreditedEMoney']['Currency']).to eq 'EUR'
