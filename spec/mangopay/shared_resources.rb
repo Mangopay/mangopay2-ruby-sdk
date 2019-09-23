@@ -3,6 +3,7 @@ shared_context 'users' do
   ###############################################
 
   let(:new_natural_user) { create_new_natural_user }
+
   def define_new_natural_user
     {
         Tag: 'Test natural user',
@@ -10,13 +11,13 @@ shared_context 'users' do
         FirstName: 'John',
         LastName: 'Doe',
         Address: {
-        AddressLine1: 'Le Palais Royal',
-        AddressLine2: '8 Rue de Montpensier',
-        City: 'Paris',
-        Region: '',
-        PostalCode: '75001',
-        Country: 'FR'
-      },
+            AddressLine1: 'Le Palais Royal',
+            AddressLine2: '8 Rue de Montpensier',
+            City: 'Paris',
+            Region: '',
+            PostalCode: '75001',
+            Country: 'FR'
+        },
         Birthday: 1_300_186_358,
         Birthplace: 'Paris',
         Nationality: 'FR',
@@ -42,17 +43,17 @@ shared_context 'users' do
             Region: 'FR',
             PostalCode: '75004',
             Country: 'FR'
-      },
+        },
         LegalRepresentativeFirstName: 'John',
         LegalRepresentativeLastName: 'Doe',
         LegalRepresentativeAdress: {
-        AddressLine1: '38 Rue de Montpensier',
-        AddressLine2: '',
-        City: 'Paris',
-        Region: '',
-        PostalCode: '75001',
-        Country: 'FR'
-      },
+            AddressLine1: '38 Rue de Montpensier',
+            AddressLine2: '',
+            City: 'Paris',
+            Region: '',
+            PostalCode: '75001',
+            Country: 'FR'
+        },
         LegalRepresentativeEmail: 'john@doe.com',
         LegalRepresentativeBirthday: 1_300_186_358,
         LegalRepresentativeNationality: 'FR',
@@ -72,12 +73,13 @@ shared_context 'wallets' do
 
   let(:new_wallet) { create_new_wallet(new_natural_user) }
   let(:new_wallet_legal) { create_new_wallet(new_legal_user) }
+
   def create_new_wallet(user)
     MangoPay::Wallet.create(
-      Owners: [user['Id']],
-      Description: 'A test wallet',
-      Currency: 'EUR',
-      Tag: 'Test wallet'
+        Owners: [user['Id']],
+        Description: 'A test wallet',
+        Currency: 'EUR',
+        Tag: 'Test wallet'
     )
   end
 
@@ -145,14 +147,14 @@ shared_context 'mandates' do
   ###############################################
   include_context 'bank_accounts'
 
-  let(:new_mandate) {create_new_mandate}
+  let(:new_mandate) { create_new_mandate }
 
   def create_new_mandate
     MangoPay::Mandate.create(
-      BankAccountId: new_bank_account['Id'],
-      Culture: 'FR',
-      ReturnURL: MangoPay.configuration.root_url,
-      Tag: 'Test mandate'
+        BankAccountId: new_bank_account['Id'],
+        Culture: 'FR',
+        ReturnURL: MangoPay.configuration.root_url,
+        Tag: 'Test mandate'
     )
   end
 end
@@ -163,6 +165,7 @@ shared_context 'kyc_documents' do
   include_context 'users'
 
   let(:new_document) { create_new_document(new_natural_user) }
+
   def create_new_document(user)
     MangoPay::KycDocument.create(user['Id'],
                                  Type: 'IDENTITY_PROOF',
@@ -183,15 +186,15 @@ shared_context 'payins' do
 
   let(:new_payin_directdebit_web) do
     MangoPay::PayIn::DirectDebit::Web.create(
-      AuthorId: new_natural_user['Id'],
-      CreditedUserId: new_wallet['Owners'][0],
-      CreditedWalletId: new_wallet['Id'],
-      DebitedFunds: { Currency: 'EUR', Amount: 1000 },
-      Fees: { Currency: 'EUR', Amount: 0 },
-      DirectDebitType: 'GIROPAY',
-      ReturnURL: MangoPay.configuration.root_url,
-      Culture: 'FR',
-      Tag: 'Test PayIn/DirectDebit/Web'
+        AuthorId: new_natural_user['Id'],
+        CreditedUserId: new_wallet['Owners'][0],
+        CreditedWalletId: new_wallet['Id'],
+        DebitedFunds: {Currency: 'EUR', Amount: 1000},
+        Fees: {Currency: 'EUR', Amount: 0},
+        DirectDebitType: 'GIROPAY',
+        ReturnURL: MangoPay.configuration.root_url,
+        Culture: 'FR',
+        Tag: 'Test PayIn/DirectDebit/Web'
     )
   end
 
@@ -201,13 +204,36 @@ shared_context 'payins' do
 
   let(:new_payin_paypal_web) do
     MangoPay::PayIn::PayPal::Web.create(
-      AuthorId: new_natural_user['Id'],
-      CreditedUserId: new_wallet['Owners'][0],
-      CreditedWalletId: new_wallet['Id'],
-      DebitedFunds: { Currency: 'EUR', Amount: 1000 },
-      Fees: { Currency: 'EUR', Amount: 0 },
-      ReturnURL: MangoPay.configuration.root_url,
-      Tag: 'Test PayIn/PayPal/Web'
+        AuthorId: new_natural_user['Id'],
+        CreditedUserId: new_wallet['Owners'][0],
+        CreditedWalletId: new_wallet['Id'],
+        DebitedFunds: {Currency: 'EUR', Amount: 1000},
+        Fees: {Currency: 'EUR', Amount: 0},
+        ReturnURL: MangoPay.configuration.root_url,
+        Tag: 'Test PayIn/PayPal/Web'
+    )
+  end
+
+  ###############################################
+  # applepay/direct
+  ###############################################
+
+  let(:new_payin_applepay_direct) do
+    MangoPay::PayIn::ApplePay::Direct.create(
+        AuthorId: new_natural_user['Id'],
+        CreditedUserId: new_wallet['Owners'][0],
+        CreditedWalletId: new_wallet['Id'],
+        DebitedFunds: {Currency: 'EUR', Amount: 199},
+        Fees: {Currency: 'EUR', Amount: 1},
+        PaymentType: 'APPLEPAY',
+        PaymentData: {
+            TransactionId: '061EB32181A2D9CA42AD16031B476EEBAA62A9A095AD660E2759FBA52B51A61',
+            Network: 'VISA',
+            TokenData: "{\"version\":\"EC_v1\",\"data\":\"w4HMBVqNC9ghPP4zncTA\\/0oQAsduERfsx78oxgniynNjZLANTL6+0koEtkQnW\\/K38Zew8qV1GLp+fLHo+qCBpiKCIwlz3eoFBTbZU+8pYcjaeIYBX9SOxcwxXsNGrGLk+kBUqnpiSIPaAG1E+WPT8R1kjOCnGvtdombvricwRTQkGjtovPfzZo8LzD3ZQJnHMsWJ8QYDLyr\\/ZN9gtLAtsBAMvwManwiaG3pOIWpyeOQOb01YcEVO16EZBjaY4x4C\\/oyFLWDuKGvhbJwZqWh1d1o9JT29QVmvy3Oq2JEjq3c3NutYut4rwDEP4owqI40Nb7mP2ebmdNgnYyWfPmkRfDCRHIWtbMC35IPg5313B1dgXZ2BmyZRXD5p+mr67vAk7iFfjEpu3GieFqwZrTl3\\/pI5V8Sxe3SIYKgT5Hr7ow==\",\"signature\":\"MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCAMIID5jCCA4ugAwIBAgIIaGD2mdnMpw8wCgYIKoZIzj0EAwIwejEuMCwGA1UEAwwlQXBwbGUgQXBwbGljYXRpb24gSW50ZWdyYXRpb24gQ0EgLSBHMzEmMCQGA1UECwwdQXBwbGUgQ2VydGlmaWNhdGlvbiBBdXRob3JpdHkxEzARBgNVBAoMCkFwcGxlIEluYy4xCzAJBgNVBAYTAlVTMB4XDTE2MDYwMzE4MTY0MFoXDTIxMDYwMjE4MTY0MFowYjEoMCYGA1UEAwwfZWNjLXNtcC1icm9rZXItc2lnbl9VQzQtU0FOREJPWDEUMBIGA1UECwwLaU9TIFN5c3RlbXMxEzARBgNVBAoMCkFwcGxlIEluYy4xCzAJBgNVBAYTAlVTMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEgjD9q8Oc914gLFDZm0US5jfiqQHdbLPgsc1LUmeY+M9OvegaJajCHkwz3c6OKpbC9q+hkwNFxOh6RCbOlRsSlaOCAhEwggINMEUGCCsGAQUFBwEBBDkwNzA1BggrBgEFBQcwAYYpaHR0cDovL29jc3AuYXBwbGUuY29tL29jc3AwNC1hcHBsZWFpY2EzMDIwHQYDVR0OBBYEFAIkMAua7u1GMZekplopnkJxghxFMAwGA1UdEwEB\\/wQCMAAwHwYDVR0jBBgwFoAUI\\/JJxE+T5O8n5sT2KGw\\/orv9LkswggEdBgNVHSAEggEUMIIBEDCCAQwGCSqGSIb3Y2QFATCB\\/jCBwwYIKwYBBQUHAgIwgbYMgbNSZWxpYW5jZSBvbiB0aGlzIGNlcnRpZmljYXRlIGJ5IGFueSBwYXJ0eSBhc3N1bWVzIGFjY2VwdGFuY2Ugb2YgdGhlIHRoZW4gYXBwbGljYWJsZSBzdGFuZGFyZCB0ZXJtcyBhbmQgY29uZGl0aW9ucyBvZiB1c2UsIGNlcnRpZmljYXRlIHBvbGljeSBhbmQgY2VydGlmaWNhdGlvbiBwcmFjdGljZSBzdGF0ZW1lbnRzLjA2BggrBgEFBQcCARYqaHR0cDovL3d3dy5hcHBsZS5jb20vY2VydGlmaWNhdGVhdXRob3JpdHkvMDQGA1UdHwQtMCswKaAnoCWGI2h0dHA6Ly9jcmwuYXBwbGUuY29tL2FwcGxlYWljYTMuY3JsMA4GA1UdDwEB\\/wQEAwIHgDAPBgkqhkiG92NkBh0EAgUAMAoGCCqGSM49BAMCA0kAMEYCIQDaHGOui+X2T44R6GVpN7m2nEcr6T6sMjOhZ5NuSo1egwIhAL1a+\\/hp88DKJ0sv3eT3FxWcs71xmbLKD\\/QJ3mWagrJNMIIC7jCCAnWgAwIBAgIISW0vvzqY2pcwCgYIKoZIzj0EAwIwZzEbMBkGA1UEAwwSQXBwbGUgUm9vdCBDQSAtIEczMSYwJAYDVQQLDB1BcHBsZSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTETMBEGA1UECgwKQXBwbGUgSW5jLjELMAkGA1UEBhMCVVMwHhcNMTQwNTA2MjM0NjMwWhcNMjkwNTA2MjM0NjMwWjB6MS4wLAYDVQQDDCVBcHBsZSBBcHBsaWNhdGlvbiBJbnRlZ3JhdGlvbiBDQSAtIEczMSYwJAYDVQQLDB1BcHBsZSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTETMBEGA1UECgwKQXBwbGUgSW5jLjELMAkGA1UEBhMCVVMwWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAATwFxGEGddkhdUaXiWBB3bogKLv3nuuTeCN\\/EuT4TNW1WZbNa4i0Jd2DSJOe7oI\\/XYXzojLdrtmcL7I6CmE\\/1RFo4H3MIH0MEYGCCsGAQUFBwEBBDowODA2BggrBgEFBQcwAYYqaHR0cDovL29jc3AuYXBwbGUuY29tL29jc3AwNC1hcHBsZXJvb3RjYWczMB0GA1UdDgQWBBQj8knET5Pk7yfmxPYobD+iu\\/0uSzAPBgNVHRMBAf8EBTADAQH\\/MB8GA1UdIwQYMBaAFLuw3qFYM4iapIqZ3r6966\\/ayySrMDcGA1UdHwQwMC4wLKAqoCiGJmh0dHA6Ly9jcmwuYXBwbGUuY29tL2FwcGxlcm9vdGNhZzMuY3JsMA4GA1UdDwEB\\/wQEAwIBBjAQBgoqhkiG92NkBgIOBAIFADAKBggqhkjOPQQDAgNnADBkAjA6z3KDURaZsYb7NcNWymK\\/9Bft2Q91TaKOvvGcgV5Ct4n4mPebWZ+Y1UENj53pwv4CMDIt1UQhsKMFd2xd8zg7kGf9F3wsIW2WT8ZyaYISb1T4en0bmcubCYkhYQaZDwmSHQAAMYIBizCCAYcCAQEwgYYwejEuMCwGA1UEAwwlQXBwbGUgQXBwbGljYXRpb24gSW50ZWdyYXRpb24gQ0EgLSBHMzEmMCQGA1UECwwdQXBwbGUgQ2VydGlmaWNhdGlvbiBBdXRob3JpdHkxEzARBgNVBAoMCkFwcGxlIEluYy4xCzAJBgNVBAYTAlVTAghoYPaZ2cynDzANBglghkgBZQMEAgEFAKCBlTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJBTEPFw0xOTA1MjMxMTA1MDdaMCoGCSqGSIb3DQEJNDEdMBswDQYJYIZIAWUDBAIBBQChCgYIKoZIzj0EAwIwLwYJKoZIhvcNAQkEMSIEIIvfGVQYBeOilcB7GNI8m8+FBVZ28QfA6BIXaggBja2PMAoGCCqGSM49BAMCBEYwRAIgU01yYfjlx9bvGeC5CU2RS5KBEG+15HH9tz\\/sg3qmQ14CID4F4ZJwAz+tXAUcAIzoMpYSnM8YBlnGJSTSp+LhspenAAAAAAAA\",\"header\":{\"ephemeralPublicKey\":\"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE0rs3wRpirXjPbFDQfPRdfEzRIZDWm0qn7Y0HB0PNzV1DDKfpYrnhRb4GEhBF\\/oEXBOe452PxbCnN1qAlqcSUWw==\",\"publicKeyHash\":\"saPRAqS7TZ4bAYwzBj8ezDDC55ZolyH1FL+Xc8fd93o=\",\"transactionId\":\"b061eb32181a2d9ca42ad16031b476eebaa62a9a095ad660e2759fba52b51a61\"}}"
+        },
+        StatementDescriptor: "php",
+        ReturnURL: MangoPay.configuration.root_url,
+        Tag: 'Test PayIn/ApplePay/Direct'
     )
   end
 
@@ -217,14 +243,14 @@ shared_context 'payins' do
 
   let(:new_payin_directdebit_direct) do
     MangoPay::PayIn::DirectDebit::Direct.create(
-      AuthorId: new_natural_user['Id'],
-      CreditedUserId: new_wallet['Owners'][0],
-      CreditedWalletId: new_wallet['Id'],
-      DebitedFunds: { Currency: 'EUR', Amount: 1000 },
-      Fees: { Currency: 'EUR', Amount: 0 },
-      MandateId: new_mandate['Id'],
-      ReturnURL: MangoPay.configuration.root_url,
-      Tag: 'Test PayIn/DirectDebit/Direct'
+        AuthorId: new_natural_user['Id'],
+        CreditedUserId: new_wallet['Owners'][0],
+        CreditedWalletId: new_wallet['Id'],
+        DebitedFunds: {Currency: 'EUR', Amount: 1000},
+        Fees: {Currency: 'EUR', Amount: 0},
+        MandateId: new_mandate['Id'],
+        ReturnURL: MangoPay.configuration.root_url,
+        Tag: 'Test PayIn/DirectDebit/Direct'
     )
   end
 
@@ -234,15 +260,15 @@ shared_context 'payins' do
 
   let(:new_payin_card_web) do
     MangoPay::PayIn::Card::Web.create(
-      AuthorId: new_natural_user['Id'],
-      CreditedUserId: new_wallet['Owners'][0],
-      CreditedWalletId: new_wallet['Id'],
-      DebitedFunds: { Currency: 'EUR', Amount: 1000 },
-      Fees: { Currency: 'EUR', Amount: 0 },
-      CardType: 'CB_VISA_MASTERCARD',
-      ReturnURL: MangoPay.configuration.root_url,
-      Culture: 'FR',
-      Tag: 'Test PayIn/Card/Web'
+        AuthorId: new_natural_user['Id'],
+        CreditedUserId: new_wallet['Owners'][0],
+        CreditedWalletId: new_wallet['Id'],
+        DebitedFunds: {Currency: 'EUR', Amount: 1000},
+        Fees: {Currency: 'EUR', Amount: 0},
+        CardType: 'CB_VISA_MASTERCARD',
+        ReturnURL: MangoPay.configuration.root_url,
+        Culture: 'FR',
+        Tag: 'Test PayIn/Card/Web'
     )
   end
 
@@ -252,9 +278,9 @@ shared_context 'payins' do
 
   let(:new_card_registration) do
     MangoPay::CardRegistration.create(
-      UserId: new_natural_user['Id'],
-      Currency: 'EUR',
-      Tag: 'Test Card Registration'
+        UserId: new_natural_user['Id'],
+        Currency: 'EUR',
+        Tag: 'Test Card Registration'
     )
   end
 
@@ -264,11 +290,11 @@ shared_context 'payins' do
 
     # 2nd step: tokenize by payline (fills-in RegistrationData)
     data = {
-      data: cardreg['PreregistrationData'],
-      accessKeyRef: cardreg['AccessKey'],
-      cardNumber: 4970100000000154,
-      cardExpirationDate: 1226,
-      cardCvx: 123}
+        data: cardreg['PreregistrationData'],
+        accessKeyRef: cardreg['AccessKey'],
+        cardNumber: 4970100000000154,
+        cardExpirationDate: 1226,
+        cardCvx: 123}
 
     res = Net::HTTP.post_form(URI(cardreg['CardRegistrationURL']), data)
     raise Exception, [res, res.body] unless res.is_a?(Net::HTTPOK) && res.body.start_with?('data=')
@@ -281,18 +307,19 @@ shared_context 'payins' do
   end
 
   let(:new_payin_card_direct) { create_new_payin_card_direct(new_wallet) }
+
   def create_new_payin_card_direct(to_wallet, amnt = 1000)
     cardreg = new_card_registration_completed
     MangoPay::PayIn::Card::Direct.create(
-      AuthorId: new_natural_user['Id'],
-      CreditedUserId: to_wallet['Owners'][0],
-      CreditedWalletId: to_wallet['Id'],
-      DebitedFunds: { Currency: 'EUR', Amount: amnt },
-      Fees: { Currency: 'EUR', Amount: 0 },
-      CardType: 'CB_VISA_MASTERCARD',
-      CardId: cardreg['CardId'],
-      SecureModeReturnURL: 'http://test.com',
-      Tag: 'Test PayIn/Card/Direct'
+        AuthorId: new_natural_user['Id'],
+        CreditedUserId: to_wallet['Owners'][0],
+        CreditedWalletId: to_wallet['Id'],
+        DebitedFunds: {Currency: 'EUR', Amount: amnt},
+        Fees: {Currency: 'EUR', Amount: 0},
+        CardType: 'CB_VISA_MASTERCARD',
+        CardId: cardreg['CardId'],
+        SecureModeReturnURL: 'http://test.com',
+        Tag: 'Test PayIn/Card/Direct'
     )
   end
 
@@ -301,28 +328,30 @@ shared_context 'payins' do
   ###############################################
 
   let(:new_card_preauthorization) { create_new_card_preauthorization(new_card_registration_completed) }
+
   def create_new_card_preauthorization(cardreg, amnt = 1000)
     MangoPay::PreAuthorization.create(
-      AuthorId: new_natural_user['Id'],
-      DebitedFunds: { Currency: 'EUR', Amount: amnt },
-      CardId: cardreg['CardId'],
-      SecureMode: 'DEFAULT',
-      SecureModeReturnURL: 'http://test.com',
-      Tag: 'Test Card PreAuthorization'
+        AuthorId: new_natural_user['Id'],
+        DebitedFunds: {Currency: 'EUR', Amount: amnt},
+        CardId: cardreg['CardId'],
+        SecureMode: 'DEFAULT',
+        SecureModeReturnURL: 'http://test.com',
+        Tag: 'Test Card PreAuthorization'
     )
   end
 
   let(:new_payin_preauthorized_direct) { create_new_payin_preauthorized_direct(new_wallet) }
+
   def create_new_payin_preauthorized_direct(to_wallet, amnt = 1000)
     preauth = new_card_preauthorization
     MangoPay::PayIn::PreAuthorized::Direct.create(
-      AuthorId: new_natural_user['Id'],
-      CreditedUserId: to_wallet['Owners'][0],
-      CreditedWalletId: to_wallet['Id'],
-      DebitedFunds: { Currency: 'EUR', Amount: amnt },
-      Fees: { Currency: 'EUR', Amount: 0 },
-      PreauthorizationId: preauth['Id'],
-      Tag: 'Test PayIn/PreAuthorized/Direct'
+        AuthorId: new_natural_user['Id'],
+        CreditedUserId: to_wallet['Owners'][0],
+        CreditedWalletId: to_wallet['Id'],
+        DebitedFunds: {Currency: 'EUR', Amount: amnt},
+        Fees: {Currency: 'EUR', Amount: 0},
+        PreauthorizationId: preauth['Id'],
+        Tag: 'Test PayIn/PreAuthorized/Direct'
     )
   end
 
@@ -331,14 +360,15 @@ shared_context 'payins' do
   ###############################################
 
   let(:new_payin_bankwire_direct) { create_new_payin_bankwire_direct(new_wallet) }
+
   def create_new_payin_bankwire_direct(to_wallet, amnt = 1000)
     MangoPay::PayIn::BankWire::Direct.create(
-      AuthorId: new_natural_user['Id'],
-      CreditedUserId: to_wallet['Owners'][0],
-      CreditedWalletId: to_wallet['Id'],
-      DeclaredDebitedFunds: { Currency: 'EUR', Amount: amnt },
-      DeclaredFees: { Currency: 'EUR', Amount: 0 },
-      Tag: 'Test PayIn/BankWire/Direct'
+        AuthorId: new_natural_user['Id'],
+        CreditedUserId: to_wallet['Owners'][0],
+        CreditedWalletId: to_wallet['Id'],
+        DeclaredDebitedFunds: {Currency: 'EUR', Amount: amnt},
+        DeclaredFees: {Currency: 'EUR', Amount: 0},
+        Tag: 'Test PayIn/BankWire/Direct'
     )
   end
 end
@@ -349,15 +379,16 @@ shared_context 'payouts' do
   include_context 'bank_accounts'
 
   let(:new_payout_bankwire) { create_new_payout_bankwire(new_payin_card_direct) }
+
   def create_new_payout_bankwire(payin, amnt = 500)
     MangoPay::PayOut::BankWire.create(
-      AuthorId: payin['CreditedUserId'],
-      DebitedWalletId: payin['CreditedWalletId'],
-      DebitedFunds: { Currency: 'EUR', Amount: amnt },
-      Fees: { Currency: 'EUR', Amount: 0 },
-      BankAccountId: new_bank_account['Id'],
-      Communication: 'This is a test',
-      Tag: 'Test PayOut/Bank/Wire'
+        AuthorId: payin['CreditedUserId'],
+        DebitedWalletId: payin['CreditedWalletId'],
+        DebitedFunds: {Currency: 'EUR', Amount: amnt},
+        Fees: {Currency: 'EUR', Amount: 0},
+        BankAccountId: new_bank_account['Id'],
+        Communication: 'This is a test',
+        Tag: 'Test PayOut/Bank/Wire'
     )
   end
 end
@@ -375,6 +406,7 @@ shared_context 'transfers' do
     create_new_payin_card_direct(wlt1, 1000) # feed wlt1 with money
     create_new_transfer(wlt1, wlt2, 500) # transfer wlt1 => wlt2
   end
+
   def create_new_transfer(from_wallet, to_wallet, amnt = 500)
     MangoPay::Transfer.create(
         AuthorId: from_wallet['Owners'][0],
@@ -395,9 +427,9 @@ shared_context 'hooks' do
     hooks = MangoPay::Hook.fetch('page' => 1, 'per_page' => 1)
     if hooks.empty?
       MangoPay::Hook.create(
-        EventType: 'PAYIN_NORMAL_CREATED',
-        Url: 'http://test.com',
-        Tag: 'Test hook'
+          EventType: 'PAYIN_NORMAL_CREATED',
+          Url: 'http://test.com',
+          Tag: 'Test hook'
       )
     else
       hooks[0]
