@@ -1,5 +1,5 @@
 ## [Unreleased]
-### New v4 SDK version (available as a beta version here: https://rubygems.org/gems/mangopay-v4) - will be shortly merged on master.
+ - New v4 SDK version (available as a beta version here: https://rubygems.org/gems/mangopay-v4) - will be shortly merged on master.
 
 ## [3.0.33] - 2019-09-23
 ### Added
