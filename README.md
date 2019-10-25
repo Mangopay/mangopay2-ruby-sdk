@@ -102,7 +102,7 @@ Along with each request, the rate limiting headers are automatically updated in 
   }
 ```
 
-Read more about rate limiting on [our documetiation](https://docs.mangopay.com/guide/rate-limiting).
+Read more about rate limiting on [our documentation](https://docs.mangopay.com/guide/rate-limiting).
 
 ### Log requests and responses
 You can easily enable logs by setting the ```log_file``` configuration option (see the section **configuration** above). If you don't want logs, remove the ```log_file``` line.
