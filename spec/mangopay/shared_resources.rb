@@ -210,6 +210,7 @@ shared_context 'payins' do
         DebitedFunds: {Currency: 'EUR', Amount: 1000},
         Fees: {Currency: 'EUR', Amount: 0},
         ReturnURL: MangoPay.configuration.root_url,
+        Culture: "FR",
         Tag: 'Test PayIn/PayPal/Web'
     )
   end
