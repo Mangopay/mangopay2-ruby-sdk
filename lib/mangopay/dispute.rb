@@ -8,9 +8,9 @@ module MangoPay
     include HTTPCalls::Update
     class << self
 
-      def close(dispute_id)
+      def close(dispute_id, idempotency_key = nil)
         url = url(dispute_id) + "/close/"
-        MangoPay.request(:put, url)
+        MangoPay.request(:put, url, {}, {}, idempotency_key)
       end
 
       # +contested_funds+: Money hash
@@ -44,7 +44,7 @@ module MangoPay
         url = "#{MangoPay.api_path}/disputes/pendingsettlement"
         MangoPay.request(:get, url, {}, filters)
       end
-      
+
       #####################################################
       # repudiations / settlement transfers
       #####################################################
@@ -66,7 +66,7 @@ module MangoPay
         url = "#{MangoPay.api_path}/settlements/#{transfer_id}"
         MangoPay.request(:get, url)
       end
-      
+
       #####################################################
       # documents
       #####################################################
@@ -91,13 +91,13 @@ module MangoPay
       # Fetches list of dispute documents:
       # - for the particular dispute if +dispute_id+ is provided (not nil)
       # - or for all disputes otherwise.
-      # 
+      #
       # Optional +filters+ is a hash accepting following keys:
       # - +page+, +per_page+, +sort+: pagination and sorting params (see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch)
       # - filters such as +Type+ (e.g. 'REFUND_PROOF') and +Status+ (e.g. 'VALIDATED')
       # - +BeforeDate+ (timestamp): filters documents with CreationDate _before_ this date
       # - +AfterDate+ (timestamp): filters documents with CreationDate _after_ this date
-      # 
+      #
       # See https://docs.mangopay.com/api-references/disputes/dispute-documents/
       #
       def fetch_documents(dispute_id = nil, filters = {})
@@ -106,12 +106,12 @@ module MangoPay
       end
 
       # Adds the file page (attachment) to the given document.
-      # 
+      #
       # See https://docs.mangopay.com/api-references/disputes/dispute-document-pages/ :
       # - Document have to be in 'CREATED' Status
       # - You can create as many pages as needed
       # - Change Status to 'VALIDATION_ASKED' to submit dispute documents
-      # 
+      #
       # The file_content_base64 param may be:
       # - Base64 encoded file content
       # - or nil: in this case pass the file path in the next param
