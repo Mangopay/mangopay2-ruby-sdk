@@ -13,8 +13,6 @@ describe MangoApi::Reports do
 
       it 'creates the transaction report entity' do
         created = MangoApi::Reports.create_for_transactions report do |filter|
-          filter.before_date = 1_463_440_221
-          filter.after_date = 1_449_817_821
           filter.type = [MangoModel::TransactionType::PAYIN]
           filter.status = [MangoModel::TransactionStatus::SUCCEEDED]
           filter.nature = [MangoModel::TransactionNature::REGULAR]
