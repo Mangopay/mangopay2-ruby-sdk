@@ -15,7 +15,7 @@ module MangoApi
           get_user: %w[GET %(users/#{_params[0]})],
           get_users: %w[GET users],
 
-          create_account: %w[POST %(users/#{_params[0].user_id}/bankaccounts/#{_params[1].type.to_s.downcase})],
+          create_account: %w[POST %(users/#{_params[0].user_id}/bankaccounts/#{_params[0].type.to_s.downcase})],
           deactivate_account: %w[PUT %(users/#{_params[0]}/bankaccounts/#{_params[1]})],
           get_account: %w[GET %(users/#{_params[0]}/bankaccounts/#{_params[1]})],
           get_accounts: %w[GET %(users/#{_params[0]}/bankaccounts)],
@@ -91,15 +91,15 @@ module MangoApi
           get_kyc_documents: %w[GET kyc/documents],
           consult_kyc_document: %w[POST %(kyc/documents/#{_params[0]}/consult)],
 
-          all_ubo_declaration: %w[GET %(users/#{_param1}/kyc/ubodeclarations)],
-          create_ubo_declaration: %w[POST %(users/#{_param1}/kyc/ubodeclarations)],
-          get_ubo_declaration: %w[GET %(users/#{_param1}/kyc/ubodeclarations/#{_param2})],
-          get_ubo_declaration_by_id: %w[GET %(kyc/ubodeclarations/#{_param1})],
-          submit_ubo_declaration: %w[PUT %(users/#{_param1}/kyc/ubodeclarations/#{_param2})],
+          all_ubo_declaration: %w[GET %(users/#{_params[0]}/kyc/ubodeclarations)],
+          create_ubo_declaration: %w[POST %(users/#{_params[0]}/kyc/ubodeclarations)],
+          get_ubo_declaration: %w[GET %(users/#{_params[0]}/kyc/ubodeclarations/#{_params[1]})],
+          get_ubo_declaration_by_id: %w[GET %(kyc/ubodeclarations/#{_params[0]})],
+          submit_ubo_declaration: %w[PUT %(users/#{_params[0]}/kyc/ubodeclarations/#{_params[1]})],
 
-          create_ubo: %w[POST %(users/#{_param1}/kyc/ubodeclarations/#{_param2}/ubos)],
-          update_ubo: %w[PUT %(users/#{_param1}/kyc/ubodeclarations/#{_param2}/ubos/#{_param3})],
-          get_ubo: %w[GET %(users/#{_param1}/kyc/ubodeclarations/#{_param2}/ubos/#{_param3})],
+          create_ubo: %w[POST %(users/#{_params[0]}/kyc/ubodeclarations/#{_params[1]}/ubos)],
+          update_ubo: %w[PUT %(users/#{_params[0]}/kyc/ubodeclarations/#{_params[1]}/ubos/#{_params[2]})],
+          get_ubo: %w[GET %(users/#{_params[0]}/kyc/ubodeclarations/#{_params[1]}/ubos/#{_params[2]})],
 
           create_hook: %w[POST hooks],
           update_hook: %w[PUT %(hooks/#{_params[0]})],
