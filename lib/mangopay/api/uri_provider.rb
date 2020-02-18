@@ -26,7 +26,7 @@ module MangoApi
                   config.api_version,
                   config.client_id,
                   parsed_path]
-                 .join('/')
+                     .join('/')
       URI(full_url)
     end
   end

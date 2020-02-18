@@ -10,23 +10,21 @@ module MangoModel
   class UboDeclaration < EntityBase
     include MangoPay::Jsonifier
 
-    # [String] ID of its owner
-    attr_accessor :user_id
+    # [Int]
+    attr_accessor :processed_date
 
     # [UboDeclarationStatus] Its status
     attr_accessor :status
 
     # [Array] Array of +UboDeclarationRefusedReasonType+s (reasons why
     # the UBO declaration was refused)
-    attr_accessor :refused_reason_types
+    attr_accessor :reason
 
     # [String] Explanation of why the UBO declaration was refused
-    attr_accessor :refused_reason_message
+    attr_accessor :message
 
     # [Array] When sending to the API, will be a list of the IDs of the users
-    # being declared as UBOs. When retrieving +UboDeclaration+s from the API,
-    # will be a list of +DeclaredUboStatus+ objects, representing validation
-    # status for each person declared as UBO.
-    attr_accessor :declared_ubos
+    # being declared as UBOs. When retrieving +Ubo+s from the API,
+    attr_accessor :ubos
   end
 end

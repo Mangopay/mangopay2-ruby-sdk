@@ -35,7 +35,7 @@ describe MangoApi::PayIns do
           expect(created.status).to be MangoModel::TransactionStatus::SUCCEEDED
           expect(created.payment_type).to be MangoModel::PayInPaymentType::CARD
           expect(created.execution_type).to be MangoModel::PayInExecutionType::DIRECT
-          expect(created.security_info.avs_result).to be MangoModel::AvsResult::FULL_MATCH
+          expect(created.security_info.avs_result).to be MangoModel::AvsResult::NO_CHECK
           expect(its_the_same_card_direct(pay_in, created)).to be_truthy
         end
       end

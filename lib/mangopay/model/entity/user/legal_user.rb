@@ -43,6 +43,9 @@ module MangoModel
     # [String] Their proof of registration
     attr_accessor :proof_of_registration
 
+    # [String]
+    attr_accessor :company_number
+
     # [String] Their shareholder declaration
     attr_accessor :shareholder_declaration
 

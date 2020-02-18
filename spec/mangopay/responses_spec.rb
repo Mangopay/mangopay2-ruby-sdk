@@ -12,6 +12,7 @@ require_relative '../../lib/mangopay/api/service/pay_ins'
 require_relative '../../lib/mangopay/api/service/pay_outs'
 require_relative '../../lib/mangopay/api/service/refunds'
 require_relative '../../lib/mangopay/model/response_replica'
+require_relative '../../lib/mangopay/common/jsonifier'
 
 describe MangoApi::Responses do
   include_context 'bank_account_context'
@@ -262,8 +263,7 @@ describe MangoApi::Responses do
     describe '#UboDeclaration' do
       context "given a successful POST request's idempotency key" do
         idempotency_key = SecureRandom.uuid
-        ubo_decl = MangoApi::UboDeclarations.create UBO_DECLARATION_DATA,
-                                                    LEGAL_USER_PERSISTED.id,
+        ubo_decl = MangoApi::UboDeclarations.create LEGAL_USER_PERSISTED.id,
                                                     idempotency_key
 
         it 'retrieves a replica of the original response' do

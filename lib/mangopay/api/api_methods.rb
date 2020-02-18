@@ -91,9 +91,15 @@ module MangoApi
           get_kyc_documents: %w[GET kyc/documents],
           consult_kyc_document: %w[POST %(kyc/documents/#{_params[0]}/consult)],
 
-          create_ubo_declaration: %w[POST %(users/legal/#{_params[0]}/ubodeclarations)],
-          update_ubo_declaration: %w[PUT %(ubodeclarations/#{_params[0]})],
-          submit_ubo_declaration: %w[PUT %(ubodeclarations/#{_params[0]})],
+          all_ubo_declaration: %w[GET %(users/#{_param1}/kyc/ubodeclarations)],
+          create_ubo_declaration: %w[POST %(users/#{_param1}/kyc/ubodeclarations)],
+          get_ubo_declaration: %w[GET %(users/#{_param1}/kyc/ubodeclarations/#{_param2})],
+          get_ubo_declaration_by_id: %w[GET %(kyc/ubodeclarations/#{_param1})],
+          submit_ubo_declaration: %w[PUT %(users/#{_param1}/kyc/ubodeclarations/#{_param2})],
+
+          create_ubo: %w[POST %(users/#{_param1}/kyc/ubodeclarations/#{_param2}/ubos)],
+          update_ubo: %w[PUT %(users/#{_param1}/kyc/ubodeclarations/#{_param2}/ubos/#{_param3})],
+          get_ubo: %w[GET %(users/#{_param1}/kyc/ubodeclarations/#{_param2}/ubos/#{_param3})],
 
           create_hook: %w[POST hooks],
           update_hook: %w[PUT %(hooks/#{_params[0]})],
