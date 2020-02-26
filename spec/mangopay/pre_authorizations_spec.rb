@@ -21,7 +21,7 @@ describe MangoApi::PreAuthorizations do
         expect(created).to be_kind_of MangoModel::PreAuthorization
         expect(created.id).not_to be_nil
         expect(created.payment_status).to be MangoModel::PaymentStatus::WAITING
-        expect(created.security_info.avs_result).to be MangoModel::AvsResult::FULL_MATCH
+        expect(created.security_info.avs_result).to be MangoModel::AvsResult::NO_CHECK
         expect(its_the_same_pre_auth(pre_auth, created)).to be_truthy
       end
     end

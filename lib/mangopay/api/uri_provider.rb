@@ -12,23 +12,21 @@ module MangoApi
     #
     # @param [Symbol] +api_method_symbol+ API endpoint symbol key,
     # as specified in ApiMethods
-    # @param [Object] +_param1+ First entity containing data necessary
-    # for parsing the URL (i.e. resource ID)
-    # @param [Object] +_param2+ Second entity containing necessary parsing data
+    # @param [Varargs] +_params+
     #
     # @return [URI] URI for the API endpoint specified by Symbol
     def provide_uri(api_method_symbol,
-                    _param1 = nil,
-                    _param2 = nil)
+                    *_params)
       _, unparsed = ApiMethods[api_method_symbol]
       raise("No method declared for key :#{api_method_symbol}") unless unparsed
+
       parsed_path = unparsed.include?('%') ? eval(unparsed) : unparsed
       config = MangoPay.configuration
       full_url = [config.root_url,
                   config.api_version,
                   config.client_id,
                   parsed_path]
-                 .join('/')
+                     .join('/')
       URI(full_url)
     end
   end
