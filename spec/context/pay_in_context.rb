@@ -136,12 +136,12 @@ def build_direct_debit_web_pay_in
   pay_in.credited_wallet_id = WALLET_PERSISTED.id
   pay_in.debited_funds = MangoModel::Money.new
   pay_in.debited_funds.currency = MangoModel::CurrencyIso::EUR
-  pay_in.debited_funds.amount = 120
+  pay_in.debited_funds.amount = 10000
   pay_in.fees = MangoModel::Money.new
   pay_in.fees.currency = MangoModel::CurrencyIso::EUR
-  pay_in.fees.amount = 80
+  pay_in.fees.amount = 100
   pay_in.return_url = 'http://www.my-site.com/returnURL/'
-  pay_in.direct_debit_type = MangoModel::DirectDebitType::SOFORT
+  pay_in.direct_debit_type = MangoModel::DirectDebitType::GIROPAY
   pay_in.secure_mode = MangoModel::SecureMode::DEFAULT
   pay_in.culture = MangoModel::CultureCode::EN
   pay_in.template_url_options = TemplateUrlOptions.new
@@ -156,12 +156,11 @@ def build_direct_debit_direct_pay_in
   pay_in.credited_wallet_id = WALLET_PERSISTED.id
   pay_in.debited_funds = MangoModel::Money.new
   pay_in.debited_funds.currency = MangoModel::CurrencyIso::EUR
-  pay_in.debited_funds.amount = 120
+  pay_in.debited_funds.amount = 10000
   pay_in.fees = MangoModel::Money.new
   pay_in.fees.currency = MangoModel::CurrencyIso::EUR
-  pay_in.fees.amount = 80
+  pay_in.fees.amount = 100
   pay_in.mandate_id = MANDATE_PERSISTED.id
-  pay_in.statement_descriptor = 'Nov2016'
   pay_in
 end
 
