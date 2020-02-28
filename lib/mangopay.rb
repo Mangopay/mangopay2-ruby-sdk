@@ -124,8 +124,8 @@ module MangoPay
     def validate(config)
       cause_message = 'You must specify your client ID'
       raise cause_message unless config.client_id
-      cause_message = 'You must specify your client passphrase'
-      raise cause_message unless config.client_passphrase
+      cause_message = 'You must specify your client APIKey'
+      raise cause_message unless config.client_apiKey
       config.root_url = config.preproduction? ? SANDBOX_API_URL : MAIN_API_URL\
                           unless config.root_url
     end
