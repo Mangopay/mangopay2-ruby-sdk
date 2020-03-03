@@ -19,5 +19,8 @@ module MangoModel
     # [String] A custom description to appear on the user's bank statement.
     # (max 100 alphanumeric/spaces, available only for SEPA payments)
     attr_accessor :statement_descriptor
+
+    # [CultureCode] The language to use for the payment page
+    attr_accessor :culture
   end
 end
