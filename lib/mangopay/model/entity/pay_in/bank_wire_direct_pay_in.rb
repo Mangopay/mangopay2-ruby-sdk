@@ -18,5 +18,8 @@ module MangoModel
 
     # [BankAccount] The bank account details
     attr_accessor :bank_account
+
+    # [CultureCode] The language to use for the payment page
+    attr_accessor :culture
   end
 end

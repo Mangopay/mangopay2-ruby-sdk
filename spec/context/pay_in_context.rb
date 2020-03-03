@@ -97,6 +97,7 @@ def build_card_direct_pay_in
   billing.address = build_address
   billing.address.postal_code = '68400'
   pay_in.billing = billing
+  pay_in.culture = MangoModel::CultureCode::FR
   pay_in
 end
 
@@ -112,6 +113,7 @@ def build_card_pre_auth_pay_in
   pay_in.fees.currency = MangoModel::CurrencyIso::EUR
   pay_in.fees.amount = 30
   pay_in.preauthorization_id = PRE_AUTHORIZATION_PERSISTED.id
+  pay_in.culture = MangoModel::CultureCode::FR
   pay_in
 end
 
@@ -126,6 +128,7 @@ def build_bank_wire_direct_pay_in
   pay_in.declared_fees = MangoModel::Money.new
   pay_in.declared_fees.currency = MangoModel::CurrencyIso::EUR
   pay_in.declared_fees.amount = 80
+  pay_in.culture = MangoModel::CultureCode::FR
   pay_in
 end
 
@@ -161,68 +164,69 @@ def build_direct_debit_direct_pay_in
   pay_in.fees.currency = MangoModel::CurrencyIso::EUR
   pay_in.fees.amount = 100
   pay_in.mandate_id = MANDATE_PERSISTED.id
+  pay_in.culture = MangoModel::CultureCode::FR
   pay_in
 end
 
 def its_the_same_card_web(pay_in1, pay_in2)
   pay_in1.author_id == pay_in2.author_id\
-    && pay_in1.credited_user_id == pay_in2.credited_user_id\
-    && its_the_same_money(pay_in1.debited_funds, pay_in2.debited_funds)\
-    && its_the_same_money(pay_in1.fees, pay_in2.fees)\
-    && pay_in1.credited_wallet_id == pay_in2.credited_wallet_id\
-    && pay_in1.card_type.eql?(pay_in2.card_type)\
-    && pay_in1.secure_mode.eql?(pay_in2.secure_mode)\
-    && pay_in1.culture.eql?(pay_in2.culture)\
-    && pay_in1.statement_descriptor == pay_in2.statement_descriptor
+     && pay_in1.credited_user_id == pay_in2.credited_user_id\
+     && its_the_same_money(pay_in1.debited_funds, pay_in2.debited_funds)\
+     && its_the_same_money(pay_in1.fees, pay_in2.fees)\
+     && pay_in1.credited_wallet_id == pay_in2.credited_wallet_id\
+     && pay_in1.card_type.eql?(pay_in2.card_type)\
+     && pay_in1.secure_mode.eql?(pay_in2.secure_mode)\
+     && pay_in1.culture.eql?(pay_in2.culture)\
+     && pay_in1.statement_descriptor == pay_in2.statement_descriptor
 end
 
 def its_the_same_card_direct(pay_in1, pay_in2)
   pay_in1.author_id == pay_in2.author_id\
-    && pay_in1.credited_user_id == pay_in2.credited_user_id\
-    && its_the_same_money(pay_in1.debited_funds, pay_in2.debited_funds)\
-    && its_the_same_money(pay_in1.fees, pay_in2.fees)\
-    && pay_in1.card_id == pay_in2.card_id\
-    && pay_in1.secure_mode.eql?(pay_in2.secure_mode)\
-    && pay_in1.statement_descriptor == pay_in2.statement_descriptor
+     && pay_in1.credited_user_id == pay_in2.credited_user_id\
+     && its_the_same_money(pay_in1.debited_funds, pay_in2.debited_funds)\
+     && its_the_same_money(pay_in1.fees, pay_in2.fees)\
+     && pay_in1.card_id == pay_in2.card_id\
+     && pay_in1.secure_mode.eql?(pay_in2.secure_mode)\
+     && pay_in1.statement_descriptor == pay_in2.statement_descriptor
 end
 
 def its_the_same_card_pre_auth(pay_in1, pay_in2)
   pay_in1.author_id == pay_in2.author_id\
-    && pay_in1.credited_user_id == pay_in2.credited_user_id\
-    && its_the_same_money(pay_in1.debited_funds, pay_in2.debited_funds)\
-    && its_the_same_money(pay_in1.fees, pay_in2.fees)\
-    && pay_in1.preauthorization_id == pay_in2.preauthorization_id
+     && pay_in1.credited_user_id == pay_in2.credited_user_id\
+     && its_the_same_money(pay_in1.debited_funds, pay_in2.debited_funds)\
+     && its_the_same_money(pay_in1.fees, pay_in2.fees)\
+     && pay_in1.preauthorization_id == pay_in2.preauthorization_id
 end
 
 def its_the_same_bank_wire_direct(pay_in1, pay_in2)
   pay_in1.author_id == pay_in2.author_id\
-    && pay_in1.credited_user_id == pay_in2.credited_user_id\
-    && pay_in1.credited_wallet_id == pay_in2.credited_wallet_id\
-    && its_the_same_money(pay_in1.declared_debited_funds, pay_in2.declared_debited_funds)\
-    && its_the_same_money(pay_in1.declared_fees, pay_in2.declared_fees)
+     && pay_in1.credited_user_id == pay_in2.credited_user_id\
+     && pay_in1.credited_wallet_id == pay_in2.credited_wallet_id\
+     && its_the_same_money(pay_in1.declared_debited_funds, pay_in2.declared_debited_funds)\
+     && its_the_same_money(pay_in1.declared_fees, pay_in2.declared_fees)
 end
 
 def its_the_same_direct_debit_web(pay_in1, pay_in2)
   pay_in1.author_id == pay_in2.author_id\
-    && pay_in1.credited_user_id == pay_in2.credited_user_id\
-    && its_the_same_money(pay_in1.debited_funds, pay_in2.debited_funds)\
-    && its_the_same_money(pay_in1.fees, pay_in2.fees)\
-    && pay_in1.credited_wallet_id == pay_in2.credited_wallet_id\
-    && pay_in1.direct_debit_type.eql?(pay_in2.direct_debit_type)\
-    && pay_in1.culture.eql?(pay_in2.culture)
+     && pay_in1.credited_user_id == pay_in2.credited_user_id\
+     && its_the_same_money(pay_in1.debited_funds, pay_in2.debited_funds)\
+     && its_the_same_money(pay_in1.fees, pay_in2.fees)\
+     && pay_in1.credited_wallet_id == pay_in2.credited_wallet_id\
+     && pay_in1.direct_debit_type.eql?(pay_in2.direct_debit_type)\
+     && pay_in1.culture.eql?(pay_in2.culture)
 end
 
 def its_the_same_direct_debit_direct(pay_in1, pay_in2)
   pay_in1.author_id == pay_in2.author_id\
-    && pay_in1.credited_user_id == pay_in2.credited_user_id\
-    && pay_in1.credited_wallet_id == pay_in2.credited_wallet_id\
-    && its_the_same_money(pay_in1.debited_funds, pay_in2.debited_funds)\
-    && its_the_same_money(pay_in1.fees, pay_in2.fees)\
-    && pay_in1.mandate_id == pay_in2.mandate_id\
-    && pay_in1.statement_descriptor == pay_in2.statement_descriptor
+     && pay_in1.credited_user_id == pay_in2.credited_user_id\
+     && pay_in1.credited_wallet_id == pay_in2.credited_wallet_id\
+     && its_the_same_money(pay_in1.debited_funds, pay_in2.debited_funds)\
+     && its_the_same_money(pay_in1.fees, pay_in2.fees)\
+     && pay_in1.mandate_id == pay_in2.mandate_id\
+     && pay_in1.statement_descriptor == pay_in2.statement_descriptor
 end
 
 def its_the_same_money(money1, money2)
   money1.currency.eql?(money2.currency)\
-    && money1.amount == money2.amount
+     && money1.amount == money2.amount
 end

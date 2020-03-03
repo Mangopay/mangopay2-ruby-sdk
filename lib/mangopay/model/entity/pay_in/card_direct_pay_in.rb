@@ -35,5 +35,8 @@ module MangoModel
 
     # [SecurityInfo] Security & Validation information
     attr_accessor :security_info
+
+    # [CultureCode] The language to use for the payment page
+    attr_accessor :culture
   end
 end

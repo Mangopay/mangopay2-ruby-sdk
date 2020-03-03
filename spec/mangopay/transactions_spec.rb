@@ -2,6 +2,7 @@ require_relative '../../lib/mangopay/api/service/transactions'
 require_relative '../../lib/mangopay/api/service/clients'
 require_relative '../context/dispute_context'
 require_relative '../context/pre_authorization_context'
+require_relative '../context/mandate_context'
 require_relative '../context/bank_account_context'
 require_relative '../../lib/mangopay/common/sort_field'
 require_relative '../../lib/mangopay/common/sort_direction'
@@ -10,6 +11,7 @@ describe MangoApi::Transactions do
   include_context 'dispute_context'
   include_context 'pre_authorization_context'
   include_context 'bank_account_context'
+  include_context 'mandate_context'
 
   describe '.of_user' do
 
@@ -252,6 +254,7 @@ describe '.of_card' do
 
       context 'having specified filters' do
         results = MangoApi::Transactions.of_card id do |filter|
+
           filter.page = 1
           filter.per_page = 3
           filter.sort_field = MangoPay::SortField::CREATION_DATE
@@ -269,7 +272,43 @@ describe '.of_card' do
     end
   end
   
-    describe '.of_bank_account' do
+    describe '.of_mandate' do
+
+    describe "given a valid mandate entity's ID" do
+      id = MANDATE_PERSISTED.id
+
+      context 'not having specified filters' do
+        results = MangoApi::Transactions.of_mandate id
+
+        it 'retrieves list with default parameters' do
+          expect(results).to be_kind_of Array
+          results.each do |result|
+            expect(result).to be_kind_of MangoModel::Transaction
+            expect(result.id).not_to be_nil
+          end
+        end
+      end
+
+      context 'having specified filters' do
+        results = MangoApi::Transactions.of_mandate id do |filter|
+          filter.page = 1
+          filter.per_page = 3
+          filter.sort_field = MangoPay::SortField::CREATION_DATE
+          filter.sort_direction = MangoPay::SortDirection::ASC
+        end
+
+        it 'retrieves list with specified parameters' do
+          expect(results).to be_kind_of Array
+          results.each do |result|
+            expect(result).to be_kind_of MangoModel::Transaction
+            expect(result.id).not_to be_nil
+          end
+        end
+      end
+    end
+  end
+
+  describe '.of_bank_account' do
 
     describe "given a valid bank account entity's ID" do
       id = IBAN_ACCOUNT_PERSISTED.id
