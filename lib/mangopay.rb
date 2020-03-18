@@ -49,7 +49,8 @@ module MangoPay
   class Configuration
     attr_accessor :preproduction, :root_url,
                   :client_id, :client_apiKey,
-                  :temp_dir, :log_file, :http_timeout
+                  :temp_dir, :log_file, :http_timeout,
+                  :logger
 
     def preproduction
       @preproduction || false
@@ -158,7 +159,7 @@ module MangoPay
           limit: res['x-ratelimit'].split(", "),
           remaining: res['x-ratelimit-remaining'].split(", "),
           reset: res['x-ratelimit-reset'].split(", ")
-        } 
+        }
       end
 
       data
@@ -204,10 +205,10 @@ module MangoPay
     end
 
     def do_request(http, req, uri)
-      if configuration.log_file.nil?
-        do_request_without_log(http, req)
-      else
+      if logs_required?
         do_request_with_log(http, req, uri)
+      else
+        do_request_without_log(http, req)
       end
     end
 
@@ -236,15 +237,24 @@ module MangoPay
     end
 
     def logger
-      raise NotImplementedError if configuration.log_file.nil?
-      if @logger.nil?
+      raise NotImplementedError unless logs_required?
+      return @logger if @logger
+
+      if !configuration.logger.nil?
+        @logger = configuration.logger
+      elsif !configuration.log_file.nil?
         @logger = Logger.new(configuration.log_file)
-        @logger.formatter = proc do |severity, datetime, progname, msg|
-          "#{msg}\n"
-        end
       end
+
+      @logger.formatter = proc do |_, _, _, msg|
+        "#{msg}\n"
+      end
+
       @logger
     end
 
+    def logs_required?
+      !configuration.log_file.nil? || !configuration.logger.nil?
+    end
   end
 end
