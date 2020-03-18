@@ -26,6 +26,7 @@ describe MangoPay::Client do
           Country: 'FR',
           PostalCode: '150770'
       }
+      clnt['TechEmails'] = ['support@mangopay.com']
       phoneNumber = rand(99999999).to_s
       clnt['HeadquartersPhoneNumber'] = phoneNumber
 
