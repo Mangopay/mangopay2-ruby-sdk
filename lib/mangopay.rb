@@ -244,10 +244,9 @@ module MangoPay
         @logger = configuration.logger
       elsif !configuration.log_file.nil?
         @logger = Logger.new(configuration.log_file)
-      end
-
-      @logger.formatter = proc do |_, _, _, msg|
-        "#{msg}\n"
+        @logger.formatter = proc do |_, _, _, msg|
+          "#{msg}\n"
+        end
       end
 
       @logger
