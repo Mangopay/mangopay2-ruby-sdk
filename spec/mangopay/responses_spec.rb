@@ -197,6 +197,21 @@ describe MangoApi::Responses do
         end
       end
 
+      describe '#PAYPAL WEB' do
+        context "given a successful POST request's idempotency key" do
+          idempotency_key = SecureRandom.uuid
+          pay_in = MangoApi::PayIns.create_paypal_web(PAYPAL_PAY_IN_DATA, idempotency_key)
+
+          it 'retrieves a replica of the original response' do
+            replica = MangoApi::Responses.replicate idempotency_key
+
+            expect(replica.resource).to be_kind_of MangoModel::PaypalWebPayIn
+            expect(replica.resource.id).to eq pay_in.id
+            expect(its_the_same_paypal_web(pay_in, replica.resource)).to be_truthy
+          end
+        end
+      end
+
       describe '#DIRECT_DEBIT DIRECT' do
         context "given a successful POST request's idempotency key" do
           idempotency_key = SecureRandom.uuid
@@ -208,6 +223,21 @@ describe MangoApi::Responses do
             expect(replica.resource).to be_kind_of MangoModel::DirectDebitDirectPayIn
             expect(replica.resource.id).to eq pay_in.id
             expect(its_the_same_direct_debit_direct(pay_in, replica.resource)).to be_truthy
+          end
+        end
+      end
+
+      describe '#APPLEPAY DIRECT' do
+        context "given a successful POST request's idempotency key" do
+          idempotency_key = SecureRandom.uuid
+          pay_in = MangoApi::PayIns.create_apple_pay_direct(APPLE_PAY_PAY_IN_DATA, idempotency_key)
+
+          it 'retrieves a replica of the original response' do
+            replica = MangoApi::Responses.replicate idempotency_key
+
+            expect(replica.resource).to be_kind_of MangoModel::ApplePayPayIn
+            expect(replica.resource.id).to eq pay_in.id
+            expect(its_the_same_apple_pay_direct(pay_in, replica.resource)).to be_truthy
           end
         end
       end

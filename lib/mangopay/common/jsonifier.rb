@@ -19,6 +19,8 @@ module MangoPay
     require_relative '../model/entity/account/other_bank_account'
     require_relative '../model/entity/mandate'
     require_relative '../model/entity/kyc_document'
+    require_relative '../model/entity/pay_in/pay_in'
+    require_relative '../model/entity/pay_in/apple_pay_direct_pay_in'
     require_relative '../model/entity/pay_out'
     require_relative '../model/entity/ubo_declaration'
     require_relative '../model/entity/hook'

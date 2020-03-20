@@ -180,6 +180,69 @@ module MangoApi
         parse response
       end
 
+
+      # Creates a new pay-in entity of +PaymentType::PAYPAL+
+      # and +ExecutionType::WEB+.
+      #
+      # +PaypalWebPayIn+ properties:
+      # * Required
+      #   * author_id
+      #   * debited_funds
+      #   * fees
+      #   * return_url
+      #   * credited_wallet_id
+      #   * direct_debit_type
+      #   * shipping_address
+      #   * paypal_buyer_account_email
+      #   * culture
+      # * Optional
+      #   * tag
+      #   * credited_user_id
+      #   * secure_mode
+      #   * template_url_options
+      #
+      # @param +pay_in+ [PaypalWebPayIn] the pay-in data model object
+      # @param +id_key+ [String] idempotency key for future response replication
+      # @return [PaypalWebPayIn] the newly-created pay-in entity object
+      def create_paypal_web(pay_in, id_key = nil)
+        uri = provide_uri(:create_paypal_web_pay_in)
+        response = HttpClient.post(uri, pay_in, id_key)
+        parse response
+      end
+
+      # Creates a new pay-in entity of +PaymentType::APPLE_PAY+
+      # and +ExecutionType::DIRECT+.
+      #
+      # +ApplePayPayIn+ properties:
+      # * Required
+      #   * author_id
+      #   * credited_wallet_id
+      #   * debited_funds
+      #   * fees
+      #   * transaction_id
+      #   * network
+      #   * token_data
+      # * Optional
+      #   * tag
+      #   * credited_user_id
+      #   * statement_descriptor
+      #
+      # @param +pay_in+ [ApplePayPayIn] the pay-in data model object
+      # @param +id_key+ [String] idempotency key for future response replication
+      # @return [ApplePayPayIn] the newly-created pay-in entity object
+      def create_apple_pay_direct(pay_in, id_key = nil)
+        uri = provide_uri(:create_apple_pay_pay_in)
+        json = pay_in.jsonify!
+        payment_data = pay_in.payment_data.to_json
+        new_json = json.delete_suffix!("}") + "," + "\"PaymentData\":" + payment_data + "}"
+        response = HttpClient.post_raw(uri) do |request|
+          HttpClient.api_headers.each { |k, v| request.add_field(k, v) }
+          request.add_field('Idempotency-Key', id_key) if id_key
+          request.body = new_json
+        end
+        parse response
+      end
+
       # Retrieves a pay-in entity.
       #
       # @param +id+ [String] ID of the pay-in to be retrieved
@@ -241,14 +304,20 @@ module MangoApi
           && hash['ExecutionType'] == MangoModel::PayInExecutionType::DIRECT.to_s
           MangoModel::CardPreAuthorizedPayIn
         elsif hash['PaymentType'] == MangoModel::PayInPaymentType::BANK_WIRE.to_s\
-        && hash['ExecutionType'] == MangoModel::PayInExecutionType::DIRECT.to_s
+         && hash['ExecutionType'] == MangoModel::PayInExecutionType::DIRECT.to_s
           MangoModel::BankWireDirectPayIn
         elsif hash['PaymentType'] == MangoModel::PayInPaymentType::DIRECT_DEBIT.to_s\
-        && hash['ExecutionType'] == MangoModel::PayInExecutionType::WEB.to_s
+         && hash['ExecutionType'] == MangoModel::PayInExecutionType::WEB.to_s
           MangoModel::DirectDebitWebPayIn
         elsif hash['PaymentType'] == MangoModel::PayInPaymentType::DIRECT_DEBIT.to_s\
-        && hash['ExecutionType'] == MangoModel::PayInExecutionType::DIRECT.to_s
+         && hash['ExecutionType'] == MangoModel::PayInExecutionType::DIRECT.to_s
           MangoModel::DirectDebitDirectPayIn
+        elsif hash['PaymentType'] == MangoModel::PayInPaymentType::PAYPAL.to_s\
+         && hash['ExecutionType'] == MangoModel::PayInExecutionType::WEB.to_s
+          MangoModel::PaypalWebPayIn
+        elsif hash['PaymentType'] == MangoModel::PayInPaymentType::APPLEPAY.to_s\
+         && hash['ExecutionType'] == MangoModel::PayInExecutionType::DIRECT.to_s
+          MangoModel::ApplePayPayIn
         end
       end
 

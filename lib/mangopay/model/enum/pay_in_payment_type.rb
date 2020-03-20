@@ -17,5 +17,11 @@ module MangoModel
 
     # Payment through bank wire
     BANK_WIRE = value 'BANK_WIRE'
+
+    # Payment through paypal
+    PAYPAL = value "PAYPAL"
+
+    # Payment through apple pay
+    APPLEPAY = value "APPLEPAY"
   end
 end

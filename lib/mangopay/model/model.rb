@@ -160,14 +160,20 @@ module MangoModel
         && hash['ExecutionType'] == PayInExecutionType::DIRECT.to_s
         CardPreAuthorizedPayIn
       elsif hash['PaymentType'] == PayInPaymentType::BANK_WIRE.to_s\
-        && hash['ExecutionType'] == PayInExecutionType::DIRECT.to_s
+         && hash['ExecutionType'] == PayInExecutionType::DIRECT.to_s
         BankWireDirectPayIn
       elsif hash['PaymentType'] == PayInPaymentType::DIRECT_DEBIT.to_s\
-        && hash['ExecutionType'] == PayInExecutionType::WEB.to_s
+         && hash['ExecutionType'] == PayInExecutionType::WEB.to_s
         DirectDebitWebPayIn
       elsif hash['PaymentType'] == PayInPaymentType::DIRECT_DEBIT.to_s\
-        && hash['ExecutionType'] == PayInExecutionType::DIRECT.to_s
+         && hash['ExecutionType'] == PayInExecutionType::DIRECT.to_s
         DirectDebitDirectPayIn
+      elsif hash['PaymentType'] == PayInPaymentType::PAYPAL.to_s\
+         && hash['ExecutionType'] == PayInExecutionType::WEB.to_s
+        PaypalWebPayIn
+      elsif hash['PaymentType'] == PayInPaymentType::APPLEPAY.to_s\
+         && hash['ExecutionType'] == PayInExecutionType::DIRECT.to_s
+        ApplePayPayIn
       end
     end
 
