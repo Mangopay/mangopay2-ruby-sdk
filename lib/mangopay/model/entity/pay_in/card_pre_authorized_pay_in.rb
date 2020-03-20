@@ -9,5 +9,8 @@ module MangoModel
 
     # [String] ID of the corresponding pre-authorization
     attr_accessor :preauthorization_id
+
+    # [CultureCode] The language to use for the payment page
+    attr_accessor :culture
   end
 end

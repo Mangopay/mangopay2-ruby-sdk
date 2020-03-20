@@ -156,6 +156,28 @@ module MangoApi
         results = HttpClient.get(uri, filter_request)
         parse_results results
       end
+      
+      # Retrieves pages of card entities belonging to a certain card.
+      # Allows configuration of paging and sorting parameters by yielding
+      # a filtering object to a provided block. When no filters are specified,
+      # will retrieve the first page of 10 newest results.
+      #
+      # Allowed +FilterRequest+ params:
+      # * page
+      # * per_page
+      # * sort_field and sort_direction
+      # * status
+      # * result_code
+      #
+      # @param +id+ [String] ID of the card whose transactions to retrieve
+      # @return [Array] the requested Transaction entity objects
+      def of_card(id)
+        uri = provide_uri(:get_cards_transactions, id)
+        filter_request = nil
+        yield filter_request = FilterRequest.new if block_given?
+        results = HttpClient.get(uri, filter_request)
+        parse_results results
+      end
 
       # Retrieves pages of transaction entities belonging to a certain
       # bank account. Allows configuration of paging and sorting parameters
@@ -166,13 +188,33 @@ module MangoApi
       # * page
       # * per_page
       # * sort_field and sort_direction
-      # * result_code
       # * status
+      # * result_code
       #
       # @param +id+ [String] ID of the bank account whose transactions to retrieve
       # @return [Array] the requested Transaction entity objects
       def of_bank_account(id)
         uri = provide_uri(:get_bank_accounts_transactions, id)
+        filter_request = nil
+        yield filter_request = FilterRequest.new if block_given?
+        results = HttpClient.get(uri, filter_request)
+        parse_results results
+      end
+
+      # Retrieves pages of transaction entities belonging to a certain
+      # mandate. Allows configuration of paging and sorting parameters
+      # by yielding a filtering object to a provided block. When no filters
+      # are specified, will retrieve the first page of 10 newest results.
+      #
+      # Allowed +FilterRequest+ params:
+      # * page
+      # * per_page
+      # * sort_field and sort_direction
+      #
+      # @param +id+ [String] ID of the mandate whose transactions to retrieve
+      # @return [Array] the requested Transaction entity objects
+      def of_mandate(id)
+        uri = provide_uri(:get_mandates_transactions, id)
         filter_request = nil
         yield filter_request = FilterRequest.new if block_given?
         results = HttpClient.get(uri, filter_request)

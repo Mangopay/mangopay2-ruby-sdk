@@ -111,6 +111,7 @@ def build_card_direct_pay_in
   billing.address = build_address
   billing.address.postal_code = '68400'
   pay_in.billing = billing
+  pay_in.culture = MangoModel::CultureCode::FR
   pay_in
 end
 
@@ -126,6 +127,7 @@ def build_card_pre_auth_pay_in
   pay_in.fees.currency = MangoModel::CurrencyIso::EUR
   pay_in.fees.amount = 30
   pay_in.preauthorization_id = PRE_AUTHORIZATION_PERSISTED.id
+  pay_in.culture = MangoModel::CultureCode::FR
   pay_in
 end
 
@@ -140,6 +142,7 @@ def build_bank_wire_direct_pay_in
   pay_in.declared_fees = MangoModel::Money.new
   pay_in.declared_fees.currency = MangoModel::CurrencyIso::EUR
   pay_in.declared_fees.amount = 80
+  pay_in.culture = MangoModel::CultureCode::FR
   pay_in
 end
 
@@ -191,6 +194,7 @@ def build_direct_debit_direct_pay_in
   pay_in.fees.currency = MangoModel::CurrencyIso::EUR
   pay_in.fees.amount = 100
   pay_in.mandate_id = MANDATE_PERSISTED.id
+  pay_in.culture = MangoModel::CultureCode::FR
   pay_in
 end
 
