@@ -122,6 +122,71 @@ describe MangoApi::PayIns do
       end
     end
 
+    describe '#PAYPAL WEB' do
+      context 'given a valid object' do
+        pay_in = PAYPAL_PAY_IN_DATA
+
+        it 'creates a paypal web payin' do
+          created = MangoApi::PayIns.create_paypal_web pay_in
+
+          expect(created).not_to be_nil
+          expect(created.id).not_to be_nil
+          expect(created.payment_type).to eq MangoModel::PayInPaymentType::PAYPAL
+          expect(created.execution_type).to be MangoModel::PayInExecutionType::WEB
+          expect(created.status).to be MangoModel::TransactionStatus::CREATED
+        end
+      end
+
+
+      context 'given a payIn ID and a PayPal account email ' do
+        payin_id = "54088959"
+        buyer_account_email = "paypal-buyer-user@mangopay.com"
+        it 'fetches the payin' do
+          pay_in = MangoApi::PayIns.get payin_id
+
+          expect(pay_in).not_to be_nil
+          expect(pay_in.id).to eq payin_id
+          expect(pay_in.paypal_buyer_account_email).to eq buyer_account_email
+        end
+      end
+
+      context 'given an existing payin' do
+        payin = PAYPAL_PAY_IN_PERSISTED
+        it 'fetches the payin' do
+          fetched = MangoApi::PayIns.get payin.id
+
+          expect(fetched).not_to be_nil
+          expect(its_the_same_paypal_web(payin, fetched)).to be_truthy
+        end
+      end
+    end
+
+    describe '#APPLE PAY DIRECT' do
+
+      context 'given a valid object' do
+        payin = APPLE_PAY_PAY_IN_DATA
+        it 'creates an apple pay payin' do
+          created = MangoApi::PayIns.create_apple_pay_direct payin
+
+          expect(created).not_to be_nil
+          expect(created.id).not_to be_nil
+          expect(created.payment_type).to eq MangoModel::PayInPaymentType::APPLEPAY
+          expect(created.execution_type).to be MangoModel::PayInExecutionType::DIRECT
+          expect(created.status).to be MangoModel::TransactionStatus::SUCCEEDED
+        end
+      end
+
+      context 'given an existing payin' do
+        payin = APPLE_PAY_PAY_IN_PERSISTED
+        it 'fetches the payin by id' do
+          fetched = MangoApi::PayIns.get payin.id
+
+          expect(fetched).not_to be_nil
+          expect(its_the_same_paypal_web(payin, fetched)).to be_truthy
+        end
+      end
+    end
+
     # describe '#DIRECT_DEBIT DIRECT' do
     #   context 'given a valid object' do
     #     mandate = MANDATE_PERSISTED

@@ -5,7 +5,7 @@ module MangoPay
   module ReadOnlyFields
 
     @read_only_fields = %w[
-      CreationDate
+      CreationDate, PaymentData
     ]
 
     class << self

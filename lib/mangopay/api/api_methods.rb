@@ -46,6 +46,8 @@ module MangoApi
           create_client_bank_wire_direct_pay_in: %w[POST clients/payins/bankwire/direct],
           create_direct_debit_web_pay_in: %w[POST payins/directdebit/web],
           create_direct_debit_direct_pay_in: %w[POST payins/directdebit/direct],
+          create_paypal_web_pay_in: %w[POST payins/paypal/web],
+          create_apple_pay_pay_in: %w[POST payins/applepay/direct],
           get_pay_in: %w[GET %(payins/#{_params[0]})],
           get_payins_refunds: %w[GET %(payins/#{_params[0]}/refunds)],
 

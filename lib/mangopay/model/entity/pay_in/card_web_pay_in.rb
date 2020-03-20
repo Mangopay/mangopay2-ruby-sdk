@@ -19,9 +19,6 @@ module MangoModel
     # Mastercard. This field allows manual activation.
     attr_accessor :secure_mode
 
-    # [CultureCode] The language to use for the payment page
-    attr_accessor :culture
-
     # [String] The URL to use for the payment page template
     attr_accessor :template_url
 

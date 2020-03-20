@@ -10,6 +10,9 @@ module MangoModel
     # [PayInPaymentType] Its type
     attr_accessor :payment_type
 
+    # [CultureCode] The language to use for the payment page
+    attr_accessor :culture
+
     # [PayInExecutionType] Its execution type
     attr_accessor :execution_type
   end
