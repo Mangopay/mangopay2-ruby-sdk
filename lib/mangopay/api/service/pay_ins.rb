@@ -234,7 +234,7 @@ module MangoApi
         uri = provide_uri(:create_apple_pay_pay_in)
         json = pay_in.jsonify!
         payment_data = pay_in.payment_data.to_json
-        new_json = json.delete_suffix!("}") + "," + "\"PaymentData\":" + payment_data + "}"
+        new_json = json[0..json.length - 2] + "," + "\"PaymentData\":" + payment_data + "}"
         response = HttpClient.post_raw(uri) do |request|
           HttpClient.api_headers.each { |k, v| request.add_field(k, v) }
           request.add_field('Idempotency-Key', id_key) if id_key
