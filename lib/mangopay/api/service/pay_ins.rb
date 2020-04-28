@@ -306,6 +306,9 @@ module MangoApi
         elsif hash['PaymentType'] == MangoModel::PayInPaymentType::BANK_WIRE.to_s\
          && hash['ExecutionType'] == MangoModel::PayInExecutionType::DIRECT.to_s
           MangoModel::BankWireDirectPayIn
+        elsif hash['PaymentType'] == MangoModel::PayInPaymentType::BANK_WIRE.to_s\
+         && hash['ExecutionType'] == MangoModel::PayInExecutionType::EXTERNAL_INSTRUCTION.to_s
+          MangoModel::BankWireExternalInstructionPayIn
         elsif hash['PaymentType'] == MangoModel::PayInPaymentType::DIRECT_DEBIT.to_s\
          && hash['ExecutionType'] == MangoModel::PayInExecutionType::WEB.to_s
           MangoModel::DirectDebitWebPayIn

@@ -162,6 +162,9 @@ module MangoModel
       elsif hash['PaymentType'] == PayInPaymentType::BANK_WIRE.to_s\
          && hash['ExecutionType'] == PayInExecutionType::DIRECT.to_s
         BankWireDirectPayIn
+      elsif hash['PaymentType'] == PayInPaymentType::BANK_WIRE.to_s\
+         && hash['ExecutionType'] == PayInExecutionType::EXTERNAL_INSTRUCTION.to_s
+        BankWireExternalInstructionPayIn
       elsif hash['PaymentType'] == PayInPaymentType::DIRECT_DEBIT.to_s\
          && hash['ExecutionType'] == PayInExecutionType::WEB.to_s
         DirectDebitWebPayIn
