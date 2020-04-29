@@ -70,8 +70,8 @@ describe MangoApi::PayIns do
           expect(pay_in).not_to be_nil
           expect(pay_in.payment_type).to be MangoModel::PayInPaymentType::BANK_WIRE
           expect(pay_in.execution_type).to be MangoModel::PayInExecutionType::EXTERNAL_INSTRUCTION
-          expect(debited_bank_account['IBAN']).not_to be_nil
-          expect(debited_bank_account['AccountNumber']).to be_nil
+          expect(debited_bank_account.iban).not_to be_nil
+          expect(debited_bank_account.account_number).to be_nil
         end
       end
 
@@ -84,8 +84,8 @@ describe MangoApi::PayIns do
           expect(pay_in).not_to be_nil
           expect(pay_in.payment_type).to be MangoModel::PayInPaymentType::BANK_WIRE
           expect(pay_in.execution_type).to be MangoModel::PayInExecutionType::EXTERNAL_INSTRUCTION
-          expect(debited_bank_account["IBAN"]).to be_nil
-          expect(debited_bank_account["AccountNumber"]).not_to be_nil
+          expect(debited_bank_account.iban).to be_nil
+          expect(debited_bank_account.account_number).not_to be_nil
         end
       end
     end

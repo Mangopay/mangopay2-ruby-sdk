@@ -1,11 +1,13 @@
 require_relative '../entity_base'
 require_relative '../../../util/non_instantiable'
 require_relative '../../enum/account_type'
+require_relative '../../../common/jsonifier'
 
 module MangoModel
 
   # Debited bank account entity
   class DebitedBankAccount < EntityBase
+    include MangoPay::Jsonifier
     extend NonInstantiable
 
     # [String] Its owner's name

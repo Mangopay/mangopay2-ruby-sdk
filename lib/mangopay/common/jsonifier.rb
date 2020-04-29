@@ -17,6 +17,7 @@ module MangoPay
     require_relative '../model/entity/account/ca_bank_account'
     require_relative '../model/entity/account/gb_bank_account'
     require_relative '../model/entity/account/other_bank_account'
+    require_relative '../model/entity/account/debited_bank_account'
     require_relative '../model/entity/mandate'
     require_relative '../model/entity/kyc_document'
     require_relative '../model/entity/pay_in/pay_in'
@@ -132,6 +133,9 @@ module MangoPay
                         else
                           raise 'Unrecognized bank account type: ' + value['Type']
                         end
+        end
+        if field == 'debited_bank_account' && is_a?(MangoModel::BankWireExternalInstructionPayIn)
+          field_value = MangoModel::DebitedBankAccount.new.dejsonify value
         end
         field_value ||= case field
                         when *MangoModel.fields_of_type(MangoModel::Address)
