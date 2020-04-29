@@ -216,7 +216,6 @@ shared_context 'payins' do
   end
 
   ###############################################
-  # CANNOT BE TESTED AS WE CAN'T MOCK TOKEN GENERATION
   # applepay/direct
   ###############################################
 
@@ -240,6 +239,7 @@ shared_context 'payins' do
   end
 
   ###############################################
+  # CANNOT BE TESTED AS WE CAN'T MOCK TOKEN GENERATION
   # googlepay/direct
   ###############################################
   let(:new_payin_googlepay_direct) do
