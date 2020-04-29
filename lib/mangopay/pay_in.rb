@@ -116,5 +116,15 @@ module MangoPay
       end
     end
 
+    module GooglePay
+      class Direct < Resource
+        include HTTPCalls::Create
+
+        def self.url(*)
+          "#{MangoPay.api_path}/payins/googlepay/#{CGI.escape(class_name.downcase)}"
+        end
+      end
+    end
+
   end
 end
