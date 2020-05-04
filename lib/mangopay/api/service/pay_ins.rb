@@ -243,6 +243,41 @@ module MangoApi
         parse response
       end
 
+      # Creates a new pay-in entity of +PaymentType::GOOGLE_PAY+
+      # and +ExecutionType::DIRECT+.
+      #
+      # +GooglePayPayIn+ properties:
+      # * Required
+      #   * author_id
+      #   * credited_wallet_id
+      #   * debited_funds
+      #   * fees
+      #   * transaction_id
+      #   * network
+      #   * token_data
+      #   * billing
+      # * Optional
+      #   * tag
+      #   * credited_user_id
+      #   * statement_descriptor
+      #
+      # @param +pay_in+ [GooglePayPayIn] the pay-in data model object
+      # @param +id_key+ [String] idempotency key for future response replication
+      # @return [GooglePayPayIn] the newly-created pay-in entity object
+      def create_google_pay_direct(pay_in, id_key = nil)
+        uri = provide_uri(:create_google_pay_pay_in)
+        json = pay_in.jsonify!
+        payment_data = pay_in.payment_data.to_json
+        billing = pay_in.billing.to_json
+        new_json = json[0..json.length - 2] + "," + "\"PaymentData\":" + payment_data + "\"Billing\":" + billing + "}"
+        response = HttpClient.post_raw(uri) do |request|
+          HttpClient.api_headers.each { |k, v| request.add_field(k, v) }
+          request.add_field('Idempotency-Key', id_key) if id_key
+          request.body = new_json
+        end
+        parse response
+      end
+
       # Retrieves a pay-in entity.
       #
       # @param +id+ [String] ID of the pay-in to be retrieved
@@ -321,6 +356,9 @@ module MangoApi
         elsif hash['PaymentType'] == MangoModel::PayInPaymentType::APPLEPAY.to_s\
          && hash['ExecutionType'] == MangoModel::PayInExecutionType::DIRECT.to_s
           MangoModel::ApplePayPayIn
+        elsif hash['PaymentType'] == MangoModel::PayInPaymentType::GOOGLEPAY.to_s\
+         && hash['ExecutionType'] == MangoModel::PayInExecutionType::DIRECT.to_s
+          MangoModel::GooglePayPayIn
         end
       end
 

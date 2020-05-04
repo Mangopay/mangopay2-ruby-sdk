@@ -219,6 +219,26 @@ def build_apple_pay_pay_in
   pay_in
 end
 
+def build_google_pay_pay_in
+  pay_in = MangoModel::GooglePayPayIn.new
+  pay_in.author_id = NATURAL_USER_PERSISTED.id
+  pay_in.credited_user_id = NATURAL_USER_PERSISTED.id
+  pay_in.credited_wallet_id = WALLET_PERSISTED.id
+  pay_in.debited_funds = MangoModel::Money.new
+  pay_in.debited_funds.currency = MangoModel::CurrencyIso::EUR
+  pay_in.debited_funds.amount = 199
+  pay_in.fees = MangoModel::Money.new
+  pay_in.fees.currency = MangoModel::CurrencyIso::EUR
+  pay_in.fees.amount = 1
+  pay_in.return_url = 'http://www.my-site.com/returnURL/'
+  pay_in.payment_data = {
+      TransactionId: '061EB32181A2D9CA42AD16031B476EEBAA62A9A095AD660E2759FBA52B51A61',
+      Network: 'VISA',
+      TokenData: "token_data"
+      }
+  pay_in
+end
+
 def its_the_same_card_web(pay_in1, pay_in2)
   pay_in1.author_id == pay_in2.author_id\
       && pay_in1.credited_user_id == pay_in2.credited_user_id\

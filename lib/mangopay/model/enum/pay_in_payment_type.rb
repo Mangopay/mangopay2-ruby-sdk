@@ -23,5 +23,8 @@ module MangoModel
 
     # Payment through apple pay
     APPLEPAY = value "APPLEPAY"
+
+    # Payment through google pay
+    GOOGLEPAY = value "GOOGLEPAY"
   end
 end
