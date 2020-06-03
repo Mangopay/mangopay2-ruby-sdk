@@ -273,6 +273,21 @@ shared_context 'payins' do
     )
   end
 
+  let(:new_payin_card_web_payline) do
+    MangoPay::PayIn::Card::Web.create(
+        AuthorId: new_natural_user['Id'],
+        CreditedUserId: new_wallet['Owners'][0],
+        CreditedWalletId: new_wallet['Id'],
+        DebitedFunds: {Currency: 'EUR', Amount: 1000},
+        Fees: {Currency: 'EUR', Amount: 0},
+        CardType: 'CB_VISA_MASTERCARD',
+        ReturnURL: MangoPay.configuration.root_url,
+        Culture: 'FR',
+        Tag: 'Test PayIn/Card/Web',
+        TemplateURLOptions: {PAYLINEV2: "https://www.maysite.com/payline_template/"}
+    )
+  end
+
   ###############################################
   # card/direct
   ###############################################
