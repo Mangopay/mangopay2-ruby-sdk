@@ -8,9 +8,10 @@ describe MangoPay::UboDeclaration do
 
       ubo_declaration = MangoPay::UboDeclaration.create(legal_user['Id'])
 
-      ubo_declaration = MangoPay::UboDeclaration.fetch(legal_user['Id'], ubo_declaration['Id'])
+      ubo_declaration_byId = MangoPay::UboDeclaration.fetch(legal_user['Id'], ubo_declaration['Id'])
 
       expect(ubo_declaration).not_to be_nil
+      expect(ubo_declaration_byId).not_to be_nil
     end
 
     describe 'UPDATE' do
