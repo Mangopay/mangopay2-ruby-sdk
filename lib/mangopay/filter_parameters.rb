@@ -13,7 +13,12 @@ module MangoPay
 
     def self.response(body)
       return '' if body.to_s.empty?
-      body = JSON.load(body)
+
+      begin
+        body = JSON.load(body)
+      rescue MultiJson::LoadError => e
+        return body
+      end
       filter_hash(body, res_confidential_params)
       JSON.dump(body)
     end
