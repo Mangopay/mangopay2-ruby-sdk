@@ -258,13 +258,13 @@ shared_context 'payins' do
         ReturnURL: MangoPay.configuration.root_url,
         Tag: 'Test PayIn/GooglePay/Direct',
         Billing: {
-            'Address': {
-                'AddressLine1': 'AddressLine1',
-                'AddressLine2': 'AddressLine2',
-                'City': 'City',
-                'Region': 'Region',
-                'PostalCode': 'PostalCode',
-                'CountryIso': 'FR'
+            Address: {
+                AddressLine1: 'AddressLine1',
+                AddressLine2: 'AddressLine2',
+                City: 'City',
+                Region: 'Region',
+                PostalCode: 'PostalCode',
+                CountryIso: 'FR'
             }
         }
     )
