@@ -15,6 +15,58 @@ describe MangoPay::Configuration do
     expect(users).to be_kind_of(Array)
   end
 
+  describe 'logger' do
+    around(:each) do |example|
+      c = MangoPay.configuration
+      c.logger = logger
+      c.log_file = log_file
+      example.run
+      c.logger = nil
+      c.log_file = nil
+      MangoPay.instance_variable_set(:@logger, nil)
+    end
+
+    context 'when the logger is set' do
+      let(:logger) { Logger.new(STDOUT) }
+
+      context 'when the log_file is set' do
+        let(:log_file) { File.join(MangoPay.configuration.temp_dir, 'mangopay.log.tmp') }
+
+        it 'initializes the logger using the logger option' do
+          expect(MangoPay.send(:logger).instance_variable_get(:@logdev).dev).to(eq(STDOUT))
+        end
+      end
+
+      context 'when the log_file is not set' do
+        let(:log_file) { nil }
+
+        it 'initializes the logger using the logger option' do
+          expect(MangoPay.send(:logger).instance_variable_get(:@logdev).dev).to(eq(STDOUT))
+        end
+      end
+    end
+
+    context 'when the logger is not set' do
+      let(:logger) { nil }
+
+      context 'when the log_file is set' do
+        let(:log_file) { File.join(MangoPay.configuration.temp_dir, 'mangopay.log.tmp') }
+
+        it 'initializes the logger using the log file' do
+          expect(MangoPay.send(:logger).instance_variable_get(:@logdev).dev).to(be_an_instance_of(File))
+        end
+      end
+
+      context 'when the log_file is not set' do
+        let(:log_file) { nil }
+
+        it 'raises an error' do
+          expect{ MangoPay.send(:logger) }.to raise_error NotImplementedError
+        end
+      end
+    end
+  end
+
   context 'with multithreading' do
     after :all do
       reset_mangopay_configuration

@@ -21,8 +21,8 @@ module MangoPay
 
     module Update
       module ClassMethods
-        def update(id = nil, params = {})
-          MangoPay.request(:put, url(id), params)
+        def update(id = nil, params = {}, idempotency_key = nil)
+          MangoPay.request(:put, url(id), params, {}, idempotency_key)
         end
       end
 
@@ -35,20 +35,20 @@ module MangoPay
       module ClassMethods
 
         # - Fetching _single_entity_ by +id+:
-        # 
+        #
         #   MangoPay::User.fetch("user-id") # => {"FirstName"=>"Mango", "LastName"=>"Pay", ...}
-        # 
+        #
         # - or fetching _multiple_entities_ with _optional_ +filters+ hash,
         #   including _pagination_ and _sorting_ params
         #   +page+, +per_page+, +sort+ (see http://docs.mangopay.com/api-references/pagination/):
-        #   
+        #
         #   MangoPay::User.fetch() # => [{...}, ...]: list of user data hashes (10 per page by default)
         #   MangoPay::User.fetch({'page' => 2, 'per_page' => 3}) # => list of 3 hashes from 2nd page
         #   MangoPay::BankAccount.fetch(user_id, {'sort' => 'CreationDate:desc'}) # => bank accounts by user, sorting by date descending (with default pagination)
         #   MangoPay::BankAccount.fetch(user_id, {'sort' => 'CreationDate:desc', 'page' => 2, 'per_page' => 3}) # both sorting and pagination params provided
-        # 
+        #
         # - For paginated queries the +filters+ param will be supplemented by +total_pages+ and +total_items+ info:
-        #   
+        #
         #   MangoPay::User.fetch(filter = {'page' => 2, 'per_page' => 3})
         #   filter # => {"page"=>2, "per_page"=>3, "total_pages"=>1969, "total_items"=>5905}
         #

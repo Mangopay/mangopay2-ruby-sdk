@@ -27,6 +27,42 @@ describe MangoPay::PayIn::BankWire::ExternalInstruction, type: :feature do
       check_type_and_status(payIn)
       MangoPay.configuration = backupConfig
     end
+
+    it 'fetches a bankwire external instruction with iban' do
+      backupConfig = MangoPay.configuration.clone
+      MangoPay.configure do |c|
+        c.preproduction = true
+        c.client_id = 'sdk-unit-tests'
+        c.root_url = 'https://api.sandbox.mangopay.com'
+        c.client_apiKey = 'cqFfFrWfCcb7UadHNxx2C9Lo6Djw8ZduLi7J9USTmu8bhxxpju'
+        c.http_timeout = 10000
+      end
+
+      payInId = "74980101"
+      payIn = MangoPay::PayIn.fetch(payInId)
+      expect(payIn).to_not be(nil)
+      expect(payIn['Id']).to eq(payInId)
+      check_type_and_status(payIn)
+      MangoPay.configuration = backupConfig
+    end
+
+    it 'fetches a bankwire external instruction with account number' do
+      backupConfig = MangoPay.configuration.clone
+      MangoPay.configure do |c|
+        c.preproduction = true
+        c.client_id = 'sdk-unit-tests'
+        c.root_url = 'https://api.sandbox.mangopay.com'
+        c.client_apiKey = 'cqFfFrWfCcb7UadHNxx2C9Lo6Djw8ZduLi7J9USTmu8bhxxpju'
+        c.http_timeout = 10000
+      end
+
+      payInId = "74981216"
+      payIn = MangoPay::PayIn.fetch(payInId)
+      expect(payIn).to_not be(nil)
+      expect(payIn['Id']).to eq(payInId)
+      check_type_and_status(payIn)
+      MangoPay.configuration = backupConfig
+    end
   end
 
 ###############################################

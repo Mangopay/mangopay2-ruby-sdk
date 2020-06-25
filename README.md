@@ -4,7 +4,7 @@ The gem for interacting with the version 2 of the Mangopay API.
 See the [API documentation](http://docs.mangopay.com/api-references/)
 for more details on the API.
 
-Tested on the following versions of Ruby: 1.9.2, 1.9.3, 2.0.0
+Tested on the following versions of Ruby: 1.9.2, 1.9.3, 2.0.0 and 2.x up to 2.5
 
 ## NEWS
 
@@ -102,7 +102,7 @@ Along with each request, the rate limiting headers are automatically updated in 
   }
 ```
 
-Read more about rate limiting on [our documetiation](https://docs.mangopay.com/guide/rate-limiting).
+Read more about rate limiting on [our documentation](https://docs.mangopay.com/guide/rate-limiting).
 
 ### Log requests and responses
 You can easily enable logs by setting the ```log_file``` configuration option (see the section **configuration** above). If you don't want logs, remove the ```log_file``` line.

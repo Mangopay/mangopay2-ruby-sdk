@@ -210,6 +210,7 @@ shared_context 'payins' do
         DebitedFunds: {Currency: 'EUR', Amount: 1000},
         Fees: {Currency: 'EUR', Amount: 0},
         ReturnURL: MangoPay.configuration.root_url,
+        Culture: "FR",
         Tag: 'Test PayIn/PayPal/Web'
     )
   end
@@ -236,6 +237,39 @@ shared_context 'payins' do
         Tag: 'Test PayIn/ApplePay/Direct'
     )
   end
+
+  ###############################################
+  # CANNOT BE TESTED AS WE CAN'T MOCK TOKEN GENERATION
+  # googlepay/direct
+  ###############################################
+  let(:new_payin_googlepay_direct) do
+    MangoPay::PayIn::GooglePay::Direct.create(
+        AuthorId: new_natural_user['Id'],
+        CreditedUserId: new_wallet['Owners'][0],
+        CreditedWalletId: new_wallet['Id'],
+        DebitedFunds: {Currency: 'EUR', Amount: 199},
+        Fees: {Currency: 'EUR', Amount: 1},
+        PaymentData: {
+            TransactionId: '061EB32181A2D9CA42AD16031B476EEBAA62A9A095AD660E2759FBA52B51A61',
+            Network: 'VISA',
+            TokenData: "tokenData"
+        },
+        StatementDescriptor: "ruby",
+        ReturnURL: MangoPay.configuration.root_url,
+        Tag: 'Test PayIn/GooglePay/Direct',
+        Billing: {
+            Address: {
+                AddressLine1: 'AddressLine1',
+                AddressLine2: 'AddressLine2',
+                City: 'City',
+                Region: 'Region',
+                PostalCode: 'PostalCode',
+                CountryIso: 'FR'
+            }
+        }
+    )
+  end
+
 
   ###############################################
   # directdebit/direct
@@ -269,6 +303,21 @@ shared_context 'payins' do
         ReturnURL: MangoPay.configuration.root_url,
         Culture: 'FR',
         Tag: 'Test PayIn/Card/Web'
+    )
+  end
+
+  let(:new_payin_card_web_payline) do
+    MangoPay::PayIn::Card::Web.create(
+        AuthorId: new_natural_user['Id'],
+        CreditedUserId: new_wallet['Owners'][0],
+        CreditedWalletId: new_wallet['Id'],
+        DebitedFunds: {Currency: 'EUR', Amount: 1000},
+        Fees: {Currency: 'EUR', Amount: 0},
+        CardType: 'CB_VISA_MASTERCARD',
+        ReturnURL: MangoPay.configuration.root_url,
+        Culture: 'FR',
+        Tag: 'Test PayIn/Card/Web',
+        TemplateURLOptions: {PAYLINEV2: "https://www.maysite.com/payline_template/"}
     )
   end
 

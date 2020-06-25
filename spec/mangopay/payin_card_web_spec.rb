@@ -22,6 +22,15 @@ describe MangoPay::PayIn::Card::Web, type: :feature do
     end
   end
 
+  describe 'CREATE with PaylineV2' do
+    it 'creates a card web payin with payline v2' do
+      created = new_payin_card_web_payline
+      expect(created['Id']).not_to be_nil
+      expect(created['RedirectURL']).to include('https://www.maysite.com/payline_template/')
+      check_type_and_status(created)
+    end
+  end
+
   describe 'EXTENDED' do
     context 'when resource not exists' do
       it 'fetches extended information' do
