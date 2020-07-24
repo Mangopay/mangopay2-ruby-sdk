@@ -69,7 +69,6 @@ describe MangoApi::Cards do
         expect(card.expiration_date).to eq CARD_EXPIRATION
         expect(card.fingerprint).not_to be_nil
         expect(card.user_id).to eq CARD_REGISTRATION_COMPLETED.user_id
-        expect(card.validity).to be MangoModel::CardValidity::UNKNOWN
       end
     end
   end
