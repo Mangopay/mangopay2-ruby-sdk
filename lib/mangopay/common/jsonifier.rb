@@ -28,6 +28,7 @@ module MangoPay
     require_relative '../model/entity/dispute'
     require_relative '../model/entity/dispute_document'
     require_relative '../model/entity/report'
+    require_relative '../model/entity/banking_alias'
     require_relative '../model/declared_ubo'
     LOG = LogProvider.provide(self)
 

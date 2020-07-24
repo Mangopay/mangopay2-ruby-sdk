@@ -147,7 +147,12 @@ module MangoApi
           get_report: %w[GET %(reports/#{_params[0]})],
           get_reports: %w[GET reports],
 
-          replicate_response: %w[GET %(responses/#{_params[0]})]
+          replicate_response: %w[GET %(responses/#{_params[0]})],
+
+          banking_alias_create_iban: %w[POST %(wallets/#{_params[0]}/bankingaliases/iban)],
+          banking_alias_all: %w[GET %(wallets/#{_params[0]}/bankingaliases)],
+          banking_alias_get: %w[GET %(bankingaliases/#{_params[0]})],
+          banking_alias_save: %w[PUT %(bankingaliases/#{_params[0]})]
       }
 
       def_delegators @hash, :[]
