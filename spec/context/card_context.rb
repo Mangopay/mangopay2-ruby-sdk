@@ -8,8 +8,8 @@ shared_context 'card_context' do
   CARD_REGISTRATION_DATA ||= build_card_registration
   CARD_REGISTRATION_PERSISTED ||= persist_card_registration CARD_REGISTRATION_DATA
   # MangoPay test data
-  CARD_NUMBER ||= '4970100000000154'
-  CARD_EXPIRATION ||= '0722'
+  CARD_NUMBER ||= '4972485830400056'
+  CARD_EXPIRATION ||= '1224'
   CARD_CVX ||= '123'
   CARD_REGISTRATION_COMPLETED ||= complete_card_registration CARD_REGISTRATION_PERSISTED
   CARD ||= retrieve_card CARD_REGISTRATION_COMPLETED.card_id
