@@ -63,6 +63,7 @@ module MangoApi
           get_cards_by_fingerprint: %w[GET %(cards/fingerprints/#{_params[0]})],
           deactivate_card: %w[PUT %(cards/#{_params[0]})],
           get_preauthorizations_for_card: %w[GET %(cards/#{_params[0]}/preauthorizations)],
+          card_validate: %w[POST %(cards/#{_params[0]}/validate)],
 
           get_users_transactions: %w[GET %(users/#{_params[0]}/transactions)],
           get_wallets_transactions: %w[GET %(wallets/#{_params[0]}/transactions)],

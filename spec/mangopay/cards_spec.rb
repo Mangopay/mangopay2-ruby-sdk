@@ -24,6 +24,19 @@ describe MangoApi::Cards do
     end
   end
 
+#  describe '.validate_card' do
+#
+#    context 'given a valid object' do
+#      it 'validates it' do
+#        card_registration = CARD_REGISTRATION_DATA
+#        retrieved = MangoApi::Cards.create_registration card_registration
+#        validate = MangoApi::Cards.validate(retrieved.id)
+#
+#        expect(validate).not_to be_nil
+#      end
+#    end
+#  end
+
   describe '.complete_registration' do
 
     context 'given the registration data from Tokenization Server' do

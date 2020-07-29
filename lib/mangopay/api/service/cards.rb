@@ -117,6 +117,16 @@ module MangoApi
         parse_card response
       end
 
+      # Validates the card entity specified by an id.
+      #
+      # @param +id+ [String] ID of the card to validate
+      # @return [Card] the validated card entity object
+      def validate(id)
+        uri = provide_uri(:card_validate, id)
+        response = HttpClient.post(uri, nil)
+        parse_card response
+      end
+
       private
 
       # Parses a JSON-originating hash into the corresponding
