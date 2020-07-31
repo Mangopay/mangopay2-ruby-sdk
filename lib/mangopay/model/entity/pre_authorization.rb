@@ -71,5 +71,7 @@ module MangoModel
     # [SecurityInfo] Security & validation information
     attr_accessor :security_info
 
+    # [true/false] True if the Multi Capture was used
+    attr_accessor :multi_capture
   end
 end
