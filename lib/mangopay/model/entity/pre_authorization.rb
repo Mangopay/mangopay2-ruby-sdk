@@ -73,5 +73,8 @@ module MangoModel
 
     # [true/false] True if the Multi Capture was used
     attr_accessor :multi_capture
+
+    # [Money] Information about the remaining funds
+    attr_accessor :remaining_funds
   end
 end
