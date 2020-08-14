@@ -220,9 +220,13 @@ module MangoPay
         time = Benchmark.realtime { res = do_request_without_log(http, req) }
         res
       ensure
-        params = FilterParameters.response(res.body)
+        params = if !res.nil?
+                   FilterParameters.response(res.body)
+                 else
+                   ''
+                 end
         line = "#{log_severity(res)} #{line}"
-        line += "\n  [#{(time * 1000).round(1)}ms] #{res.code} #{params}\n"
+        line += "\n  [#{(time * 1000).round(1)}ms] #{res.code} #{params}\n" unless res.nil?
         logger.info { line }
       end
     end
