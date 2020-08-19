@@ -16,7 +16,7 @@ describe MangoApi::OAuthTokens do
         # noinspection RubyStringKeysInHashInspection
         headers = {
           'Authorization' => "#{token['token_type']} #{token['access_token']}",
-          'User-Agent' => "MANGOPAY V2 RubyBindings/#{MangoPay::VERSION}",
+          'User-Agent' => "MangoPay V2 SDK Ruby Bindings v4/#{MangoPay::VERSION}",
           'Content-Type' => 'application/json'
         }
         url = 'https://api.sandbox.mangopay.com/v2.01/sdk-unit-tests/users/natural'

@@ -287,7 +287,7 @@ module MangoApi
       def initialize_headers
         auth_token = MangoApi::AuthTokenManager.token
         @default_headers = {
-          'User-Agent' => "MANGOPAY V2 RubyBindings/#{MangoPay::VERSION}",
+          'User-Agent' => "MangoPay V2 SDK Ruby Bindings v4/#{MangoPay::VERSION}",
           'Authorization' => "#{auth_token['token_type']} "\
                              "#{auth_token['access_token']}",
           'Content-Type' => 'application/json'
