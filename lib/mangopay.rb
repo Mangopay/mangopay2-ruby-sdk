@@ -142,6 +142,8 @@ module MangoPay
         do_request(http, req, uri)
       end
 
+      raise MangoPay::ResponseError.new(uri, '408', {'Message' => 'Request Timeout'}) if res.nil?
+
       # decode json data
       data = res.body.to_s.empty? ? {} : JSON.load(res.body.to_s)
 
@@ -193,7 +195,7 @@ module MangoPay
     def request_headers
       auth_token = AuthorizationToken::Manager.get_token
       headers = {
-          'User-Agent' => "MANGOPAY V2 RubyBindings/#{VERSION}",
+          'User-Agent' => "MangoPay V2 SDK Ruby Bindings #{VERSION}",
           'Authorization' => "#{auth_token['token_type']} #{auth_token['access_token']}",
           'Content-Type' => 'application/json'
       }
@@ -217,12 +219,23 @@ module MangoPay
       params = FilterParameters.request(req.body)
       line = "[#{Time.now.iso8601}] #{req.method.upcase} \"#{uri.to_s}\" #{params}"
       begin
-        time = Benchmark.realtime { res = do_request_without_log(http, req) }
+        time = Benchmark.realtime {
+          begin
+            res = do_request_without_log(http, req)
+          rescue Net::ReadTimeout
+            res = nil
+          end
+        }
         res
       ensure
-        params = FilterParameters.response(res.body)
         line = "#{log_severity(res)} #{line}"
-        line += "\n  [#{(time * 1000).round(1)}ms] #{res.code} #{params}\n"
+        if res.nil?
+          params = ''
+          line += "\n  [#{(time * 1000).round(1)}ms] 408 Request Timeout #{params}\n"
+        else
+          params = FilterParameters.response(res.body)
+          line += "\n  [#{(time * 1000).round(1)}ms] #{res.code} #{params}\n"
+        end
         logger.info { line }
       end
     end

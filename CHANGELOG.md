@@ -1,5 +1,6 @@
-## [Unreleased]
- - New v4 SDK version (available as a beta version here: https://rubygems.org/gems/mangopay-v4) - will be shortly merged on master.
+## [3.0.35] - 2020-08-24
+ -> Improvement to Net::ReadTimeout handling
+-> "User-agent" format in the headers changed, aligned to other assets 👤
  
 ## [3.0.34] - 2020-06-25
 ### Added
