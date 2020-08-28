@@ -137,6 +137,7 @@ module MangoApi
         response = Net::HTTP.start(uri.host,
                                    uri.port,
                                    use_ssl: true,
+                                   ssl_version: :TLSv1_2,
                                    read_timeout: http_timeout) do |http|
           request = http_method.new(uri.request_uri)
           yield request if block_given?
