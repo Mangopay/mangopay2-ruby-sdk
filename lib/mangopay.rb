@@ -135,7 +135,7 @@ module MangoPay
         headers['Idempotency-Key'] = headers_or_idempotency_key if headers_or_idempotency_key != nil
       end
 
-      res = Net::HTTP.start(uri.host, uri.port, use_ssl: true, :read_timeout => configuration.http_timeout) do |http|
+      res = Net::HTTP.start(uri.host, uri.port, use_ssl: true, :read_timeout => configuration.http_timeout, ssl_version: :TLSv1_2) do |http|
         req = Net::HTTP::const_get(method.capitalize).new(uri.request_uri, headers)
         req.body = JSON.dump(params)
         before_request_proc.call(req) if before_request_proc
