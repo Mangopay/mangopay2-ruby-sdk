@@ -1,6 +1,9 @@
+## [3.0.36] - 2020-08-28
+- Forces TLS version to 1.2
+
 ## [3.0.35] - 2020-08-24
- -> Improvement to Net::ReadTimeout handling
--> "User-agent" format in the headers changed, aligned to other assets 👤
+- Improvement to Net::ReadTimeout handling
+- "User-agent" format in the headers changed, aligned to other assets 👤
  
 ## [3.0.34] - 2020-06-25
 ### Added
