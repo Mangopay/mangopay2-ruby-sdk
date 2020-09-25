@@ -1,4 +1,6 @@
 describe MangoPay::Client do
+  include_context 'users'
+  include_context 'payins'
 
   describe 'FETCH' do
     it 'fetches the current client details' do
@@ -121,6 +123,19 @@ describe MangoPay::Client do
       expect(trns).to be_kind_of(Array)
       expect(trns).not_to be_empty
       #expect((trns.map {|m| m['CreditedWalletId']}).uniq).to eq(['CREDIT_EUR'])
+    end
+  end
+
+  describe 'validate' do
+    it 'validates card' do
+      client = MangoPay::Client.fetch
+      completed = new_card_registration_completed
+      card_id = completed['CardId']
+      client_id = client['ClientId']
+
+      card = MangoPay::Client.validate(client_id, card_id)
+      expect(client).not_to be_nil
+      expect(card).not_to be_nil
     end
   end
 
