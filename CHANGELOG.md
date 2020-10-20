@@ -1,3 +1,6 @@
+## [3.0.37] - 2020-10-20
+- Card Validation endpoint fully activated
+
 ## [3.0.36] - 2020-08-28
 - Forces TLS version to 1.2
 
