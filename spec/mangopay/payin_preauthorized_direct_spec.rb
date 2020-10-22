@@ -18,7 +18,9 @@ describe MangoPay::PayIn::PreAuthorized::Direct, type: :feature do
   describe 'CREATE' do
     it 'creates a preauthorized direct payin' do
       created = new_payin_preauthorized_direct
+      transactions = MangoPay::PreAuthorization.transactions(created['PreauthorizationId'])
       expect(created['Id']).not_to be_nil
+      expect(transactions[0]['Status']).to eq('SUCCEEDED')
       check_type_and_status(created)
     end
   end
