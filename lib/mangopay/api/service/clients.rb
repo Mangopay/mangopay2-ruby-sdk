@@ -53,6 +53,18 @@ module MangoApi
         parse response
       end
 
+      def create_bank_account(bank_account)
+        uri = provide_uri(:client_create_bank_account)
+        response = HttpClient.post(uri, bank_account)
+        MangoModel::IbanBankAccount.new.dejsonify response
+      end
+
+      def create_payout(payout)
+        uri = provide_uri(:client_create_payout)
+        response = HttpClient.post(uri, payout)
+        MangoModel::PayOut.new.dejsonify response
+      end
+
       private
 
       # Parses a JSON-originating hash into the corresponding
