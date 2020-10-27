@@ -74,6 +74,14 @@ module MangoPay
         MangoPay.request(:post, url)
       end
 
+      def create_bank_account(params)
+        MangoPay.request(:post, url() + "/bankaccounts/iban", params)
+      end
+
+      def create_payout(params)
+        MangoPay.request(:post, url() + "/payouts", params)
+      end
+
     end
   end
 end
