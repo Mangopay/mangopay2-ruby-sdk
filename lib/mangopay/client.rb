@@ -69,6 +69,19 @@ module MangoPay
         MangoPay.request(:get, url() + "/wallets/#{funds_type}/#{currency_iso_code}/transactions", {}, filters)
       end
 
+      def validate(client_id, card_id)
+        url = "#{MangoPay.api_path}/cards/#{card_id}/validate"
+        MangoPay.request(:post, url)
+      end
+
+      def create_bank_account(params)
+        MangoPay.request(:post, url() + "/bankaccounts/iban", params)
+      end
+
+      def create_payout(params)
+        MangoPay.request(:post, url() + "/payouts", params)
+      end
+
     end
   end
 end
