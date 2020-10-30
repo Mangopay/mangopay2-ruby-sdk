@@ -1,5 +1,8 @@
-## [3.0.37] - 2020-10-20
+## [3.0.37] - 2020-10-30
 - Card Validation endpoint fully activated
+- added pre authorizations transactions method
+- added new methods for client bank accounts and payouts
+- Send headers for different api calls
 
 ## [3.0.36] - 2020-08-28
 - Forces TLS version to 1.2
