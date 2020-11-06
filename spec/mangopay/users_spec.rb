@@ -143,4 +143,21 @@ describe MangoApi::Users do
       end
     end
   end
+
+  describe '..get_block_status' do
+
+    describe '#BlockStatus' do
+      context "given an existing user's ID" do
+        created = NATURAL_USER_PERSISTED
+        id = created.id
+
+        it 'retrieves the block status' do
+          retrieved = MangoApi::Users.get_block_status id
+
+          expect(retrieved).not_to be_nil
+          expect(retrieved).to be_kind_of MangoModel::UserBlockStatus
+        end
+      end
+    end
+  end
 end

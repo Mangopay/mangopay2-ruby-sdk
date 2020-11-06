@@ -30,6 +30,8 @@ module MangoPay
     require_relative '../model/entity/report'
     require_relative '../model/entity/banking_alias'
     require_relative '../model/declared_ubo'
+    require_relative '../model/entity/user_block_status'
+    require_relative '../model/scope_blocked'
     LOG = LogProvider.provide(self)
 
     # Serializes an object to a JSON string.
@@ -221,6 +223,8 @@ module MangoPay
                           MangoModel::AvsResult.value_of value
                         when *MangoModel.fields_of_type(DateTime)
                           DateTime.parse value
+                        when *MangoModel.fields_of_type(MangoModel::ScopeBlocked)
+                          MangoModel::ScopeBlocked.value_of value
                         else
                           value
                         end
