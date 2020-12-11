@@ -208,4 +208,12 @@ describe MangoPay::User do
       expect(pre_authorizations).to be_an(Array)
     end
   end
+
+  describe 'FETCH Block Status' do
+    it "fetches user's block status" do
+      legal_user = new_legal_user
+      block_status = MangoPay::User.block_status(legal_user['Id'])
+      expect(block_status).to_not be_nil
+    end
+  end
 end
