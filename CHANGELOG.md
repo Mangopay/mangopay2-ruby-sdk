@@ -1,3 +1,8 @@
+## [3.0.38] - 2020-12-11
+- Added 'Regulatory' endpoint to allow checks of User Block Status
+- Added support for Regulatory -> Blocked Status Hooks
+- Removed sensitive data from logs, such as OwnerName, OwnerAddress BIC
+
 ## [3.0.37] - 2020-10-30
 - Card Validation endpoint fully activated
 - added pre authorizations transactions method
