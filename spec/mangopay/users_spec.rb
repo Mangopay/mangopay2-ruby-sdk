@@ -144,6 +144,7 @@ describe MangoApi::Users do
     end
   end
 
+=begin
   describe '..get_block_status' do
 
     describe '#BlockStatus' do
@@ -160,4 +161,5 @@ describe MangoApi::Users do
       end
     end
   end
+=end
 end
