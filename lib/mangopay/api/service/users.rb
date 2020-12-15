@@ -129,6 +129,12 @@ module MangoApi
         parse response
       end
 
+      def get_regulatory(id)
+        uri = provide_uri(:get_regulatory, id)
+        response = HttpClient.get(uri)
+        parse response
+      end
+
       private
 
       # Parses an array of JSON-originating hashes into the corresponding

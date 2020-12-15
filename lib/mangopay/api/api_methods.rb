@@ -15,6 +15,7 @@ module MangoApi
           get_user: %w[GET %(users/#{_params[0]})],
           get_users: %w[GET users],
           get_user_block_status: %w[GET %(users/#{_params[0]}/blockStatus)],
+          get_user_regulatory: %w[GET %(users/#{_params[0]}/Regulatory)],
 
           create_account: %w[POST %(users/#{_params[0].user_id}/bankaccounts/#{_params[0].type.to_s.downcase})],
           deactivate_account: %w[PUT %(users/#{_params[0]}/bankaccounts/#{_params[1]})],
