@@ -41,5 +41,8 @@ module MangoModel
 
     # [String] The ip address
     attr_accessor :ip_address
+
+    # [Shipping] Shipping information
+    attr_accessor :shipping
   end
 end
