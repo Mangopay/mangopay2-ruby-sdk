@@ -76,5 +76,8 @@ module MangoModel
 
     # [Money] Information about the remaining funds
     attr_accessor :remaining_funds
+
+    # [String] IpAddress
+    attr_accessor :ip_address
   end
 end
