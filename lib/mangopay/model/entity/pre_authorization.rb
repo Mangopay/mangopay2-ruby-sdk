@@ -82,5 +82,8 @@ module MangoModel
 
     # [Shipping] Shipping information
     attr_accessor :shipping
+
+    # [BrowserInfo] Browser Info
+    attr_accessor :browser_info
   end
 end

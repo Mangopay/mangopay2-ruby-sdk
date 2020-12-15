@@ -153,6 +153,8 @@ module MangoPay
                           MangoModel::Billing.new.dejsonify value
                         when *MangoModel.fields_of_type(MangoModel::Shipping)
                           MangoModel::Shipping.new.dejsonify value
+                        when *MangoModel.fields_of_type(MangoModel::BrowserInfo)
+                          MangoModel::BrowserInfo.new.dejsonify value
                         when *MangoModel.fields_of_type(MangoModel::SecurityInfo)
                           MangoModel::SecurityInfo.new.dejsonify value
                         when *MangoModel.fields_of_type(MangoModel::PersonType)
