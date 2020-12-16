@@ -209,6 +209,7 @@ describe MangoPay::User do
     end
   end
 
+=begin
   describe 'FETCH Block Status' do
     it "fetches user's block status" do
       legal_user = new_legal_user
@@ -216,4 +217,5 @@ describe MangoPay::User do
       expect(block_status).to_not be_nil
     end
   end
+=end
 end

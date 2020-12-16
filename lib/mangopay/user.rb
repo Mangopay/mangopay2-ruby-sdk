@@ -69,6 +69,11 @@ module MangoPay
       def block_status(user_id, filters = {})
         MangoPay.request(:get, url(user_id) + '/blockStatus', {}, filters)
       end
+
+      # Fetches User Regulatory
+      def regulatory(user_id, filters = {})
+        MangoPay.request(:get, url(user_id) + '/Regulatory', {}, filters)
+      end
     end
   end
 end
