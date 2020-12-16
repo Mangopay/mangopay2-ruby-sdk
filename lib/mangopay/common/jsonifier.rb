@@ -30,6 +30,8 @@ module MangoPay
     require_relative '../model/entity/report'
     require_relative '../model/entity/banking_alias'
     require_relative '../model/declared_ubo'
+    require_relative '../model/shipping'
+    require_relative '../model/broswer_info'
     LOG = LogProvider.provide(self)
 
     # Serializes an object to a JSON string.
