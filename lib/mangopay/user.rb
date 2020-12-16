@@ -64,6 +64,16 @@ module MangoPay
       def pre_authorizations(user_id, filters = {})
         MangoPay.request(:get, url(user_id) + '/preauthorizations', {}, filters)
       end
+
+      # Fetches User Block Status
+      def block_status(user_id, filters = {})
+        MangoPay.request(:get, url(user_id) + '/blockStatus', {}, filters)
+      end
+
+      # Fetches User Regulatory
+      def regulatory(user_id, filters = {})
+        MangoPay.request(:get, url(user_id) + '/Regulatory', {}, filters)
+      end
     end
   end
 end
