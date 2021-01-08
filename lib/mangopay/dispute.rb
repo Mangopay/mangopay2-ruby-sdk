@@ -50,9 +50,9 @@ module MangoPay
       #####################################################
 
       # see https://docs.mangopay.com/api-references/disputes/repudiations/
-      def fetch_repudiation(repudiation_id)
+      def fetch_repudiation(repudiation_id, idempotency_key = nil)
         url = "#{MangoPay.api_path}/repudiations/#{repudiation_id}"
-        MangoPay.request(:get, url)
+        MangoPay.request(:get, url, {}, {}, idempotency_key)
       end
 
       # +params+: hash; see https://docs.mangopay.com/api-references/disputes/settlement-transfers/
