@@ -49,12 +49,17 @@ module MangoPay
     end
 
     def type;    @details['Type']; end
-    def errors;  @details['errors']; end
+    def error;   @details['error']; end
+    def errors;  @details['errors'] || error; end
 
     def message;
-      msg = @details['Message']
-      msg += errors.sort.map {|k,v| " #{k}: #{v}"}.join if (errors && errors.is_a?(Hash))
-      msg
+      if error
+        msg = error
+      else
+        msg = @details['Message']
+        msg += errors.sort.map {|k,v| " #{k}: #{v}"}.join if (errors && errors.is_a?(Hash))
+        msg
+      end
     end
 
   end
