@@ -16,6 +16,9 @@ module MangoModel
     # statement along with environment's Client name (max 12 chars)
     attr_accessor :bank_wire_ref
 
+    # [String] The new parameter "PayoutModeRequested" can take two different values : "INSTANT_PAYMENT" or "STANDARD"
+    attr_accessor :payout_mode_requested
+
     # [PayOutPaymentType] Its type
     attr_accessor :payment_type
   end
