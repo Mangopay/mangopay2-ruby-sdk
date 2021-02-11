@@ -12,5 +12,7 @@ module MangoModel
 
     # Force activation of the Secure Mode for a transaction
     FORCE = value 'FORCE'
+
+    NO_CHOICE = value 'NO_CHOICE'
   end
 end
