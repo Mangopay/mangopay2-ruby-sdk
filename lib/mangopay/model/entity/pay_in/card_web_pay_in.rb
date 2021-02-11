@@ -33,5 +33,8 @@ module MangoModel
     # [String] The URL to redirect the user to for them to proceed
     # with the payment
     attr_accessor :redirect_url
+
+    # [Shipping] Shipping information
+    attr_accessor :shipping
   end
 end
