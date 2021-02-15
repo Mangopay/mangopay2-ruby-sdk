@@ -111,6 +111,8 @@ def build_card_direct_pay_in
   billing = MangoModel::Billing.new
   billing.address = build_address
   billing.address.postal_code = '68400'
+  billing.first_name = 'John'
+  billing.last_name = 'Doe'
   pay_in.billing = billing
   pay_in.culture = MangoModel::CultureCode::FR
   pay_in

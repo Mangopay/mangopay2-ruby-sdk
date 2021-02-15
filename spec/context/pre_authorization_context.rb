@@ -28,6 +28,8 @@ def build_pre_authorization
   billing = MangoModel::Billing.new
   billing.address = build_address
   billing.address.postal_code = '68400'
+  billing.first_name = 'John'
+  billing.last_name = 'Doe'
   pre_auth.billing = billing
   pre_auth
 end
