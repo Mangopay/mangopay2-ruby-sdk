@@ -123,6 +123,18 @@ module MangoApi
         parse_results results
       end
 
+      def get_block_status(id)
+        uri = provide_uri(:get_user_block_status, id)
+        response = HttpClient.get(uri)
+        parse response
+      end
+
+      def get_regulatory(id)
+        uri = provide_uri(:get_regulatory, id)
+        response = HttpClient.get(uri)
+        parse response
+      end
+
       private
 
       # Parses an array of JSON-originating hashes into the corresponding
