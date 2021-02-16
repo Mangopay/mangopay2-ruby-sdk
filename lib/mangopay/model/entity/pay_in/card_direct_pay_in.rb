@@ -38,5 +38,14 @@ module MangoModel
 
     # [CultureCode] The language to use for the payment page
     attr_accessor :culture
+
+    # [String] The ip address
+    attr_accessor :ip_address
+
+    # [Shipping] Shipping information
+    attr_accessor :shipping
+
+    # [BrowserInfo] Browser Info
+    attr_accessor :browser_info
   end
 end

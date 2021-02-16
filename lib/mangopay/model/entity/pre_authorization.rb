@@ -76,5 +76,14 @@ module MangoModel
 
     # [Money] Information about the remaining funds
     attr_accessor :remaining_funds
+
+    # [String] IpAddress
+    attr_accessor :ip_address
+
+    # [Shipping] Shipping information
+    attr_accessor :shipping
+
+    # [BrowserInfo] Browser Info
+    attr_accessor :browser_info
   end
 end

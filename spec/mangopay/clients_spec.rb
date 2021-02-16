@@ -1,5 +1,7 @@
 require_relative '../context/client_context'
 require_relative '../../lib/mangopay/api/service/clients'
+require_relative '../../lib/mangopay/api/service/client_wallets'
+require_relative '../../lib/mangopay/model/entity/client_wallet'
 require_relative '../../lib/mangopay/util/file_encoder'
 
 describe MangoApi::Clients do
@@ -52,6 +54,68 @@ describe MangoApi::Clients do
         expect(retrieved.client_id).to eq MangoPay.configuration.client_id
         expect(retrieved.platform_categorization).to be_kind_of MangoModel::PlatformCategorization
       end
+    end
+  end
+
+  describe '.create_bank_account' do
+    it "creates a new bank account" do
+      account = MangoModel::IbanBankAccount.new
+      account.owner_name = 'John'
+
+      address = MangoModel::Address.new
+      address.address_line1 = 'Le Palais Royal'
+      address.address_line2 = 'test'
+      address.city = 'Paris'
+      address.postal_code = '75001'
+      address.country = 'FR'
+      account.owner_address = address
+
+      account.iban = 'FR7618829754160173622224154'
+      account.bic = 'CMBRFR2BCME'
+      account.tag = 'custom meta'
+
+      created_account = MangoApi::Clients.create_bank_account(account)
+
+      expect(created_account).not_to be_nil
+      expect(created_account.id).not_to be_nil
+    end
+  end
+
+  describe '.create_payout' do
+    it "creates a new payout" do
+      account = MangoModel::IbanBankAccount.new
+      payout = MangoModel::PayOut.new
+      account.owner_name = 'John'
+
+      address = MangoModel::Address.new
+      address.address_line1 = 'Le Palais Royal'
+      address.address_line2 = 'test'
+      address.city = 'Paris'
+      address.postal_code = '75001'
+      address.country = 'FR'
+      account.owner_address = address
+
+      account.iban = 'FR7618829754160173622224154'
+      account.bic = 'CMBRFR2BCME'
+      account.tag = 'custom meta'
+
+      debited_funds = MangoModel::Money.new
+      debited_funds.currency = 'EUR'
+      debited_funds.amount = 12
+
+      created_account = MangoApi::Clients.create_bank_account(account)
+      wallets = MangoApi::ClientWallets.all
+
+      payout.debited_funds = debited_funds
+      payout.bank_account_id = created_account.id
+      payout.debited_wallet_id = wallets[0].id
+      payout.bank_wire_ref = 'invoice 7282'
+      payout.tag = 'bla'
+
+      created_payout = MangoApi::Clients.create_payout(payout)
+
+      expect(created_payout).not_to be_nil
+      expect(created_payout.id).not_to be_nil
     end
   end
 end

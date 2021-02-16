@@ -27,6 +27,7 @@ def build_pay_out
   pay_out.bank_account_id = IBAN_ACCOUNT_PERSISTED.id
   pay_out.debited_wallet_id = WALLET_PERSISTED.id
   pay_out.bank_wire_ref = 'Invoice 7282'
+  pay_out.payout_mode_requested = 'STANDARD'
   pay_out
 end
 

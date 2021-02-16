@@ -32,6 +32,9 @@ module MangoPay
     require_relative '../model/declared_ubo'
     require_relative '../model/entity/user_block_status'
     require_relative '../model/scope_blocked'
+    require_relative '../model/shipping'
+    require_relative '../model/broswer_info'
+
     LOG = LogProvider.provide(self)
 
     # Serializes an object to a JSON string.
@@ -153,6 +156,10 @@ module MangoPay
                           MangoModel::PlatformCategorization.new.dejsonify value
                         when *MangoModel.fields_of_type(MangoModel::Billing)
                           MangoModel::Billing.new.dejsonify value
+                        when *MangoModel.fields_of_type(MangoModel::Shipping)
+                          MangoModel::Shipping.new.dejsonify value
+                        when *MangoModel.fields_of_type(MangoModel::BrowserInfo)
+                          MangoModel::BrowserInfo.new.dejsonify value
                         when *MangoModel.fields_of_type(MangoModel::SecurityInfo)
                           MangoModel::SecurityInfo.new.dejsonify value
                         when *MangoModel.fields_of_type(MangoModel::PersonType)
