@@ -28,6 +28,8 @@ module MangoApi
           update_client: %w[PUT clients],
           get_client: %w[GET clients],
           upload_client_logo: %w[PUT clients/logo],
+          client_create_bank_account: %w[POST clients/bankaccounts/iban],
+          client_create_payout: %w[POST clients/payouts],
 
           get_client_wallet: %w[GET %(clients/wallets/#{_params[0].to_s}/#{_params[1].to_s})],
           get_client_wallets: %w[GET clients/wallets],
