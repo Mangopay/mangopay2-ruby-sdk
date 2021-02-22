@@ -1,8 +1,14 @@
-## [3.0.38] - 2020-12-11
-- Added 'Regulatory' endpoint to allow checks of User Block Status
-- Added support for Regulatory -> Blocked Status Hooks
-- Removed sensitive data from logs, such as OwnerName, OwnerAddress BIC
-
+## [3.1.0]
+- 3DS2 integration with Shipping and Billing objects, including FirstName and LastName fields
+The objects Billing and Shipping may be included on all calls to the following endpoints:
+  - /preauthorizations/card/direct
+  - /payins/card/direct
+  - /payins/card/web
+- Enable Instant Payment for payouts by adding a new parameter PayoutModeRequested on the following endpoint /payouts/bankwire
+  - The new parameter PayoutModeRequested can take two differents values : "INSTANT_PAYMENT" or "STANDARD" (STANDARD = the way we procede normaly a payout request)
+  - This new parameter is not mandatory and if empty or not present, the payout will be "STANDARD" by default
+  - Instant Payment is in beta all over Europe - SEPA region
+- Add test on new payout mode PayoutModeRequested
 ## [3.0.37] - 2020-10-30
 - Card Validation endpoint fully activated
 - added pre authorizations transactions method

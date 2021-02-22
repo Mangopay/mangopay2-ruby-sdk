@@ -183,6 +183,7 @@ describe MangoPay::Client do
                                                },
                                                DebitedWalletId: wallets[0]['Id'],
                                                BankWireRef: 'invoice 7282',
+                                               PayoutModeRequested: 'STANDARD',
                                                Tag: 'bla')
 
       expect(pay_out).not_to be_nil
