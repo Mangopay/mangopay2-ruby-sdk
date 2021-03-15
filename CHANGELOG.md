@@ -1,3 +1,20 @@
+## [3.1.0]
+- 3DS2 integration with Shipping and Billing objects, including FirstName and LastName fields
+The objects Billing and Shipping may be included on all calls to the following endpoints:
+  - /preauthorizations/card/direct
+  - /payins/card/direct
+  - /payins/card/web
+- Enable Instant Payment for payouts by adding a new parameter PayoutModeRequested on the following endpoint /payouts/bankwire
+  - The new parameter PayoutModeRequested can take two differents values : "INSTANT_PAYMENT" or "STANDARD" (STANDARD = the way we procede normaly a payout request)
+  - This new parameter is not mandatory and if empty or not present, the payout will be "STANDARD" by default
+  - Instant Payment is in beta all over Europe - SEPA region
+- Add test on new payout mode PayoutModeRequested
+## [3.0.37] - 2020-10-30
+- Card Validation endpoint fully activated
+- added pre authorizations transactions method
+- added new methods for client bank accounts and payouts
+- Send headers for different api calls
+
 ## [3.0.36] - 2020-08-28
 - Forces TLS version to 1.2
 

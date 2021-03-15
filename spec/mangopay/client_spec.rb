@@ -1,4 +1,6 @@
 describe MangoPay::Client do
+  include_context 'users'
+  include_context 'payins'
 
   describe 'FETCH' do
     it 'fetches the current client details' do
@@ -40,7 +42,7 @@ describe MangoPay::Client do
   describe 'UPLOAD LOGO' do
     it 'accepts Base64 encoded file content' do
       fnm = __FILE__.sub('.rb', '.png')
-      bts = File.open(fnm, 'rb') {|f| f.read}
+      bts = File.open(fnm, 'rb') { |f| f.read }
       b64 = Base64.encode64(bts)
       ret = MangoPay::Client.upload_logo(b64)
       expect(ret).to be_nil
@@ -54,7 +56,7 @@ describe MangoPay::Client do
 
     it 'fails when input string is not base64-encoded' do
       file = 'any file content...'
-      expect {MangoPay::Client.upload_logo(file)}.to raise_error {|err|
+      expect { MangoPay::Client.upload_logo(file) }.to raise_error { |err|
         expect(err).to be_a MangoPay::ResponseError
         expect(err.code).to eq '400'
         expect(err.type).to eq 'param_error'
@@ -73,14 +75,14 @@ describe MangoPay::Client do
       wlts = MangoPay::Client.fetch_wallets('fees')
       expect(wlts).to be_kind_of(Array)
       expect(wlts).not_to be_empty
-      expect((wlts.map {|m| m['FundsType']}).uniq).to eq(['FEES'])
+      expect((wlts.map { |m| m['FundsType'] }).uniq).to eq(['FEES'])
     end
 
     it 'fetches all client credit wallets' do
       wlts = MangoPay::Client.fetch_wallets('credit')
       expect(wlts).to be_kind_of(Array)
       expect(wlts).not_to be_empty
-      expect((wlts.map {|m| m['FundsType']}).uniq).to eq(['CREDIT'])
+      expect((wlts.map { |m| m['FundsType'] }).uniq).to eq(['CREDIT'])
     end
   end
 
@@ -121,6 +123,71 @@ describe MangoPay::Client do
       expect(trns).to be_kind_of(Array)
       expect(trns).not_to be_empty
       #expect((trns.map {|m| m['CreditedWalletId']}).uniq).to eq(['CREDIT_EUR'])
+    end
+  end
+
+  describe 'validate' do
+    it 'validates card' do
+      client = MangoPay::Client.fetch
+      completed = new_card_registration_completed
+      card_id = completed['CardId']
+      client_id = client['ClientId']
+
+      card = MangoPay::Client.validate(client_id, card_id)
+      expect(client).not_to be_nil
+      expect(card).not_to be_nil
+    end
+  end
+
+  describe 'create_bank_account' do
+    it 'creates a new bank account' do
+      bank_account = MangoPay::Client.create_bank_account(Type: 'IBAN',
+                                                          OwnerName: 'John',
+                                                          OwnerAddress: {
+                                                              AddressLine1: 'Le Palais Royal',
+                                                              AddressLine2: '8 Rue de Montpensier',
+                                                              City: 'Paris',
+                                                              Region: '',
+                                                              PostalCode: '75001',
+                                                              Country: 'FR'
+                                                          },
+                                                          IBAN: 'FR7618829754160173622224154',
+                                                          BIC: 'CMBRFR2BCME',
+                                                          Tag: 'Test bank account')
+      expect(bank_account).not_to be_nil
+      expect(bank_account['Id']).not_to be_nil
+    end
+  end
+
+  describe 'create_payout' do
+    it 'creates a new payout' do
+      wallets = MangoPay::Client.fetch_wallets('FEES')
+      bank_account = MangoPay::Client.create_bank_account(Type: 'IBAN',
+                                                          OwnerName: 'John',
+                                                          OwnerAddress: {
+                                                              AddressLine1: 'Le Palais Royal',
+                                                              AddressLine2: '8 Rue de Montpensier',
+                                                              City: 'Paris',
+                                                              Region: '',
+                                                              PostalCode: '75001',
+                                                              Country: 'FR'
+                                                          },
+                                                          IBAN: 'FR7618829754160173622224154',
+                                                          BIC: 'CMBRFR2BCME',
+                                                          Tag: 'Test bank account')
+      pay_out = MangoPay::Client.create_payout(BankAccountId: bank_account['Id'],
+
+                                               DebitedFunds: {
+                                                   Currency: 'EUR',
+                                                   Amount: 12
+                                               },
+                                               DebitedWalletId: wallets[0]['Id'],
+                                               BankWireRef: 'invoice 7282',
+                                               PayoutModeRequested: 'STANDARD',
+                                               Tag: 'bla')
+
+      expect(pay_out).not_to be_nil
+      expect(pay_out['Id']).not_to be_nil
     end
   end
 

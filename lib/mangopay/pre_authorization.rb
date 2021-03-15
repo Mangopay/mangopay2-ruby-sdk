@@ -9,5 +9,9 @@ module MangoPay
       MangoPay.request(:post, "#{url}/card/direct", params, {}, idempotency_key)
     end
 
+    def self.transactions(pre_authorization_id, filters = {})
+      MangoPay.request(:get, "#{url}/#{pre_authorization_id}/transactions", {}, filters)
+    end
+
   end
 end

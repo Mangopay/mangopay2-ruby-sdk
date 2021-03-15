@@ -39,12 +39,12 @@ module MangoPay
       @@res_confidential_params ||= [
         'access_token', 'AccessKey', 'IBAN', 'CardRegistrationURL',
         'PreregistrationData', 'RedirectURL', 'RegistrationData',
-        'SecureModeRedirectUrl'
+        'SecureModeRedirectUrl', 'OwnerName', 'OwnerAddress', 'BIC'
       ].freeze
     end
 
     def self.req_confidential_params
-      @@req_confidential_params ||= ['File', 'IBAN'].freeze
+      @@req_confidential_params ||= ['File', 'IBAN', 'OwnerName', 'OwnerAddress', 'BIC'].freeze
     end
 
   end
