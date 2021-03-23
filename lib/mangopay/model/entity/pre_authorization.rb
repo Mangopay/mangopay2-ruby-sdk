@@ -85,5 +85,11 @@ module MangoModel
 
     # [BrowserInfo] Browser Info
     attr_accessor :browser_info
+
+    # [String] Requested3DSVersion
+    attr_accessor :requested_3ds_version
+
+    # [String] Applied3DSVersion
+    attr_accessor :applied_3ds_version
   end
 end

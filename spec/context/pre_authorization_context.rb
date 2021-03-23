@@ -31,6 +31,7 @@ def build_pre_authorization
   billing.first_name = 'John'
   billing.last_name = 'Doe'
   pre_auth.billing = billing
+  pre_auth.requested_3ds_version = 'V1'
   pre_auth
 end
 
