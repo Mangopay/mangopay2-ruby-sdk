@@ -368,7 +368,8 @@ shared_context 'payins' do
         CardType: 'CB_VISA_MASTERCARD',
         CardId: cardreg['CardId'],
         SecureModeReturnURL: 'http://test.com',
-        Tag: 'Test PayIn/Card/Direct'
+        Tag: 'Test PayIn/Card/Direct',
+        Requested3DSVersion: 'V1'
     )
   end
 
@@ -385,7 +386,8 @@ shared_context 'payins' do
         CardId: cardreg['CardId'],
         SecureMode: 'DEFAULT',
         SecureModeReturnURL: 'http://test.com',
-        Tag: 'Test Card PreAuthorization'
+        Tag: 'Test Card PreAuthorization',
+        Requested3DSVersion: 'V1'
     )
   end
 
