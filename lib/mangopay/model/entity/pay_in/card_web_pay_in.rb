@@ -36,11 +36,5 @@ module MangoModel
 
     # [Shipping] Shipping information
     attr_accessor :shipping
-
-    # [String] Requested3DSVersion
-    attr_accessor :requested_3ds_version
-
-    # [String] Applied3DSVersion
-    attr_accessor :applied_3ds_version
   end
 end
