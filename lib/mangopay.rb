@@ -8,7 +8,7 @@ require_relative 'mangopay/api/api'
 module MangoPay
   LOG = LogProvider.provide(self)
 
-  VERSION = '4.0.2'.freeze
+  VERSION = '4.1.0'.freeze
 
   SANDBOX_API_URL = 'https://api.sandbox.mangopay.com'.freeze
   MAIN_API_URL = 'https://api.mangopay.com'.freeze
