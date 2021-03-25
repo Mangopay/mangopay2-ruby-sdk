@@ -19,6 +19,7 @@ describe MangoPay::PayIn::Card::Direct, type: :feature do
     it 'creates a card direct payin' do
       created = new_payin_card_direct
       expect(created['Id']).not_to be_nil
+      expect(created['Requested3DSVersion']).not_to be_nil
       check_type_and_status(created)
     end
   end
