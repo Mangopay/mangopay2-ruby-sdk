@@ -136,8 +136,8 @@ shared_context 'bank_accounts' do
                                      PostalCode: '75001',
                                      Country: 'FR'
                                  },
-                                 IBAN: 'FR7618829754160173622224154',
-                                 BIC: 'CMBRFR2BCME',
+                                 IBAN: 'FR7630004000031234567890143',
+                                 BIC: 'CRLYFRPP',
                                  Tag: 'Test bank account')
   end
 end
