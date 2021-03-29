@@ -37,8 +37,8 @@ end
 def build_iban_account
   account = MangoModel::IbanBankAccount.new
   add_user_details account
-  account.iban = 'FR7618829754160173622224154'
-  account.bic = 'CMBRFR2BCME'
+  account.iban = 'FR7630004000031234567890143'
+  account.bic = 'CRLYFRPP'
   account
 end
 
