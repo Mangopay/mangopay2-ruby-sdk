@@ -137,7 +137,7 @@ shared_context 'bank_accounts' do
                                      Country: 'FR'
                                  },
                                  IBAN: 'FR7630004000031234567890143',
-                                 BIC: 'CRLYFRPP',
+                                 BIC: 'BNPAFRPP',
                                  Tag: 'Test bank account')
   end
 end

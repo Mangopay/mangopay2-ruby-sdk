@@ -152,7 +152,7 @@ describe MangoPay::Client do
                                                               Country: 'FR'
                                                           },
                                                           IBAN: 'FR7630004000031234567890143',
-                                                          BIC: 'CRLYFRPP',
+                                                          BIC: 'BNPAFRPP',
                                                           Tag: 'Test bank account')
       expect(bank_account).not_to be_nil
       expect(bank_account['Id']).not_to be_nil
@@ -173,7 +173,7 @@ describe MangoPay::Client do
                                                               Country: 'FR'
                                                           },
                                                           IBAN: 'FR7630004000031234567890143',
-                                                          BIC: 'CRLYFRPP',
+                                                          BIC: 'BNPAFRPP',
                                                           Tag: 'Test bank account')
       pay_out = MangoPay::Client.create_payout(BankAccountId: bank_account['Id'],
 
