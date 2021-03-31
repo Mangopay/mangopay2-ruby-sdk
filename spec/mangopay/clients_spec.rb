@@ -71,7 +71,7 @@ describe MangoApi::Clients do
       account.owner_address = address
 
       account.iban = 'FR7630004000031234567890143'
-      account.bic = 'CRLYFRPP'
+      account.bic = 'BNPAFRPP'
       account.tag = 'custom meta'
 
       created_account = MangoApi::Clients.create_bank_account(account)
@@ -96,7 +96,7 @@ describe MangoApi::Clients do
       account.owner_address = address
 
       account.iban = 'FR7630004000031234567890143'
-      account.bic = 'CRLYFRPP'
+      account.bic = 'BNPAFRPP'
       account.tag = 'custom meta'
 
       debited_funds = MangoModel::Money.new
