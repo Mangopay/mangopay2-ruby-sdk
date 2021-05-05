@@ -1,6 +1,7 @@
 describe MangoPay do
   include_context 'users'
   include_context 'payins'
+  require 'json'
 
   describe 'requests log file' do
 
