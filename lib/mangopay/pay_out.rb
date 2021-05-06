@@ -8,9 +8,9 @@ module MangoPay
     # - +page+, +per_page+, +sort+: pagination and sorting params (see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch)
     # - +Status+: TransactionStatus {CREATED, SUCCEEDED, FAILED}
     # - +ResultCode+: string representing the transaction result
-    def self.refunds(pay_out_id, filters = {})
+    def self.refunds(pay_out_id, filters = {}, idempotency_key = nil)
       url = url(pay_out_id) + '/refunds'
-      MangoPay.request(:get, url, {}, filters)
+      MangoPay.request(:get, url, {}, filters, idempotency_key)
     end
 
     # See http://docs.mangopay.com/api-references/pay-out-bank-wire/
