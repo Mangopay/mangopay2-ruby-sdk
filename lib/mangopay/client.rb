@@ -47,7 +47,10 @@ module MangoPay
       # +currency_iso_code+ is currncy ISO code
       # see https://docs.mangopay.com/api-references/client-wallets/
       def fetch_wallet(funds_type, currency_iso_code)
-        MangoPay.request(:get, url() + "/wallets/#{funds_type}/#{currency_iso_code}")
+        method = :get
+        path = url() + "/wallets/#{funds_type}/#{currency_iso_code}"
+        yield method, path if block_given?
+        MangoPay.request(method, path)
       end
 
       # Fetch transactions for all your client wallets.
@@ -79,7 +82,10 @@ module MangoPay
       end
 
       def create_payout(params)
-        MangoPay.request(:post, url() + "/payouts", params)
+        method = :post
+        path = url() + "/payouts"
+        yield method, path, params if block_given?
+        MangoPay.request(method, path, params)
       end
 
     end

@@ -10,16 +10,16 @@ module MangoPay
         end
       end
 
-      def create(user_id, ubo_declaration_id, params)
-        MangoPay.request(:post, url(user_id, ubo_declaration_id), params)
+      def create(user_id, ubo_declaration_id, params, idempotency_key = nil)
+        MangoPay.request(:post, url(user_id, ubo_declaration_id), params, {}, idempotency_key)
       end
 
       def fetch(user_id, ubo_declaration_id, ubo_id)
         MangoPay.request(:get, url(user_id, ubo_declaration_id, ubo_id))
       end
 
-      def update(user_id, ubo_declaration_id, ubo_id, params)
-        MangoPay.request(:put, url(user_id, ubo_declaration_id, ubo_id), params)
+      def update(user_id, ubo_declaration_id, ubo_id, params, idempotency_key = nil)
+        MangoPay.request(:put, url(user_id, ubo_declaration_id, ubo_id), params, {}, idempotency_key)
       end
     end
   end

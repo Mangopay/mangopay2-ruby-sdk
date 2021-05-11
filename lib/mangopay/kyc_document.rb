@@ -9,20 +9,20 @@ module MangoPay
         MangoPay.request(:post, url(user_id), params, {}, idempotency_key)
       end
 
-      def update(user_id, document_id, params = {})
-        MangoPay.request(:put, url(user_id, document_id), params)
+      def update(user_id, document_id, params = {}, idempotency_key = nil)
+        MangoPay.request(:put, url(user_id, document_id), params, {}, idempotency_key)
       end
 
       # Fetches the KYC document belonging to the given +user_id+, with the given +document_id+.
-      def fetch(user_id, document_id)
+      def fetch(user_id, document_id, idempotency_key = nil)
         url = (user_id) ? url(user_id, document_id) : "#{MangoPay.api_path}/KYC/documents/#{CGI.escape(document_id.to_s)}"
-        MangoPay.request(:get, url)
+        MangoPay.request(:get, url, {}, {}, idempotency_key)
       end
 
       # Fetches list of KYC documents:
       # - for the particular user if +user_id+ is provided (not nil)
       # - or for all users otherwise.
-      # 
+      #
       # Optional +filters+ is a hash accepting following keys:
       # - +page+, +per_page+, +sort+: pagination and sorting params (see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch)
       # - filters such as +Type+ (e.g. 'IDENTITY_PROOF') and +Status+ (e.g. 'VALIDATED')
@@ -35,12 +35,12 @@ module MangoPay
       end
 
       # Adds the file page (attachment) to the given document.
-      # 
+      #
       # See http://docs.mangopay.com/api-references/kyc/pages/ :
       # - Document have to be in 'CREATED' Status
       # - You can create as many pages as needed
       # - Change Status to 'VALIDATION_ASKED' to submit KYC documents
-      # 
+      #
       # The file_content_base64 param may be:
       # - Base64 encoded file content
       # - or nil: in this case pass the file path in the next param
