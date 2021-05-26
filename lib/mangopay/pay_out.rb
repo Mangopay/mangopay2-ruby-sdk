@@ -20,6 +20,11 @@ module MangoPay
       def self.url(*)
         "#{MangoPay.api_path}/payouts/bankwire"
       end
+
+      def self.get_bankwire(pay_out_id)
+        url = self.url() + "/" + pay_out_id
+        MangoPay.request(:get, url);
+      end
     end
   end
 end

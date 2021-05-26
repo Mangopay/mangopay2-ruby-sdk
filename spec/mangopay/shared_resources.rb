@@ -439,7 +439,8 @@ shared_context 'payouts' do
         Fees: {Currency: 'EUR', Amount: 0},
         BankAccountId: new_bank_account['Id'],
         Communication: 'This is a test',
-        Tag: 'Test PayOut/Bank/Wire'
+        Tag: 'Test PayOut/Bank/Wire',
+        PayoutModeRequested: 'Standard'
     )
   end
 end

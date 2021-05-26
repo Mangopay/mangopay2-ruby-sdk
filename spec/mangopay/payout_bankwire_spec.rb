@@ -40,6 +40,15 @@ describe MangoPay::PayOut::BankWire, type: :feature do
     end
   end
 
+  describe 'Get Bankwire' do
+    it 'gets a bankwire' do
+      created = new_payout_bankwire
+      fetched = MangoPay::PayOut::BankWire.get_bankwire(created['Id'])
+      expect(fetched['Id']).to eq(created['Id'])
+      expect(fetched['CreationDate']).to eq(created['CreationDate'])
+    end
+  end
+
   describe 'FETCH' do
     it 'fetches a payout' do
       created = new_payout_bankwire
