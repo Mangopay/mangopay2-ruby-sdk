@@ -12,6 +12,7 @@ describe MangoApi::PayOuts do
       it 'creates the pay-out entity' do
         created = MangoApi::PayOuts.create pay_out
 
+        bankwireGet = MangoApi::PayOuts.get_bankwire created.id
         expect(created).to be_kind_of MangoModel::PayOut
         expect(created.id).not_to be_nil
         expect(created.payment_type).to be MangoModel::PayOutPaymentType::BANK_WIRE

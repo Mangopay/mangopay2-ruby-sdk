@@ -39,6 +39,12 @@ module MangoApi
         parse response
       end
 
+      def get_bankwire(id)
+        uri = provide_uri(:get_pay_out_bankwire, id)
+        response = HttpClient.get(uri)
+        parse response
+      end
+
       private
 
       # Parses a JSON-originating hash into the corresponding

@@ -21,5 +21,14 @@ module MangoModel
 
     # [PayOutPaymentType] Its type
     attr_accessor :payment_type
+
+    # [String] ModeRequested
+    attr_accessor :mode_requested
+
+    # [String] ModeApplied
+    attr_accessor :mode_applied
+
+    # [String] Status
+    attr_accessor :status
   end
 end

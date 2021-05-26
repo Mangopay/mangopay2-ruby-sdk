@@ -92,6 +92,7 @@ module MangoApi
           get_accounts_mandates: %w[GET %(users/#{_params[0]}/bankaccounts/#{_params[1]}/mandates)],
 
           create_pay_out: %w[POST payouts/bankwire],
+          get_pay_out_bankwire: %w[GET %(payouts/bankwire/#{_params[0]})],
           get_pay_out: %w[GET %(payouts/#{_params[0]})],
 
           create_kyc_document: %w[POST %(users/#{_params[0]}/kyc/documents)],
