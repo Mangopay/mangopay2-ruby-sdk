@@ -6,7 +6,11 @@ describe MangoPay::Configuration do
       c.client_id = 'test_asd'
       c.client_apiKey = '00000'
       MangoPay::User.fetch()
-    }.to raise_error(MangoPay::ResponseError)
+    }.to raise_error { |err|
+        expect(err).to be_a MangoPay::ResponseError
+        expect(err.code).to eq '401'
+        expect(err.message).to eq 'invalid_client'
+      }
   end
 
   it 'goes ok when calling with correct client credentials' do
