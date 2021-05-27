@@ -1,3 +1,26 @@
+## [3.4.0] - 2021.05.27
+## Added
+
+### Instant payment
+
+Mangopay introduces the instant payment mode. It allows payouts (transfer from wallet to user bank account) to be processed within 25 seconds, rather than the 48 hours for a standard payout.
+
+You can now use this new type of payout with the Ruby SDK.
+
+Example :
+
+```ruby
+bankwire = MangoPay::PayOut::BankWire.get_bankwire(payout['Id'])
+# where payout['Id'] is the id of an existing payout
+```
+
+Please note that this feature must be authorized and activated by MANGOPAY. More information [here](https://docs.mangopay.com/guide/instant-payment-payout).
+
+### Accepted PRs
+
+- Add support to create refunds for PayIn, Transfer and PayOut transactions.
+- ResponseError object improvement
+
 ## [3.3.0]
 ## Fixed
 
