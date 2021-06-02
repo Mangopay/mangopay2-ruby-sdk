@@ -14,6 +14,17 @@ describe MangoPay::UboDeclaration do
       expect(ubo_declaration_byId).not_to be_nil
     end
 
+    it 'fetches ubo declaration just by id' do
+      legal_user = new_legal_user
+
+      ubo_declaration = MangoPay::UboDeclaration.create(legal_user['Id'], nil)
+
+      ubo_declaration_byId = MangoPay::UboDeclaration.fetch(nil, ubo_declaration['Id'], nil)
+
+      expect(ubo_declaration).not_to be_nil
+      expect(ubo_declaration_byId).not_to be_nil
+    end
+
     describe 'UPDATE' do
       it 'can update a UBO declaration' do
         legal_user = new_legal_user
