@@ -14,7 +14,7 @@ module MangoPay
         MangoPay.request(:post, url(user_id), {}, {}, idempotency_key)
       end
 
-      # Fetches the Ubo declaration belonging to the given +user_id+ if given, with the given +document_id+.
+      # Fetches the Ubo declaration belonging to the given +user_id+ if given, with the given +id+.
       def fetch(user_id, id, idempotency_key)
         url = (user_id) ? url(user_id, id) : "#{MangoPay.api_path}/kyc/ubodeclarations/#{CGI.escape(id.to_s)}"
         MangoPay.request(:get, url, {}, {}, idempotency_key)
