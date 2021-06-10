@@ -5,7 +5,6 @@ describe MangoPay::PayIn::RecurringPayments, type: :feature do
 
   describe 'CREATE' do
     it 'creates a recurring payment' do
-      #user = create_new_natural_user
       cardreg = new_card_registration_3dsecure_completed
       wallet = new_wallet
       recurring = MangoPay::PayIn::RecurringPayments::Recurring.create(
@@ -41,10 +40,27 @@ describe MangoPay::PayIn::RecurringPayments, type: :feature do
         }
       )
       expect(recurring).not_to be_nil
-      #created = new_payin_card_direct
-      #expect(created['Id']).not_to be_nil
-      #expect(created['Requested3DSVersion']).not_to be_nil
-      #check_type_and_status(created)
+
+      cit = MangoPay::PayIn::RecurringPayments::CIT.create(
+        RecurringPayinRegistrationId: recurring['Id'],
+        IpAddress: "2001:0620:0000:0000:0211:24FF:FE80:C12C",
+        SecureModeReturnURL: "http://www.my-site.com/returnurl",
+        StatementDescriptor: "lorem",
+        Tag: "custom meta",
+        BrowserInfo: {
+          AcceptHeader: "text/html, application/xhtml+xml, application/xml;q=0.9, /;q=0.8",
+          JavaEnabled: true,
+          Language: "FR-FR",
+          ColorDepth: 4,
+          ScreenHeight: 1800,
+          ScreenWidth: 400,
+          JavascriptEnabled: true,
+          TimeZoneOffset: "+60",
+          UserAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 13_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+        }
+      )
+
+      expect(cit).not_to be_nil
     end
   end
 end
