@@ -2,6 +2,7 @@ module MangoPay
 
   # See http://docs.mangopay.com/api-references/refund/
   class Refund < Resource
+    include HTTPCalls::Create
     include HTTPCalls::Fetch
 
     # Fetches list of refunds belonging to given +repudiation_id+
