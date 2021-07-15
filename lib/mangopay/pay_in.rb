@@ -130,8 +130,12 @@ module MangoPay
       class Recurring < Resource
         include HTTPCalls::Create
 
-        def self.url(*)
-          "#{MangoPay.api_path}/recurringpayinregistrations"
+        def self.url(*args)
+          if args.any?
+            "#{MangoPay.api_path}/recurringpayinregistrations/#{args.first}"
+          else
+            "#{MangoPay.api_path}/recurringpayinregistrations"
+          end
         end
       end
 
