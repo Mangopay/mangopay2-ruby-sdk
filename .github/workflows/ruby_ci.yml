@@ -28,4 +28,4 @@ jobs:
           ruby-version: 2.6.x
 
       - name: Test
-        run: bundle exec rspe
+        run: bundle exec rspec
