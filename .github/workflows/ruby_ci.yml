@@ -1,0 +1,34 @@
+name: mangopay2-net-ruby-ci
+
+on:
+  push:
+    branches:
+      # push on master branch
+      - master
+      # push on a feature branch
+      - feature/*
+      # push on a bugfix branch
+      - bugfix/*
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby 2.6
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.6.x
+      - name: Install Rspec
+        run: |
+          gem install bundler
+          bundler install
+      - name: Test
+        run: bundle exec rspec
