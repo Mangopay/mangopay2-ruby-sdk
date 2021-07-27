@@ -69,4 +69,82 @@ describe MangoPay::PayIn::RecurringPayments, type: :feature do
       expect(cit).not_to be_nil
     end
   end
+
+  describe 'GET' do
+    it 'creates and gets a recurring payment' do
+      cardreg = new_card_registration_3dsecure_completed
+      wallet = new_wallet
+      recurring = MangoPay::PayIn::RecurringPayments::Recurring.create(
+        AuthorId: new_natural_user['Id'],
+        CardId: cardreg['CardId'],
+        CreditedUserId: wallet['Owners'][0],
+        CreditedWalletId: wallet['Id'],
+        FirstTransactionDebitedFunds: {Currency: 'EUR', Amount: 10},
+        FirstTransactionFees: {Currency: 'EUR', Amount: 1},
+        Billing: {
+          Address: {
+            AddressLine1: 'AddressLine1',
+            AddressLine2: 'AddressLine2',
+            City: 'City',
+            Region: 'Region',
+            PostalCode: 'PostalCode',
+            Country: 'FR'
+          },
+          FirstName: 'Joe',
+          LastName: 'Blogs'
+        },
+        Shipping: {
+          Address: {
+            AddressLine1: 'AddressLine1',
+            AddressLine2: 'AddressLine2',
+            City: 'City',
+            Region: 'Region',
+            PostalCode: 'PostalCode',
+            Country: 'FR'
+          },
+          FirstName: 'Joe',
+          LastName: 'Blogs'
+        }
+      )
+      expect(recurring).not_to be_nil
+
+      get = MangoPay::PayIn::RecurringPayments::Recurring.fetch(
+        recurring['Id']
+      )
+
+      expect(get).not_to be_nil
+
+      update = MangoPay::PayIn::RecurringPayments::Recurring.update(
+        recurring['Id'],
+        {
+          Billing: {
+            Address: {
+              AddressLine1: 'TEST',
+              AddressLine2: 'TEST',
+              City: 'TEST',
+              Region: 'FR',
+              PostalCode: 'TEST',
+              Country: 'FR'
+            },
+            FirstName: 'TEST',
+            LastName: 'TEST'
+          },
+          Shipping: {
+            Address: {
+              AddressLine1: 'TEST',
+              AddressLine2: 'TEST',
+              City: 'TEST',
+              Region: 'FR',
+              PostalCode: 'TEST',
+              Country: 'FR'
+            },
+            FirstName: 'TEST',
+            LastName: 'TEST'
+          }
+        }
+      )
+
+      expect(update).not_to be_nil
+    end
+  end
 end
