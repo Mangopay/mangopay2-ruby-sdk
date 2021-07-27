@@ -57,6 +57,12 @@ describe MangoPay::PayIn::RecurringPayments, type: :feature do
           JavascriptEnabled: true,
           TimeZoneOffset: "+60",
           UserAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 13_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+        },
+        DebitedFunds: {
+          Currency: 'EUR', Amount: 10
+        },
+        Fees: {
+          Currency: 'EUR', Amount: 10
         }
       )
 
