@@ -128,6 +128,7 @@ module MangoPay
 
     module RecurringPayments
       class Recurring < Resource
+        include HTTPCalls::Fetch
         include HTTPCalls::Create
 
         def self.url(*args)
