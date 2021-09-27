@@ -10,17 +10,17 @@ module MangoPay
         end
       end
 
-      def create(user_id, idempotency_key)
+      def create(user_id, idempotency_key = nil)
         MangoPay.request(:post, url(user_id), {}, {}, idempotency_key)
       end
 
       # Fetches the Ubo declaration belonging to the given +user_id+ if given, with the given +id+.
-      def fetch(user_id, id, idempotency_key)
+      def fetch(user_id, id, idempotency_key = nil)
         url = (user_id) ? url(user_id, id) : "#{MangoPay.api_path}/kyc/ubodeclarations/#{CGI.escape(id.to_s)}"
         MangoPay.request(:get, url, {}, {}, idempotency_key)
       end
 
-      def update(user_id, id, params = {}, idempotency_key)
+      def update(user_id, id, params = {}, idempotency_key = nil)
         request_params = {
             Status: params['Status'],
             Ubos: params['Ubos']
