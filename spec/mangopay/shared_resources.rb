@@ -216,6 +216,22 @@ shared_context 'payins' do
   end
 
   ###############################################
+  # payconiq/web
+  ###############################################
+
+  let(:new_payin_payconiq_web) do
+    MangoPay::PayIn::Payconiq::Web.create(
+      AuthorId: new_natural_user['Id'],
+      CreditedWalletId: new_wallet['Id'],
+      DebitedFunds: {Currency: 'EUR', Amount: 100},
+      Fees: {Currency: 'EUR', Amount: 0},
+      ReturnURL: MangoPay.configuration.root_url,
+      Country: "BE",
+      Tag: 'Custom Meta'
+    )
+  end
+
+  ###############################################
   # applepay/direct
   ###############################################
 
