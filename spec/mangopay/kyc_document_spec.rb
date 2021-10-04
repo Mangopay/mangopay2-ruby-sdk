@@ -8,6 +8,7 @@ describe MangoPay::KycDocument do
       expect(new_document['Status']).to eq('CREATED')
       expect(new_document['RefusedReasonType']).to be_nil
       expect(new_document['RefusedReasonMessage']).to be_nil
+      expect(new_document['Flags']).to match_array([])
     end
   end
 
