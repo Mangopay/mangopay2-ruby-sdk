@@ -24,5 +24,8 @@ module MangoModel
 
     # [Integer] Time when the document was processed (UNIX timestamp)
     attr_accessor :processed_date
+
+    # [Array] More information regarding why the document has been rejected.
+    attr_accessor :flags
   end
 end
