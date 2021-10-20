@@ -40,6 +40,12 @@ describe MangoPay::PayIn::RecurringPayments, type: :feature do
         }
       )
       expect(recurring).not_to be_nil
+      expect(recurring['Status']).not_to be_nil
+      expect(recurring['Id']).not_to be_nil
+      id = recurring['Id']
+
+      get = MangoPay::PayIn::RecurringPayments::Recurring.fetch(id)
+      expect(get).not_to be_nil
 
       cit = MangoPay::PayIn::RecurringPayments::CIT.create(
         RecurringPayinRegistrationId: recurring['Id'],
@@ -61,6 +67,12 @@ describe MangoPay::PayIn::RecurringPayments, type: :feature do
       )
 
       expect(cit).not_to be_nil
+
+      update = MangoPay::PayIn::RecurringPayments::Recurring.update(id, {
+        Status: 'Ended'
+      })
+
+      expect(update).not_to be_nil
     end
   end
 end
