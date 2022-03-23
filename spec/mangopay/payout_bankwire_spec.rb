@@ -49,6 +49,26 @@ describe MangoPay::PayOut::BankWire, type: :feature do
     end
   end
 
+  describe 'Check Eligibility' do
+    it 'checks the eligibility of a payout' do
+      created = new_payout_bankwire
+
+      eligibility = MangoPay::PayOut::InstantPayoutEligibility::Reachability.create(
+        AuthorId: created['AuthorId'],
+        DebitedFunds: {
+          Amount: 10,
+          Currency: 'EUR'
+        },
+        PayoutModeRequested: 'INSTANT_PAYMENT',
+        BankAccountId: created['BankAccountId'],
+        DebitedWalletId: created['DebitedWalletId']
+      )
+
+      expect(created).not_to be_nil
+      expect(eligibility).not_to be_nil
+    end
+  end
+
   describe 'FETCH' do
     it 'fetches a payout' do
       created = new_payout_bankwire

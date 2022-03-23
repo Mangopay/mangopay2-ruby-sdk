@@ -26,5 +26,16 @@ module MangoPay
         MangoPay.request(:get, url);
       end
     end
+
+    # See https://docs.mangopay.com/endpoints/v2.01/payouts#e1058_check-instant-payout-eligibility
+    module InstantPayoutEligibility
+      class Reachability < Resource
+        include HTTPCalls::Create
+
+        def self.url(*)
+          "#{MangoPay.api_path}/payouts/reachability"
+        end
+      end
+    end
   end
 end
