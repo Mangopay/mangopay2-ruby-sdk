@@ -11,7 +11,7 @@ describe MangoPay::PayIn::ApplePay::Direct, type: :feature do
 
   describe 'CREATE' do
     it 'creates a applepay direct payin' do
-      #pending("no cards to test for")
+      pending("no cards to test for")
       created = new_payin_applepay_direct
       expect(created['Id']).not_to be_nil
       check_type_and_status(created)
