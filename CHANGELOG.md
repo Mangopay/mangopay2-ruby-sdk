@@ -1,3 +1,12 @@
+## [3.9.0] - 2022.03.31
+### Added
+
+#### Instant payment eligibility check
+
+With the function
+`PayOut::InstantPayoutEligibility::Reachability.create(params)`
+the destination bank reachability can now be verified prior to making an instant payout. This results in a better user experience, as this preliminary check will allow the platform to propose the instant payout option only to end users whose bank is eligible.
+
 ## [3.8.0] - 2021.10.20
 ## Added
 
