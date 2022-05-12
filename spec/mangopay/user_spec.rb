@@ -33,6 +33,20 @@ describe MangoPay::User do
       })
       expect(updated_user['LegalRepresentativeFirstName']).to eq('Jack')
     end
+
+    it 'updates a natural user terms and conditions accepted' do
+      updated_user = MangoPay::NaturalUser.update(new_natural_user['Id'] ,{
+        TermsAndConditionsAccepted: true
+      })
+      expect(updated_user['TermsAndConditionsAccepted']).to eq(true)
+    end
+
+    it 'updates a legal user terms and conditions accepted' do
+      updated_user = MangoPay::LegalUser.update(new_legal_user['Id'], {
+        TermsAndConditionsAccepted: true
+      })
+      expect(updated_user['TermsAndConditionsAccepted']).to eq(true)
+    end
   end
 
   describe 'FETCH' do
