@@ -37,15 +37,19 @@ describe MangoPay::PayIn::RecurringPayments, type: :feature do
           },
           FirstName: 'Joe',
           LastName: 'Blogs'
-        }
+        },
+        FreeCycles: 0
       )
       expect(recurring).not_to be_nil
       expect(recurring['Status']).not_to be_nil
       expect(recurring['Id']).not_to be_nil
+      expect(recurring['FreeCycles']).not_to be_nil
+
       id = recurring['Id']
 
       get = MangoPay::PayIn::RecurringPayments::Recurring.fetch(id)
       expect(get).not_to be_nil
+      expect(get['FreeCycles']).not_to be_nil
 
       cit = MangoPay::PayIn::RecurringPayments::CIT.create(
         RecurringPayinRegistrationId: recurring['Id'],
