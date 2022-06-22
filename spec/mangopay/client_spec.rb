@@ -126,18 +126,18 @@ describe MangoPay::Client do
     end
   end
 
-  describe 'validate' do
-    it 'validates card' do
-      client = MangoPay::Client.fetch
-      completed = new_card_registration_completed
-      card_id = completed['CardId']
-      client_id = client['ClientId']
-
-      card = MangoPay::Client.validate(client_id, card_id)
-      expect(client).not_to be_nil
-      expect(card).not_to be_nil
-    end
-  end
+  # describe 'validate' do
+  #   it 'validates card' do
+  #     client = MangoPay::Client.fetch
+  #     completed = new_card_registration_completed
+  #     card_id = completed['CardId']
+  #     client_id = client['ClientId']
+  #
+  #     card = MangoPay::Client.validate(client_id, card_id)
+  #     expect(client).not_to be_nil
+  #     expect(card).not_to be_nil
+  #   end
+  # end
 
   describe 'create_bank_account' do
     it 'creates a new bank account' do
