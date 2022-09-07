@@ -42,6 +42,7 @@ module MangoPay
   autoload :BankingAliasesIBAN, 'mangopay/bankingaliases_iban'
   autoload :UboDeclaration, 'mangopay/ubo_declaration'
   autoload :Ubo, 'mangopay/ubo'
+  autoload :Regulatory, 'mangopay/regulatory'
 
   # temporary
   autoload :Temp, 'mangopay/temp'
@@ -72,6 +73,10 @@ module MangoPay
 
     def api_path
       "/#{version_code}/#{MangoPay.configuration.client_id}"
+    end
+
+    def api_path_no_client
+      "/#{version_code}"
     end
 
     def api_uri(url='')
