@@ -407,7 +407,7 @@ shared_context 'payins' do
         CardId: cardreg['CardId'],
         SecureModeReturnURL: 'http://test.com',
         Tag: 'Test PayIn/Card/Direct',
-        Requested3DSVersion: 'V2',
+        Requested3DSVersion: 'V2_1',
         BrowserInfo: {
             AcceptHeader: "text/html, application/xhtml+xml, application/xml;q=0.9, /;q=0.8",
             JavaEnabled: true,
@@ -437,7 +437,7 @@ shared_context 'payins' do
         SecureMode: 'DEFAULT',
         SecureModeReturnURL: 'http://test.com',
         Tag: 'Test Card PreAuthorization',
-        Requested3DSVersion: 'V2',
+        Requested3DSVersion: 'V2_1',
         BrowserInfo: {
             AcceptHeader: "text/html, application/xhtml+xml, application/xml;q=0.9, /;q=0.8",
             JavaEnabled: true,
