@@ -221,13 +221,13 @@ shared_context 'payins' do
 
   let(:new_payin_payconiq_web) do
     MangoPay::PayIn::Payconiq::Web.create(
-      AuthorId: new_natural_user['Id'],
-      CreditedWalletId: new_wallet['Id'],
-      DebitedFunds: {Currency: 'EUR', Amount: 100},
-      Fees: {Currency: 'EUR', Amount: 0},
-      ReturnURL: MangoPay.configuration.root_url,
-      Country: "BE",
-      Tag: 'Custom Meta'
+        AuthorId: new_natural_user['Id'],
+        CreditedWalletId: new_wallet['Id'],
+        DebitedFunds: {Currency: 'EUR', Amount: 100},
+        Fees: {Currency: 'EUR', Amount: 0},
+        ReturnURL: MangoPay.configuration.root_url,
+        Country: "BE",
+        Tag: 'Custom Meta'
     )
   end
 
@@ -357,7 +357,7 @@ shared_context 'payins' do
     data = {
         data: cardreg['PreregistrationData'],
         accessKeyRef: cardreg['AccessKey'],
-        cardNumber: 4970100000000154,
+        cardNumber: 4970105191923460,
         cardExpirationDate: 1226,
         cardCvx: 123}
 
@@ -377,11 +377,11 @@ shared_context 'payins' do
 
     # 2nd step: tokenize by payline (fills-in RegistrationData)
     data = {
-      data: cardreg['PreregistrationData'],
-      accessKeyRef: cardreg['AccessKey'],
-      cardNumber: 4970105191923460,
-      cardExpirationDate: 1224,
-      cardCvx: 123}
+        data: cardreg['PreregistrationData'],
+        accessKeyRef: cardreg['AccessKey'],
+        cardNumber: 4970105191923460,
+        cardExpirationDate: 1224,
+        cardCvx: 123}
 
     res = Net::HTTP.post_form(URI(cardreg['CardRegistrationURL']), data)
     raise Exception, [res, res.body] unless res.is_a?(Net::HTTPOK) && res.body.start_with?('data=')
@@ -407,7 +407,19 @@ shared_context 'payins' do
         CardId: cardreg['CardId'],
         SecureModeReturnURL: 'http://test.com',
         Tag: 'Test PayIn/Card/Direct',
-        Requested3DSVersion: 'V1'
+        Requested3DSVersion: 'V2_1',
+        BrowserInfo: {
+            AcceptHeader: "text/html, application/xhtml+xml, application/xml;q=0.9, /;q=0.8",
+            JavaEnabled: true,
+            Language: "FR-FR",
+            ColorDepth: 4,
+            ScreenHeight: 1800,
+            ScreenWidth: 400,
+            JavascriptEnabled: true,
+            TimeZoneOffset: "+60",
+            UserAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 13_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+        },
+        IpAddress: "2001:0620:0000:0000:0211:24FF:FE80:C12C"
     )
   end
 
@@ -425,7 +437,19 @@ shared_context 'payins' do
         SecureMode: 'DEFAULT',
         SecureModeReturnURL: 'http://test.com',
         Tag: 'Test Card PreAuthorization',
-        Requested3DSVersion: 'V1'
+        Requested3DSVersion: 'V2_1',
+        BrowserInfo: {
+            AcceptHeader: "text/html, application/xhtml+xml, application/xml;q=0.9, /;q=0.8",
+            JavaEnabled: true,
+            Language: "FR-FR",
+            ColorDepth: 4,
+            ScreenHeight: 1800,
+            ScreenWidth: 400,
+            JavascriptEnabled: true,
+            TimeZoneOffset: "+60",
+            UserAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 13_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+        },
+        IpAddress: "2001:0620:0000:0000:0211:24FF:FE80:C12C"
     )
   end
 
@@ -440,7 +464,19 @@ shared_context 'payins' do
         DebitedFunds: {Currency: 'EUR', Amount: amnt},
         Fees: {Currency: 'EUR', Amount: 0},
         PreauthorizationId: preauth['Id'],
-        Tag: 'Test PayIn/PreAuthorized/Direct'
+        Tag: 'Test PayIn/PreAuthorized/Direct',
+        BrowserInfo: {
+            AcceptHeader: "text/html, application/xhtml+xml, application/xml;q=0.9, /;q=0.8",
+            JavaEnabled: true,
+            Language: "FR-FR",
+            ColorDepth: 4,
+            ScreenHeight: 1800,
+            ScreenWidth: 400,
+            JavascriptEnabled: true,
+            TimeZoneOffset: "+60",
+            UserAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 13_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+        },
+        IpAddress: "2001:0620:0000:0000:0211:24FF:FE80:C12C"
     )
   end
 

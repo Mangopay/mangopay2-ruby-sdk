@@ -15,7 +15,7 @@ describe MangoPay::PreAuthorization do
       expect(created['PaymentStatus']).to eq('WAITING')
       expect(created['PaymentType']).to eq('CARD')
       expect(created['ExecutionType']).to eq('DIRECT')
-      expect(created['Requested3DSVersion']).to eq('V1')
+      expect(created['Requested3DSVersion']).to eq('V2_1')
     end
   end
 
