@@ -1,7 +1,8 @@
 describe MangoPay::PayIn::PreAuthorized::Direct, type: :feature do
   include_context 'wallets'
   include_context 'payins'
-  
+  include_context 'users'
+
   def check_type_and_status(payin)
     expect(payin['Type']).to eq('PAYIN')
     expect(payin['Nature']).to eq('REGULAR')
@@ -67,4 +68,18 @@ describe MangoPay::PayIn::PreAuthorized::Direct, type: :feature do
     end
   end
 
+  describe 'CREATE PRE AUTHORIZED DEPOSIT' do
+    it 'creates a card direct pre authorized deposit payin' do
+      wallet = new_wallet
+      author = new_natural_user
+      card_registration = new_card_registration_completed
+      deposit = create_new_deposit(card_registration['Id'], author['Id'])
+
+      created = create_new_payin_pre_authorized_deposit_direct(deposit['Id'], author['Id'], wallet['Id'])
+
+      expect(created['Id']).not_to be_nil
+      check_type_and_status(created)
+      expect(created['DepositId']).to eq(deposit['Id'])
+    end
+  end
 end

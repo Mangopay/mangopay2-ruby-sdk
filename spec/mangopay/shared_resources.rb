@@ -481,6 +481,21 @@ shared_context 'payins' do
   end
 
   ###############################################
+  # pre-authorized direct deposit
+  ###############################################
+
+  def create_new_payin_pre_authorized_deposit_direct(deposit_id, author_id, credited_wallet_id)
+    MangoPay::PayIn::PreAuthorized::Direct.create_pre_authorized_deposit_pay_in(
+        AuthorId: author_id,
+        CreditedWalletId: credited_wallet_id,
+        DebitedFunds: {Currency: 'EUR', Amount: 500},
+        Fees: {Currency: 'EUR', Amount: 0},
+        DepositId: deposit_id,
+        Tag: 'lorem ipsum'
+    )
+  end
+
+  ###############################################
   # bankwire/direct
   ###############################################
 
@@ -577,4 +592,58 @@ shared_context 'bankigaliases' do
                                             Country: 'LU'
                                         }, new_wallet['Id'])
   end
+end
+
+
+###############################################
+# deposits
+###############################################
+
+def create_new_deposit(card_registration_id, author_id)
+  MangoPay::Deposit.create(
+      {
+          AuthorId: author_id,
+          DebitedFunds: {Currency: 'EUR', Amount: 1000},
+          CardId: card_registration_id,
+          SecureModeReturnURL: 'http://test.com',
+          StatementDescriptor: "lorem",
+          Culture: 'FR',
+          IpAddress: "2001:0620:0000:0000:0211:24FF:FE80:C12C",
+          BrowserInfo: {
+              AcceptHeader: "text/html, application/xhtml+xml, application/xml;q=0.9, /;q=0.8",
+              JavaEnabled: true,
+              Language: "FR-FR",
+              ColorDepth: 4,
+              ScreenHeight: 1800,
+              ScreenWidth: 400,
+              JavascriptEnabled: true,
+              TimeZoneOffset: "+60",
+              UserAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 13_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+          },
+          Billing: {
+              Address: {
+                  AddressLine1: 'AddressLine1',
+                  AddressLine2: 'AddressLine2',
+                  City: 'City',
+                  Region: 'Region',
+                  PostalCode: 'PostalCode',
+                  Country: 'FR'
+              },
+              FirstName: 'Joe',
+              LastName: 'Blogs'
+          },
+          Shipping: {
+              Address: {
+                  AddressLine1: 'AddressLine1',
+                  AddressLine2: 'AddressLine2',
+                  City: 'City',
+                  Region: 'Region',
+                  PostalCode: 'PostalCode',
+                  Country: 'FR'
+              },
+              FirstName: 'Joe',
+              LastName: 'Blogs'
+          }
+      }
+  )
 end
