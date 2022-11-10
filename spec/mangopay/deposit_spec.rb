@@ -6,7 +6,7 @@ describe MangoPay::Deposit do
     it 'creates a new deposit' do
       author = new_natural_user
       card_registration = new_card_registration_completed
-      deposit = create_new_deposit(card_registration['Id'], author['Id'])
+      deposit = create_new_deposit(card_registration['CardId'], author['Id'])
 
       assert_deposit(deposit, card_registration['CardId'], author["Id"])
     end
@@ -16,7 +16,7 @@ describe MangoPay::Deposit do
     it 'get an existing deposit' do
       author = new_natural_user
       card_registration = new_card_registration_completed
-      deposit = create_new_deposit(card_registration['Id'], author['Id'])
+      deposit = create_new_deposit(card_registration['CardId'], author['Id'])
 
       assert_deposit(deposit, card_registration['CardId'], author["Id"])
 
@@ -30,7 +30,7 @@ describe MangoPay::Deposit do
     it 'cancel an existing deposit' do
       author = new_natural_user
       card_registration = new_card_registration_completed
-      deposit = create_new_deposit(card_registration['Id'], author['Id'])
+      deposit = create_new_deposit(card_registration['CardId'], author['Id'])
 
       assert_deposit(deposit, card_registration['CardId'], author["Id"])
       expect(deposit['Status']).to eq('SUCCEEDED')
