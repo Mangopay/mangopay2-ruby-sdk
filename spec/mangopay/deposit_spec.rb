@@ -53,7 +53,6 @@ end
 
 def assert_deposit(deposit, card_reg_id, author_id)
   expect(deposit['Id']).not_to be_nil
-  expect(deposit['Id'].to_i).to be > 0
   expect(deposit['CreationDate']).not_to be_nil
   expect(deposit['ExpirationDate']).not_to be_nil
   expect(deposit['AuthorId']).not_to be_nil
