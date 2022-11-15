@@ -68,7 +68,9 @@ describe MangoPay::PayIn::PreAuthorized::Direct, type: :feature do
     end
   end
 
-  describe 'CREATE PRE AUTHORIZED DEPOSIT' do
+    # this flow is tested manually for the moment
+=begin
+  describe 'CREATE AND VIEW PRE AUTHORIZED DEPOSIT' do
     it 'creates a card direct pre authorized deposit payin' do
       wallet = new_wallet
       author = new_natural_user
@@ -82,4 +84,5 @@ describe MangoPay::PayIn::PreAuthorized::Direct, type: :feature do
       expect(created['DepositId']).to eq(deposit['Id'])
     end
   end
+=end
 end

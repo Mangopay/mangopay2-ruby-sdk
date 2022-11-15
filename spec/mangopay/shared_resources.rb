@@ -393,6 +393,28 @@ shared_context 'payins' do
                                       RegistrationData: cardreg['RegistrationData'])
   end
 
+  let(:new_card_registration_completed_for_deposit) do
+    # 1st step: create
+    cardreg = new_card_registration
+
+    # 2nd step: tokenize by payline (fills-in RegistrationData)
+    data = {
+        data: cardreg['PreregistrationData'],
+        accessKeyRef: cardreg['AccessKey'],
+        cardNumber: 4970105181818183,
+        cardExpirationDate: 1226,
+        cardCvx: 123}
+
+    res = Net::HTTP.post_form(URI(cardreg['CardRegistrationURL']), data)
+    raise Exception, [res, res.body] unless res.is_a?(Net::HTTPOK) && res.body.start_with?('data=')
+
+    cardreg['RegistrationData'] = res.body
+
+    # 3rd step: update (fills-in CardId) and return it
+    MangoPay::CardRegistration.update(cardreg['Id'],
+                                      RegistrationData: cardreg['RegistrationData'])
+  end
+
   let(:new_payin_card_direct) { create_new_payin_card_direct(new_wallet) }
 
   def create_new_payin_card_direct(to_wallet, amnt = 1000)
@@ -605,7 +627,7 @@ def create_new_deposit(card_registration_id, author_id)
           AuthorId: author_id,
           DebitedFunds: {Currency: 'EUR', Amount: 1000},
           CardId: card_registration_id,
-          SecureModeReturnURL: 'http://test.com',
+          SecureModeReturnURL: 'http://mangopay-sandbox-test.com',
           StatementDescriptor: "lorem",
           Culture: 'FR',
           IpAddress: "2001:0620:0000:0000:0211:24FF:FE80:C12C",
