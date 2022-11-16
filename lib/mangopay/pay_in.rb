@@ -55,6 +55,10 @@ module MangoPay
         def self.url(*)
           "#{MangoPay.api_path}/payins/preauthorized/direct"
         end
+
+        def self.create_pre_authorized_deposit_pay_in(params, idempotency_key = nil)
+          MangoPay.request(:post, "#{MangoPay.api_path}/payins/deposit-preauthorized/direct/full-capture", params, {}, idempotency_key)
+        end
       end
 
     end

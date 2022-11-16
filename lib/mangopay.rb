@@ -43,6 +43,7 @@ module MangoPay
   autoload :UboDeclaration, 'mangopay/ubo_declaration'
   autoload :Ubo, 'mangopay/ubo'
   autoload :Regulatory, 'mangopay/regulatory'
+  autoload :Deposit, 'mangopay/deposit'
 
   # temporary
   autoload :Temp, 'mangopay/temp'
