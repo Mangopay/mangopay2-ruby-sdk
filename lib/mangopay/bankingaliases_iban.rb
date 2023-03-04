@@ -8,9 +8,5 @@ module MangoPay
       MangoPay.request(:post, url, params, {}, headers_or_idempotency_key)
     end
 
-    def self.url(id = nil)
-      "#{super.url(id)}"
-    end
-
   end
 end
