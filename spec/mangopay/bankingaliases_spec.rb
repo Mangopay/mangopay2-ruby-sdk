@@ -1,7 +1,7 @@
 describe MangoPay::BankingAliases do
   include_context 'users'
   include_context 'wallets'
-  include_context 'bankigaliases'
+  include_context 'bankingaliases'
 
   describe 'CREATE' do
     it 'creates a new banking alias' do
