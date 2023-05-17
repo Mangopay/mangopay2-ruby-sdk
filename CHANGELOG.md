@@ -1,3 +1,9 @@
+## [3.13.0] - 2023-05-17
+### Added
+
+- Possibility to configure HTTP `max_retries (http_max_retries)` (default value = 1) and `open_timeout (http_open_timeout)` (default value = 60 seconds)
+- Increased default `read_timeout` to 30 seconds
+
 ## [3.12.0] - 2022-11-16
 ### New 30-day preauthorization feature
 
