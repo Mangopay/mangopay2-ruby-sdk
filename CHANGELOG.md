@@ -1,3 +1,8 @@
+## [3.13.2] - 2023-05-18
+### Fixes
+
+- fixed GitHub Actions CD pipeline
+
 ## [3.13.1] - 2023-05-18
 ### Fixes
 
