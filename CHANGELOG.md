@@ -1,3 +1,8 @@
+## [3.13.1] - 2023-05-18
+### Fixes
+
+- typo fixed in test context name (@batistadasilva)
+
 ## [3.13.0] - 2023-05-17
 ### Added
 
