@@ -601,7 +601,7 @@ shared_context 'hooks' do
 end
 
 ###############################################
-shared_context 'bankigaliases' do
+shared_context 'bankingaliases' do
   ###############################################
   include_context 'users'
   include_context 'wallets'
