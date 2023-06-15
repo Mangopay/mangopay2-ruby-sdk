@@ -417,6 +417,21 @@ shared_context 'payins' do
 
   let(:new_payin_card_direct) { create_new_payin_card_direct(new_wallet) }
 
+  ###############################################
+  # MBWAY/direct
+  ###############################################
+  let(:new_payin_mbway_direct) do
+    MangoPay::PayIn::Mbway::Direct.create(
+      AuthorId: new_natural_user['Id'],
+      CreditedWalletId: new_wallet['Id'],
+      DebitedFunds: {Currency: 'EUR', Amount: 199},
+      Fees: {Currency: 'EUR', Amount: 1},
+      StatementDescriptor: "ruby",
+      Tag: 'Test PayIn/Mbway/Direct',
+      PhoneNumber: '351#269458236'
+    )
+  end
+
   def create_new_payin_card_direct(to_wallet, amnt = 1000)
     cardreg = new_card_registration_completed
     MangoPay::PayIn::Card::Direct.create(
