@@ -101,10 +101,18 @@ module MangoPay
     module PayPal
 
       # See https://docs.mangopay.com/api-references/payins/paypal-payin/
+      # <b>DEPRECATED</b>: Please use the Direct payment method. Web will be removed in a future version.
       class Web < Resource
         include HTTPCalls::Create
         def self.url(*)
           "#{MangoPay.api_path}/payins/paypal/#{CGI.escape(class_name.downcase)}"
+        end
+      end
+
+      class Direct < Resource
+        include HTTPCalls::Create
+        def self.url(*)
+          "#{MangoPay.api_path}/payins/payment-methods/paypal"
         end
       end
 
