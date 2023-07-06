@@ -48,7 +48,7 @@ module MangoPay
       super(message) if message
     end
 
-    def type;    @details['Type']; end
+    def type;    @details['Type'] || @details['type']; end
     def error;   @details['error']; end
     def errors;  @details['errors'] || error; end
 
@@ -56,7 +56,7 @@ module MangoPay
       if error
         msg = error
       else
-        msg = @details['Message']
+        msg = @details['Message'] || @details['message']
         msg += errors.sort.map {|k,v| " #{k}: #{v}"}.join if (errors && errors.is_a?(Hash))
         msg
       end

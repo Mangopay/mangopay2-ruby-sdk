@@ -64,7 +64,7 @@ module MangoPay
     end
 
     def http_timeout
-      @http_timeout || 30000
+      @http_timeout || 30
     end
 
     def http_max_retries
@@ -72,7 +72,7 @@ module MangoPay
     end
 
     def http_open_timeout
-      @http_open_timeout || 60000
+      @http_open_timeout || 30
     end
   end
 
