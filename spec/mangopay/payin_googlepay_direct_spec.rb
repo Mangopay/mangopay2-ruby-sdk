@@ -4,7 +4,7 @@ describe MangoPay::PayIn::ApplePay::Direct, type: :feature do
   def check_type_and_status(payin)
     expect(payin['Type']).to eq('PAYIN')
     expect(payin['Nature']).to eq('REGULAR')
-    expect(payin['PaymentType']).to eq('GOOGLEPAY')
+    expect(payin['PaymentType']).to eq('GOOGLE_PAY')
     expect(payin['ExecutionType']).to eq('DIRECT')
     expect(payin['Status']).to eq('CREATED')
   end
