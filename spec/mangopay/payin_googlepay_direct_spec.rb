@@ -1,4 +1,4 @@
-describe MangoPay::PayIn::ApplePay::Direct, type: :feature do
+describe MangoPay::PayIn::GooglePay::Direct, type: :feature do
   include_context 'payins'
 
   def check_type_and_status(payin)
