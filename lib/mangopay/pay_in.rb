@@ -144,7 +144,7 @@ module MangoPay
         include HTTPCalls::Create
 
         def self.url(*)
-          "#{MangoPay.api_path}/payins/googlepay/#{CGI.escape(class_name.downcase)}"
+          "#{MangoPay.api_path}/payins/payment-methods/googlepay"
         end
       end
     end
