@@ -1,3 +1,13 @@
+## [3.15.0] - 2023-07-07
+### Added
+
+- Google Pay is now available as a payment method with Mangopay. This payment method is in private beta. Please contact support if you have any questions.
+- Paypal integration with Mangopay has been improved. This payment method is in private beta. Please contact support if you have any questions.
+
+### Fixed
+
+- `Phone` parameter instead of `PhoneNumber` for MBWay
+- Timeout should be in secondes instead of milliseconds in the configuration
 ## [3.14.0] - 2023-06-21
 ### Added
 
