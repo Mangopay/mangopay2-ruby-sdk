@@ -428,7 +428,7 @@ shared_context 'payins' do
       Fees: {Currency: 'EUR', Amount: 1},
       StatementDescriptor: "ruby",
       Tag: 'Test PayIn/Mbway/Direct',
-      PhoneNumber: '351#269458236'
+      Phone: '351#269458236'
     )
   end
 
