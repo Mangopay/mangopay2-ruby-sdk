@@ -428,7 +428,51 @@ shared_context 'payins' do
       Fees: {Currency: 'EUR', Amount: 1},
       StatementDescriptor: "ruby",
       Tag: 'Test PayIn/Mbway/Direct',
-      PhoneNumber: '351#269458236'
+      Phone: '351#269458236'
+    )
+  end
+
+  ###############################################
+  # PAYPAL/direct
+  ###############################################
+  let(:new_payin_paypal_direct) do
+    MangoPay::PayIn::PayPal::Direct.create(
+      AuthorId: new_natural_user['Id'],
+      DebitedFunds: { Currency: 'EUR', Amount: 400 },
+      Fees: { Currency: 'EUR', Amount: 0 },
+      CreditedWalletId: new_wallet['Id'],
+      ReturnUrl: "http://example.com",
+      LineItems: [
+        {
+          Name: "running shoes",
+          Quantity: 1,
+          UnitAmount: 200,
+          TaxAmount: 0,
+          Description: "seller1 ID"
+        },
+        {
+          Name: "running shoes",
+          Quantity: 1,
+          UnitAmount: 200,
+          TaxAmount: 0,
+          Description: "seller2 ID"
+        }
+      ],
+      Shipping: {
+        Address: {
+          AddressLine1: 'AddressLine1',
+          AddressLine2: 'AddressLine2',
+          City: 'City',
+          Region: 'Region',
+          PostalCode: 'PostalCode',
+          Country: 'FR'
+        },
+        FirstName: 'Joe',
+        LastName: 'Blogs'
+      },
+      StatementDescriptor: "ruby",
+      Tag: 'Test',
+      # Culture: 'FR'
     )
   end
 
