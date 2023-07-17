@@ -19,6 +19,36 @@ describe MangoPay::Configuration do
     expect(users).to be_kind_of(Array)
   end
 
+  describe '.use_ssl?' do
+    let(:configuration) { MangoPay::Configuration.new }
+
+    it 'defaults to true' do
+      expect(configuration.use_ssl?).to eq(true)
+    end
+
+    context 'when assigned to false in production' do
+      before do
+        configuration.use_ssl = false
+        configuration.preproduction = false
+      end
+
+      it 'uses true as value' do
+        expect(configuration.use_ssl?).to eq(true)
+      end
+    end
+
+    context 'when assigned to false in preproduction' do
+      before do
+        configuration.use_ssl = false
+        configuration.preproduction = true
+      end
+
+      it 'uses assigned as value' do
+        expect(configuration.use_ssl?).to eq(false)
+      end
+    end
+  end
+
   describe 'logger' do
     around(:each) do |example|
       c = MangoPay.configuration
