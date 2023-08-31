@@ -443,14 +443,14 @@ shared_context 'payins' do
   ###############################################
   # MBWAY/direct
   ###############################################
-  let(:new_payin_mbway_direct) do
-    MangoPay::PayIn::Mbway::Direct.create(
+  let(:new_payin_mbway_web) do
+    MangoPay::PayIn::Mbway::Web.create(
       AuthorId: new_natural_user['Id'],
       CreditedWalletId: new_wallet['Id'],
       DebitedFunds: {Currency: 'EUR', Amount: 199},
       Fees: {Currency: 'EUR', Amount: 1},
       StatementDescriptor: "ruby",
-      Tag: 'Test PayIn/Mbway/Direct',
+      Tag: 'Test PayIn/Mbway/Web',
       Phone: '351#269458236'
     )
   end
@@ -458,8 +458,8 @@ shared_context 'payins' do
   ###############################################
   # PAYPAL/direct
   ###############################################
-  let(:new_payin_paypal_direct) do
-    MangoPay::PayIn::PayPal::Direct.create(
+  let(:new_payin_paypal_web_v2) do
+    MangoPay::PayIn::PayPal::Web.create_v2(
       AuthorId: new_natural_user['Id'],
       DebitedFunds: { Currency: 'EUR', Amount: 400 },
       Fees: { Currency: 'EUR', Amount: 0 },

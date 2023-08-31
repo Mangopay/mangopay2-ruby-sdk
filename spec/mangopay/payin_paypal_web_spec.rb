@@ -22,6 +22,14 @@ describe MangoPay::PayIn::PayPal::Web, type: :feature do
     end
   end
 
+  describe 'CREATE V2' do
+    it 'creates a paypal web v2 payin' do
+      created = new_payin_paypal_web_v2
+      expect(created['Id']).not_to be_nil
+      check_type_and_status(created)
+    end
+  end
+
   describe "FETCH" do
     it 'FETCHES a payIn with PayPal account email' do
       payin_id = "54088959"
@@ -37,6 +45,19 @@ describe MangoPay::PayIn::PayPal::Web, type: :feature do
   describe 'FETCH' do
     it 'fetches a payin' do
       created = new_payin_paypal_web
+      fetched = MangoPay::PayIn.fetch(created['Id'])
+      expect(fetched['Id']).to eq(created['Id'])
+      expect(fetched['CreationDate']).to eq(created['CreationDate'])
+      expect(fetched['CreditedFunds']).to eq(created['CreditedFunds'])
+      expect(fetched['CreditedWalletId']).to eq(created['CreditedWalletId'])
+      check_type_and_status(created)
+      check_type_and_status(fetched)
+    end
+  end
+
+  describe 'FETCH V2' do
+    it 'fetches a payin' do
+      created = new_payin_paypal_web_v2
       fetched = MangoPay::PayIn.fetch(created['Id'])
       expect(fetched['Id']).to eq(created['Id'])
       expect(fetched['CreationDate']).to eq(created['CreationDate'])

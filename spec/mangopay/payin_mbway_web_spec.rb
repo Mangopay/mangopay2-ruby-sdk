@@ -1,4 +1,4 @@
-describe MangoPay::PayIn::Mbway::Direct, type: :feature do
+describe MangoPay::PayIn::Mbway::Web, type: :feature do
   include_context 'wallets'
   include_context 'payins'
   
@@ -6,13 +6,13 @@ describe MangoPay::PayIn::Mbway::Direct, type: :feature do
     expect(payin['Type']).to eq('PAYIN')
     expect(payin['Nature']).to eq('REGULAR')
     expect(payin['PaymentType']).to eq('MBWAY')
-    expect(payin['ExecutionType']).to eq('DIRECT')
+    expect(payin['ExecutionType']).to eq('WEB')
     expect(payin['Status']).to eq('CREATED')
   end
 
   describe 'CREATE' do
-    it 'creates a mbway direct payin' do
-      created = new_payin_mbway_direct
+    it 'creates a mbway web payin' do
+      created = new_payin_mbway_web
       expect(created['Id']).not_to be_nil
       expect(created['Phone']).not_to be_nil
       check_type_and_status(created)
@@ -21,7 +21,7 @@ describe MangoPay::PayIn::Mbway::Direct, type: :feature do
 
   describe 'FETCH' do
     it 'fetches a payin' do
-      created = new_payin_mbway_direct
+      created = new_payin_mbway_web
       fetched = MangoPay::PayIn.fetch(created['Id'])
       expect(fetched['Id']).to eq(created['Id'])
       check_type_and_status(created)
