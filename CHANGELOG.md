@@ -1,3 +1,13 @@
+## [3.16.0] - 2023-09-04
+### Added
+
+- Card validation endpoint management (Private beta)
+- New MOPs added : Multibanco, Blik, Satispay (Private beta)
+
+### Fixed
+
+- Execution Type of MB Way and PayPal has been changed from Direct to Web
+
 ## [3.15.0] - 2023-07-07
 ### Added
 
