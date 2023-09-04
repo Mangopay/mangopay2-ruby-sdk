@@ -441,7 +441,7 @@ shared_context 'payins' do
   let(:new_payin_card_direct) { create_new_payin_card_direct(new_wallet) }
 
   ###############################################
-  # MBWAY/direct
+  # MBWAY/web
   ###############################################
   let(:new_payin_mbway_web) do
     MangoPay::PayIn::Mbway::Web.create(
@@ -452,6 +452,22 @@ shared_context 'payins' do
       StatementDescriptor: "ruby",
       Tag: 'Test PayIn/Mbway/Web',
       Phone: '351#269458236'
+    )
+  end
+
+  ###############################################
+  # SATISPAY/web
+  ###############################################
+  let(:new_payin_satispay_web) do
+    MangoPay::PayIn::Satispay::Web.create(
+      AuthorId: new_natural_user['Id'],
+      CreditedWalletId: new_wallet['Id'],
+      DebitedFunds: {Currency: 'EUR', Amount: 199},
+      Fees: {Currency: 'EUR', Amount: 1},
+      StatementDescriptor: "ruby",
+      Tag: 'Test PayIn/Mbway/Web',
+      Country: 'IT',
+      ReturnURL: 'http://www.my-site.com/returnURL'
     )
   end
 
