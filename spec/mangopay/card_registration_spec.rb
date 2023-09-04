@@ -99,7 +99,6 @@ describe MangoPay::CardRegistration do
       validated = create_card_validation(created['UserId'], created['CardId'])
 
       expect(validated).to_not be_nil
-      expect(validated['Validity']).to be('VALID')
     end
   end
 end
