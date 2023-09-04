@@ -101,18 +101,16 @@ module MangoPay
     module PayPal
 
       # See https://docs.mangopay.com/api-references/payins/paypal-payin/
-      # <b>DEPRECATED</b>: Please use the Direct payment method. Web will be removed in a future version.
+      # # <b>DEPRECATED</b>: 'create' function is now deprecated.
+      # Please use the 'create_v2' function - MangoPay::PayIn::PayPal::Web.create_new(params)
       class Web < Resource
         include HTTPCalls::Create
         def self.url(*)
           "#{MangoPay.api_path}/payins/paypal/#{CGI.escape(class_name.downcase)}"
         end
-      end
 
-      class Direct < Resource
-        include HTTPCalls::Create
-        def self.url(*)
-          "#{MangoPay.api_path}/payins/payment-methods/paypal"
+        def self.create_v2(params, idempotency_key = nil)
+          MangoPay.request(:post, "#{MangoPay.api_path}/payins/payment-methods/paypal", params, {}, idempotency_key)
         end
       end
 
@@ -150,7 +148,7 @@ module MangoPay
     end
 
     module Mbway
-      class Direct < Resource
+      class Web < Resource
         include HTTPCalls::Create
 
         def self.url(*)
