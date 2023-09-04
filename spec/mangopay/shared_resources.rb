@@ -471,6 +471,28 @@ shared_context 'payins' do
   end
 
   ###############################################
+  # BLIK/web
+  ###############################################
+  let(:new_payin_blik_web) do
+    user = new_natural_user
+    wallet = MangoPay::Wallet.create(
+      Owners: [user['Id']],
+      Description: 'A test wallet',
+      Currency: 'PLN',
+      Tag: 'Test wallet'
+    )
+    MangoPay::PayIn::Blik::Web.create(
+      AuthorId: user['Id'],
+      CreditedWalletId: wallet['Id'],
+      DebitedFunds: {Currency: 'PLN', Amount: 199},
+      Fees: {Currency: 'PLN', Amount: 1},
+      StatementDescriptor: "ruby",
+      Tag: 'Test PayIn/Blik/Web',
+      ReturnURL: 'https://example.com'
+    )
+  end
+
+  ###############################################
   # PAYPAL/direct
   ###############################################
   let(:new_payin_paypal_web_v2) do
