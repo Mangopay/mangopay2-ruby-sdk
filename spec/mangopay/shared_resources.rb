@@ -493,6 +493,22 @@ shared_context 'payins' do
   end
 
   ###############################################
+  # SATISPAY/web
+  ###############################################
+  let(:new_payin_satispay_web) do
+    MangoPay::PayIn::Satispay::Web.create(
+      AuthorId: new_natural_user['Id'],
+      CreditedWalletId: new_wallet['Id'],
+      DebitedFunds: {Currency: 'EUR', Amount: 199},
+      Fees: {Currency: 'EUR', Amount: 1},
+      StatementDescriptor: "ruby",
+      Tag: 'Test PayIn/Mbway/Web',
+      Country: 'IT',
+      ReturnURL: 'http://www.my-site.com/returnURL'
+    )
+  end
+
+  ###############################################
   # PAYPAL/direct
   ###############################################
   let(:new_payin_paypal_web_v2) do
