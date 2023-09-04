@@ -584,6 +584,27 @@ shared_context 'payins' do
     )
   end
 
+  def create_card_validation(author_id, card_id)
+    params = {
+      AuthorId: author_id,
+      SecureModeReturnURL: "https://mangopay.com",
+      IpAddress: "2001:0620:0000:0000:0211:24FF:FE80:C12C",
+      Tag: "custom meta",
+      BrowserInfo: {
+        AcceptHeader: "text/html, application/xhtml+xml, application/xml;q=0.9, /;q=0.8",
+        JavaEnabled: true,
+        Language: "FR-FR",
+        ColorDepth: 4,
+        ScreenHeight: 1800,
+        ScreenWidth: 400,
+        JavascriptEnabled: true,
+        TimeZoneOffset: "+60",
+        UserAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 13_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+      }
+    }
+    MangoPay::Card.validate(card_id, params)
+  end
+
   ###############################################
   # pre-authorized direct deposit
   ###############################################
