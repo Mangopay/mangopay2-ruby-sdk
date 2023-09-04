@@ -102,7 +102,7 @@ module MangoPay
 
       # See https://docs.mangopay.com/api-references/payins/paypal-payin/
       # # <b>DEPRECATED</b>: 'create' function is now deprecated.
-      # Please use the 'create_new' function - MangoPay::PayIn::PayPal::Web.create_new(params)
+      # Please use the 'create_v2' function - MangoPay::PayIn::PayPal::Web.create_new(params)
       class Web < Resource
         include HTTPCalls::Create
         def self.url(*)
@@ -153,6 +153,16 @@ module MangoPay
 
         def self.url(*)
           "#{MangoPay.api_path}/payins/payment-methods/mbway"
+        end
+      end
+    end
+
+    module Multibanco
+      class Web < Resource
+        include HTTPCalls::Create
+
+        def self.url(*)
+          "#{MangoPay.api_path}/payins/payment-methods/multibanco"
         end
       end
     end

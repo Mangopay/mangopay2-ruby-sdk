@@ -35,6 +35,11 @@ module MangoPay
       def get_pre_authorizations(card_id, filters = {})
         MangoPay.request(:get, "#{MangoPay.api_path}/cards/#{card_id}/preauthorizations")
       end
+
+      def validate(card_id, params)
+        url = "#{MangoPay.api_path}/cards/#{card_id}/validation"
+        MangoPay.request(:post, url, params)
+      end
     end
   end
 end
