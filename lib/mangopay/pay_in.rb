@@ -157,6 +157,16 @@ module MangoPay
       end
     end
 
+    module Blik
+      class Web < Resource
+        include HTTPCalls::Create
+
+        def self.url(*)
+          "#{MangoPay.api_path}/payins/payment-methods/blik"
+        end
+      end
+    end
+
     module RecurringPayments
       class Recurring < Resource
         include HTTPCalls::Create

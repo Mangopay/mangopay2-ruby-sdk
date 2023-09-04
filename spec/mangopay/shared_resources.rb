@@ -441,7 +441,7 @@ shared_context 'payins' do
   let(:new_payin_card_direct) { create_new_payin_card_direct(new_wallet) }
 
   ###############################################
-  # MBWAY/direct
+  # MBWAY/web
   ###############################################
   let(:new_payin_mbway_web) do
     MangoPay::PayIn::Mbway::Web.create(
@@ -452,6 +452,28 @@ shared_context 'payins' do
       StatementDescriptor: "ruby",
       Tag: 'Test PayIn/Mbway/Web',
       Phone: '351#269458236'
+    )
+  end
+
+  ###############################################
+  # BLIK/web
+  ###############################################
+  let(:new_payin_blik_web) do
+    user = new_natural_user
+    wallet = MangoPay::Wallet.create(
+      Owners: [user['Id']],
+      Description: 'A test wallet',
+      Currency: 'PLN',
+      Tag: 'Test wallet'
+    )
+    MangoPay::PayIn::Blik::Web.create(
+      AuthorId: user['Id'],
+      CreditedWalletId: wallet['Id'],
+      DebitedFunds: {Currency: 'PLN', Amount: 199},
+      Fees: {Currency: 'PLN', Amount: 1},
+      StatementDescriptor: "ruby",
+      Tag: 'Test PayIn/Blik/Web',
+      ReturnURL: 'https://example.com'
     )
   end
 
