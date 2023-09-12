@@ -187,6 +187,16 @@ module MangoPay
       end
     end
 
+    module Klarna
+      class Web < Resource
+        include HTTPCalls::Create
+
+        def self.url(*)
+          "#{MangoPay.api_path}/payins/payment-methods/klarna"
+        end
+      end
+    end
+
     module RecurringPayments
       class Recurring < Resource
         include HTTPCalls::Create
