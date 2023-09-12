@@ -509,7 +509,7 @@ shared_context 'payins' do
   end
 
   ###############################################
-  # PAYPAL/direct
+  # PAYPAL/web V2
   ###############################################
   let(:new_payin_paypal_web_v2) do
     MangoPay::PayIn::PayPal::Web.create_v2(
@@ -546,6 +546,7 @@ shared_context 'payins' do
         FirstName: 'Joe',
         LastName: 'Blogs'
       },
+      ShippingPreference: "GET_FROM_FILE",
       StatementDescriptor: "ruby",
       Tag: 'Test',
       # Culture: 'FR'
