@@ -28,5 +28,4 @@ describe MangoPay::PayIn::Multibanco::Web, type: :feature do
       check_type_and_status(fetched)
     end
   end
-
 end
