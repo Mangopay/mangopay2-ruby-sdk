@@ -509,6 +509,66 @@ shared_context 'payins' do
   end
 
   ###############################################
+  # KLARNA/web
+  ###############################################
+  let(:new_payin_klarna_web) do
+    MangoPay::PayIn::Klarna::Web.create(
+      AuthorId: new_natural_user['Id'],
+      CreditedWalletId: new_wallet['Id'],
+      DebitedFunds: {Currency: 'EUR', Amount: 400},
+      Fees: {Currency: 'EUR', Amount: 10},
+      ReturnURL: 'http://www.my-site.com/returnURL',
+      LineItems: [
+        {
+          Name: "running shoes",
+          Quantity: 1,
+          UnitAmount: 200,
+          TaxAmount: 0,
+          Description: "seller1 ID"
+        },
+        {
+          Name: "running shoes",
+          Quantity: 1,
+          UnitAmount: 200,
+          TaxAmount: 0,
+          Description: "seller2 ID"
+        }
+      ],
+      Country: 'FR',
+      Culture: 'FR',
+      Phone: '33#607080900',
+      Email: 'mango@mangopay.com',
+      AdditionalData: '{}',
+      Billing: {
+        Address: {
+          AddressLine1: 'AddressLine1',
+          AddressLine2: 'AddressLine2',
+          City: 'City',
+          Region: 'Region',
+          PostalCode: 'PostalCode',
+          Country: 'FR'
+        },
+        FirstName: 'Joe',
+        LastName: 'Blogs'
+      },
+      Shipping: {
+        Address: {
+          AddressLine1: 'AddressLine1',
+          AddressLine2: 'AddressLine2',
+          City: 'City',
+          Region: 'Region',
+          PostalCode: 'PostalCode',
+          Country: 'FR'
+        },
+        FirstName: 'Joe',
+        LastName: 'Blogs'
+      },
+      MerchantOrderId: 'afd48-879d-48fg',
+      Tag: 'Test PayIn/Klarna/Web'
+    )
+  end
+
+  ###############################################
   # PAYPAL/web V2
   ###############################################
   let(:new_payin_paypal_web_v2) do
