@@ -1,3 +1,10 @@
+## [3.17.0] - 2023-09-20
+### Added
+
+- A new parameter for Paypal : ShippingPreference
+- Klarna is now available as a payment method with Mangopay. This payment method is in private beta. Please contact support if you have any questions.
+- #225 It's now possible to configure ssl_options. It's now possible to set to false in preproduction environment. Thanks to @mantaskujalis
+
 ## [3.16.0] - 2023-09-04
 ### Added
 
