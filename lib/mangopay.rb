@@ -53,7 +53,7 @@ module MangoPay
                   :client_id, :client_apiKey,
                   :temp_dir, :log_file, :http_timeout,
                   :http_max_retries, :http_open_timeout,
-                  :logger
+                  :logger, :use_ssl
 
     def preproduction
       @preproduction || false
@@ -73,6 +73,14 @@ module MangoPay
 
     def http_open_timeout
       @http_open_timeout || 30
+    end
+
+    def use_ssl?
+      return true unless preproduction == true
+      return true unless defined?(@use_ssl)
+      return false if @use_ssl == false
+
+      true
     end
   end
 
@@ -150,7 +158,7 @@ module MangoPay
         headers['Idempotency-Key'] = headers_or_idempotency_key if headers_or_idempotency_key != nil
       end
 
-      res = Net::HTTP.start(uri.host, uri.port, use_ssl: true, :read_timeout => configuration.http_timeout,
+      res = Net::HTTP.start(uri.host, uri.port, :use_ssl => configuration.use_ssl?, :read_timeout => configuration.http_timeout,
                             :max_retries => configuration.http_max_retries,
                             :open_timeout => configuration.http_open_timeout, ssl_version: :TLSv1_2) do |http|
         req = Net::HTTP::const_get(method.capitalize).new(uri.request_uri, headers)
