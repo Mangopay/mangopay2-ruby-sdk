@@ -1,3 +1,7 @@
+## [3.18.0] - 2023-09-29
+### Added
+- Instantly convert funds between 2 wallets of different currencies owned by the same user with the new SPOT FX endpoints
+
 ## [3.17.0] - 2023-09-20
 ### Added
 
