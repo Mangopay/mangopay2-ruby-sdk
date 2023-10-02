@@ -568,6 +568,37 @@ shared_context 'payins' do
   end
 
   ###############################################
+  # IDEAL/web
+  ###############################################
+  let(:new_payin_ideal_web) do
+    MangoPay::PayIn::Ideal::Web.create(
+      AuthorId: new_natural_user['Id'],
+      CreditedWalletId: new_wallet['Id'],
+      DebitedFunds: {Currency: 'EUR', Amount: 400},
+      Fees: {Currency: 'EUR', Amount: 10},
+      ReturnURL: 'http://www.my-site.com/returnURL',
+      Bic: 'REVOLT21',
+      StatementDescriptor: "test",
+      Tag: 'Test PayIn/Ideal/Web'
+    )
+  end
+
+  ###############################################
+  # Giropay/web
+  ###############################################
+  let(:new_payin_giropay_web) do
+    MangoPay::PayIn::Giropay::Web.create(
+      AuthorId: new_natural_user['Id'],
+      CreditedWalletId: new_wallet['Id'],
+      DebitedFunds: {Currency: 'EUR', Amount: 400},
+      Fees: {Currency: 'EUR', Amount: 10},
+      ReturnURL: 'http://www.my-site.com/returnURL',
+      StatementDescriptor: "test",
+      Tag: 'Test PayIn/Giropay/Web'
+    )
+  end
+
+  ###############################################
   # PAYPAL/web V2
   ###############################################
   let(:new_payin_paypal_web_v2) do

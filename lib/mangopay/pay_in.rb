@@ -197,6 +197,26 @@ module MangoPay
       end
     end
 
+    module Ideal
+      class Web < Resource
+        include HTTPCalls::Create
+
+        def self.url(*)
+          "#{MangoPay.api_path}/payins/payment-methods/ideal"
+        end
+      end
+    end
+
+    module Giropay
+      class Web < Resource
+        include HTTPCalls::Create
+
+        def self.url(*)
+          "#{MangoPay.api_path}/payins/payment-methods/giropay"
+        end
+      end
+    end
+
     module RecurringPayments
       class Recurring < Resource
         include HTTPCalls::Create
