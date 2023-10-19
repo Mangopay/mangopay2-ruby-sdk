@@ -74,9 +74,21 @@ shared_context 'wallets' do
   let(:new_wallet) { create_new_wallet(new_natural_user) }
   let(:new_wallet_legal) { create_new_wallet(new_legal_user) }
 
+  let(:new_wallet2) { create_new_wallet2(new_natural_user) }
+  let(:new_wallet_legal2) { create_new_wallet2(new_legal_user) }
+
   def create_new_wallet(user)
     MangoPay::Wallet.create(
       Owners: [user['Id']],
+      Description: 'A test wallet',
+      Currency: 'EUR',
+      Tag: 'Test wallet'
+    )
+  end
+
+  def create_new_wallet2(user)
+    MangoPay::Wallet.create(
+      Owners: [user['id']],
       Description: 'A test wallet',
       Currency: 'EUR',
       Tag: 'Test wallet'
@@ -88,10 +100,21 @@ shared_context 'wallets' do
     expect(wlt2['Balance']['Amount']).to eq amnt2 if wlt2
   end
 
+  def wallets_check_amounts2(wlt1, amnt1, wlt2 = nil, amnt2 = nil)
+    expect(wlt1['balance']['amount']).to eq amnt1
+    expect(wlt2['balance']['amount']).to eq amnt2 if wlt2
+  end
+
   def wallets_reload_and_check_amounts(wlt1, amnt1, wlt2 = nil, amnt2 = nil)
     wlt1 = MangoPay::Wallet.fetch(wlt1['Id'])
     wlt2 = MangoPay::Wallet.fetch(wlt2['Id']) if wlt2
     wallets_check_amounts(wlt1, amnt1, wlt2, amnt2)
+  end
+
+  def wallets_reload_and_check_amounts2(wlt1, amnt1, wlt2 = nil, amnt2 = nil)
+    wlt1 = MangoPay::Wallet.fetch(wlt1['id'])
+    wlt2 = MangoPay::Wallet.fetch(wlt2['id']) if wlt2
+    wallets_check_amounts2(wlt1, amnt1, wlt2, amnt2)
   end
 end
 
@@ -117,6 +140,28 @@ shared_context 'ubo' do
     }
     MangoPay::Ubo.create(user['Id'], ubo_declaration['Id'], ubo)
   end
+
+  def new_ubo2(user, ubo_declaration)
+    ubo = {
+      FirstName: 'John',
+      LastName: 'Doe',
+      Address: {
+        AddressLine1: '6 Parvis Notre-Dame',
+        AddressLine2: 'Pl. Jean-Paul II',
+        City: 'Paris',
+        Region: '',
+        PostalCode: '75004',
+        Country: 'FR'
+      },
+      Nationality: 'FR',
+      Birthday: 1_300_186_358,
+      Birthplace: {
+        City: 'Paris',
+        Country: 'FR'
+      }
+    }
+    MangoPay::Ubo.create(user['id'], ubo_declaration['id'], ubo)
+  end
 end
 
 ###############################################
@@ -126,6 +171,23 @@ shared_context 'bank_accounts' do
 
   let(:new_bank_account) do
     MangoPay::BankAccount.create(new_natural_user['Id'],
+                                 Type: 'IBAN',
+                                 OwnerName: 'John',
+                                 OwnerAddress: {
+                                   AddressLine1: 'Le Palais Royal',
+                                   AddressLine2: '8 Rue de Montpensier',
+                                   City: 'Paris',
+                                   Region: '',
+                                   PostalCode: '75001',
+                                   Country: 'FR'
+                                 },
+                                 IBAN: 'FR7630004000031234567890143',
+                                 BIC: 'BNPAFRPP',
+                                 Tag: 'Test bank account')
+  end
+
+  let(:new_bank_account2) do
+    MangoPay::BankAccount.create(new_natural_user['id'],
                                  Type: 'IBAN',
                                  OwnerName: 'John',
                                  OwnerAddress: {
@@ -165,9 +227,16 @@ shared_context 'kyc_documents' do
   include_context 'users'
 
   let(:new_document) { create_new_document(new_natural_user) }
+  let(:new_document2) { create_new_document2(new_natural_user) }
 
   def create_new_document(user)
     MangoPay::KycDocument.create(user['Id'],
+                                 Type: 'IDENTITY_PROOF',
+                                 Tag: 'Test document')
+  end
+
+  def create_new_document2(user)
+    MangoPay::KycDocument.create(user['id'],
                                  Type: 'IDENTITY_PROOF',
                                  Tag: 'Test document')
   end
@@ -371,6 +440,14 @@ shared_context 'payins' do
     )
   end
 
+  let(:new_card_registration2) do
+    MangoPay::CardRegistration.create(
+      UserId: new_natural_user['id'],
+      Currency: 'EUR',
+      Tag: 'Test Card Registration'
+    )
+  end
+
   let(:new_card_registration_completed) do
     # 1st step: create
     cardreg = new_card_registration
@@ -391,6 +468,28 @@ shared_context 'payins' do
     # 3rd step: update (fills-in CardId) and return it
     MangoPay::CardRegistration.update(cardreg['Id'],
                                       RegistrationData: cardreg['RegistrationData'])
+  end
+
+  let(:new_card_registration_completed2) do
+    # 1st step: create
+    cardreg = new_card_registration2
+
+    # 2nd step: tokenize by payline (fills-in RegistrationData)
+    data = {
+      data: cardreg['preregistration_data'],
+      accessKeyRef: cardreg['access_key'],
+      cardNumber: 4970105191923460,
+      cardExpirationDate: 1226,
+      cardCvx: 123 }
+
+    res = Net::HTTP.post_form(URI(cardreg['card_registration_url']), data)
+    raise Exception, [res, res.body] unless res.is_a?(Net::HTTPOK) && res.body.start_with?('data=')
+
+    cardreg['registration_data'] = res.body
+
+    # 3rd step: update (fills-in CardId) and return it
+    MangoPay::CardRegistration.update(cardreg['id'],
+                                      RegistrationData: cardreg['registration_data'])
   end
 
   let(:new_card_registration_3dsecure_completed) do
@@ -438,6 +537,7 @@ shared_context 'payins' do
   end
 
   let(:new_payin_card_direct) { create_new_payin_card_direct(new_wallet) }
+  let(:new_payin_card_direct2) { create_new_payin_card_direct2(new_wallet2) }
 
   ###############################################
   # MBWAY/web
@@ -640,6 +740,34 @@ shared_context 'payins' do
     )
   end
 
+  def create_new_payin_card_direct2(to_wallet, amnt = 1000)
+    cardreg = new_card_registration_completed2
+    MangoPay::PayIn::Card::Direct.create(
+      AuthorId: new_natural_user['id'],
+      CreditedUserId: to_wallet['owners'][0],
+      CreditedWalletId: to_wallet['id'],
+      DebitedFunds: { Currency: 'EUR', Amount: amnt },
+      Fees: { Currency: 'EUR', Amount: 0 },
+      CardType: 'CB_VISA_MASTERCARD',
+      CardId: cardreg['card_id'],
+      SecureModeReturnURL: 'http://test.com',
+      Tag: 'Test PayIn/Card/Direct',
+      Requested3DSVersion: 'V2_1',
+      BrowserInfo: {
+        AcceptHeader: "text/html, application/xhtml+xml, application/xml;q=0.9, /;q=0.8",
+        JavaEnabled: true,
+        Language: "FR-FR",
+        ColorDepth: 4,
+        ScreenHeight: 1800,
+        ScreenWidth: 400,
+        JavascriptEnabled: true,
+        TimeZoneOffset: "+60",
+        UserAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 13_6_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+      },
+      IpAddress: "2001:0620:0000:0000:0211:24FF:FE80:C12C"
+    )
+  end
+
   ###############################################
   # card/direct with pre-authorization
   ###############################################
@@ -776,6 +904,7 @@ shared_context 'payouts' do
   include_context 'bank_accounts'
 
   let(:new_payout_bankwire) { create_new_payout_bankwire(new_payin_card_direct) }
+  let(:new_payout_bankwire2) { create_new_payout_bankwire2(new_payin_card_direct2) }
 
   def create_new_payout_bankwire(payin, amnt = 500)
     MangoPay::PayOut::BankWire.create(
@@ -784,6 +913,19 @@ shared_context 'payouts' do
       DebitedFunds: { Currency: 'EUR', Amount: amnt },
       Fees: { Currency: 'EUR', Amount: 0 },
       BankAccountId: new_bank_account['Id'],
+      Communication: 'This is a test',
+      Tag: 'Test PayOut/Bank/Wire',
+      PayoutModeRequested: 'Standard'
+    )
+  end
+
+  def create_new_payout_bankwire2(payin, amnt = 500)
+    MangoPay::PayOut::BankWire.create(
+      AuthorId: payin['credited_user_id'],
+      DebitedWalletId: payin['credited_wallet_id'],
+      DebitedFunds: { Currency: 'EUR', Amount: amnt },
+      Fees: { Currency: 'EUR', Amount: 0 },
+      BankAccountId: new_bank_account2['id'],
       Communication: 'This is a test',
       Tag: 'Test PayOut/Bank/Wire',
       PayoutModeRequested: 'Standard'
@@ -939,5 +1081,19 @@ shared_context 'instant_conversion' do
 
   def get_instant_conversion(id)
     MangoPay::InstantConversion.get(id, params = {})
+  end
+end
+
+shared_context 'snakify_response_keys' do
+  before do
+    MangoPay.configure do |config|
+      config.snakify_response_keys = true
+    end
+  end
+
+  after do
+    MangoPay.configure do |config|
+      config.snakify_response_keys = false
+    end
   end
 end

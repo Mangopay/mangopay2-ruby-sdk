@@ -66,7 +66,6 @@ describe MangoPay::BankAccount do
       expect(created['AccountNumber']).to eq('234234234234')
       expect(created['BIC']).to eq('BINAADADXXX')
     end
-
   end
 
   describe 'FETCH' do

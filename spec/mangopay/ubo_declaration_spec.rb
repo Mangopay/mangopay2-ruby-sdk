@@ -39,6 +39,23 @@ describe MangoPay::UboDeclaration do
         expect(ubo_declaration).not_to be_nil
         expect(ubo_declaration['Status']).to eq 'VALIDATION_ASKED'
       end
+
+      context 'when snakify_response_keys is true' do
+        include_context 'snakify_response_keys'
+        it 'can update a UBO declaration' do
+          legal_user = new_legal_user
+          ubo_declaration = MangoPay::UboDeclaration.create(legal_user['id'])
+          ubo_declaration['status'] = 'VALIDATION_ASKED'
+
+          ubo = new_ubo2(legal_user, ubo_declaration)
+
+          ubo_declaration['ubos'] = [ubo]
+          ubo_declaration = MangoPay::UboDeclaration.update(legal_user['id'], ubo_declaration['id'], ubo_declaration)
+
+          expect(ubo_declaration).not_to be_nil
+          expect(ubo_declaration['status']).to eq 'VALIDATION_ASKED'
+        end
+      end
     end
   end
 end

@@ -21,10 +21,17 @@ module MangoPay
       end
 
       def update(user_id, id, params = {}, idempotency_key = nil)
-        request_params = {
-            Status: params['Status'],
-            Ubos: params['Ubos']
-        }
+        request_params = if MangoPay.configuration.snakify_response_keys?
+                           {
+                             Status: params['status'],
+                             Ubos: params['ubos']
+                           }
+                         else
+                           {
+                             Status: params['Status'],
+                             Ubos: params['Ubos']
+                           }
+                         end
         MangoPay.request(:put, url(user_id, id), request_params, {}, idempotency_key)
       end
     end
