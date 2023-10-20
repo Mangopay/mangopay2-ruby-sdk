@@ -57,13 +57,34 @@ describe MangoPay::Transfer, type: :feature do
       create_new_payin_card_direct(wlt1, 1000)
       wallets_reload_and_check_amounts(wlt1, 1000, wlt2, 0)
 
-      # trnasfer wlt1 => wlt2
+      # transfer wlt1 => wlt2
       trans = create_new_transfer(wlt1, wlt2, 600)
       wallets_reload_and_check_amounts(wlt1, 400, wlt2, 600)
 
-      # refund the trnasfer
+      # refund the transfer
       refund = MangoPay::Transfer.refund(trans['Id'], {AuthorId: trans['AuthorId']})
       wallets_reload_and_check_amounts(wlt1, 1000, wlt2, 0)
+    end
+
+    context 'when snakify_response_keys is true' do
+      include_context 'snakify_response_keys'
+      it 'changes balances correctly' do
+        wlt1 = new_wallet2
+        wlt2 = new_wallet_legal2
+        wallets_check_amounts2(wlt1, 0, wlt2, 0)
+
+        # payin: feed wlt1 with money
+        create_new_payin_card_direct2(wlt1, 1000)
+        wallets_reload_and_check_amounts2(wlt1, 1000, wlt2, 0)
+
+        # transfer wlt1 => wlt2
+        trans = create_new_transfer2(wlt1, wlt2, 600)
+        wallets_reload_and_check_amounts2(wlt1, 400, wlt2, 600)
+
+        # refund the transfer
+        MangoPay::Transfer.refund(trans['id'], {AuthorId: trans['author_id']})
+        wallets_reload_and_check_amounts2(wlt1, 1000, wlt2, 0)
+      end
     end
   end
 

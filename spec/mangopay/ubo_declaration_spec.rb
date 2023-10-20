@@ -55,6 +55,14 @@ describe MangoPay::UboDeclaration do
           expect(ubo_declaration).not_to be_nil
           expect(ubo_declaration['status']).to eq 'VALIDATION_ASKED'
         end
+
+        it 'returns error when parameters are wrong' do
+          expect { MangoPay::UboDeclaration.update(nil , nil) }.to raise_error { |err|
+            expect(err).to be_a MangoPay::ResponseError
+            expect(err.code).to eq '404'
+            expect(err.type).to be_nil
+          }
+        end
       end
     end
   end

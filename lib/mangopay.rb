@@ -209,6 +209,9 @@ module MangoPay
       request(:get, url)
     end
 
+    def camelize_keys(hash)
+      transform_keys_to_camel_case(hash)
+    end
     private
 
     def user_agent
@@ -306,6 +309,10 @@ module MangoPay
 
     def transform_keys_to_snake_case(response)
       _deep_transform_keys_in_object!(response, &:underscore)
+    end
+
+    def transform_keys_to_camel_case(hash)
+      _deep_transform_keys_in_object!(hash, &:camelize)
     end
 
     def _deep_transform_keys_in_object!(object, &block)

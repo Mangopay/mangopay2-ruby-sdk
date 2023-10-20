@@ -35,6 +35,20 @@ describe MangoPay::KycDocument do
       expect(updated_document['Id']).to eq(new_document['Id'])
       expect(updated_document['Status']).to eq('VALIDATION_ASKED')
     end
+
+    context 'when snakify_response_keys is true' do
+      include_context 'snakify_response_keys'
+      it 'updates a document' do
+        fnm = __FILE__.sub('.rb', '.png')
+        MangoPay::KycDocument.create_page(new_natural_user['id'], new_document2['id'], nil, fnm)
+
+        updated_document = MangoPay::KycDocument.update(new_natural_user['id'], new_document2['id'], {
+          Status: 'VALIDATION_ASKED'
+        })
+        expect(updated_document['id']).to eq(new_document2['id'])
+        expect(updated_document['status']).to eq('VALIDATION_ASKED')
+      end
+    end
   end
 
   describe 'FETCH' do

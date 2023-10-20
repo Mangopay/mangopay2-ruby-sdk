@@ -958,6 +958,18 @@ shared_context 'transfers' do
       Tag: 'Test transfer'
     )
   end
+
+  def create_new_transfer2(from_wallet, to_wallet, amnt = 500)
+    MangoPay::Transfer.create(
+      AuthorId: from_wallet['owners'][0],
+      DebitedWalletId: from_wallet['id'],
+      CreditedUserId: to_wallet['owners'][0],
+      CreditedWalletId: to_wallet['id'],
+      DebitedFunds: { Currency: 'EUR', Amount: amnt },
+      Fees: { Currency: 'EUR', Amount: 0 },
+      Tag: 'Test transfer'
+    )
+  end
 end
 
 ###############################################
