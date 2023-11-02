@@ -1,3 +1,9 @@
+## [3.19.0] - 2023-11-02
+### Updated
+
+- Giropay and Ideal integrations with Mangopay have been improved.
+- Klarna param "MerchantOrderId" has been renamed to "Reference"
+
 ## [3.18.0] - 2023-09-29
 ### Added
 - Instantly convert funds between 2 wallets of different currencies owned by the same user with the new SPOT FX endpoints
