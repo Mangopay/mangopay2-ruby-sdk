@@ -562,7 +562,7 @@ shared_context 'payins' do
         FirstName: 'Joe',
         LastName: 'Blogs'
       },
-      MerchantOrderId: 'afd48-879d-48fg',
+      Reference: 'afd48-879d-48fg',
       Tag: 'Test PayIn/Klarna/Web'
     )
   end
