@@ -49,12 +49,28 @@ module MangoPay
   # temporary
   autoload :Temp, 'mangopay/temp'
 
+  @configurations = {}
+
   class Configuration
     attr_accessor :preproduction, :root_url,
                   :client_id, :client_apiKey,
                   :temp_dir, :log_file, :http_timeout,
                   :http_max_retries, :http_open_timeout,
                   :logger, :use_ssl
+
+    def apply_configuration
+      MangoPay.configure do |config|
+        config.preproduction = @preproduction
+        config.client_id = @client_id
+        config.client_apiKey = @client_apiKey
+        config.log_file = @log_file
+        config.http_timeout = @http_timeout
+        config.http_max_retries = @http_max_retries
+        config.http_open_timeout = @http_open_timeout
+        config.use_ssl = @use_ssl
+        config.logger = @logger
+      end
+    end
 
     def preproduction
       @preproduction || false
@@ -136,6 +152,23 @@ module MangoPay
 
     def ratelimit=(obj)
       @ratelimit = obj
+    end
+
+    # Add MangoPay.Configuration to the list of configs
+    def add_config(name, config)
+      @configurations[name] = config
+    end
+
+    # Fetch a MangoPay configuration from the list of configs. Throw error if not found
+    def get_config(name)
+      config = @configurations[name]
+      raise "Could not find any configuration with name '#{name}'" unless config
+      config
+    end
+
+    def remove_config(name)
+      raise "Could not find any configuration with name '#{name}'" unless @configurations[name]
+      @configurations[name] = nil
     end
 
     #
