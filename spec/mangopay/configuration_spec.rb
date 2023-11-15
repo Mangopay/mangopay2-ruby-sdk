@@ -13,6 +13,74 @@ describe MangoPay::Configuration do
       }
   end
 
+  it 'fails when calling with wrong client credentials, but succeeds after applying a new (correct) config' do
+    # create a wrong configuration
+    wrong_config = MangoPay::Configuration.new
+    wrong_config.client_id = 'placeholder'
+    wrong_config.client_apiKey = '0000'
+    wrong_config.preproduction = true
+
+    # create a valid configuration
+    valid_config = MangoPay::Configuration.new
+    valid_config.client_id = 'sdk-unit-tests'
+    valid_config.client_apiKey = 'cqFfFrWfCcb7UadHNxx2C9Lo6Djw8ZduLi7J9USTmu8bhxxpju'
+    valid_config.preproduction = true
+
+    # add the 2 configs to the list of MangoPay configs
+    MangoPay.add_config('wrong', wrong_config)
+    MangoPay.add_config('valid', valid_config)
+
+    # apply wrong config
+    MangoPay.get_config('wrong').apply_configuration
+
+    expect {
+      MangoPay::User.fetch()
+    }.to raise_error { |err|
+      expect(err).to be_a MangoPay::ResponseError
+      expect(err.code).to eq '401'
+      expect(err.message).to eq 'invalid_client'
+    }
+
+    # apply valid configuration
+    MangoPay.get_config('valid').apply_configuration
+
+    # expect success
+    users = MangoPay::User.fetch()
+    expect(users).to be_kind_of(Array)
+  end
+
+  it 'fails when fetching a config that does not exist' do
+    expect {
+      MangoPay.get_config('placeholder')
+    }.to raise_error { |err|
+      expect(err).to be_a RuntimeError
+      expect(err.message).to eq "Could not find any configuration with name 'placeholder'"
+    }
+  end
+
+  it 'succeeds when removing config' do
+    wrong_config = MangoPay::Configuration.new
+    wrong_config.client_id = 'placeholder'
+    wrong_config.client_apiKey = '0000'
+    wrong_config.preproduction = true
+
+    MangoPay.add_config('wrong', wrong_config)
+
+    # pass when fetching config before removing it
+    MangoPay.get_config('wrong')
+
+    # remove config
+    MangoPay.remove_config('wrong')
+
+    # fail when trying to fetch after removal
+    expect {
+      MangoPay.get_config('wrong')
+    }.to raise_error { |err|
+      expect(err).to be_a RuntimeError
+      expect(err.message).to eq "Could not find any configuration with name 'wrong'"
+    }
+  end
+
   it 'goes ok when calling with correct client credentials' do
     reset_mangopay_configuration
     users = MangoPay::User.fetch()
