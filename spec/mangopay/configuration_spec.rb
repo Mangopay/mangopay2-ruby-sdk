@@ -27,11 +27,11 @@ describe MangoPay::Configuration do
     valid_config.preproduction = true
 
     # add the 2 configs to the list of MangoPay configs
-    MangoPay::add_config('wrong', wrong_config)
-    MangoPay::add_config('valid', valid_config)
+    MangoPay.add_config('wrong', wrong_config)
+    MangoPay.add_config('valid', valid_config)
 
     # apply wrong config
-    MangoPay::get_config('wrong').apply_configuration
+    MangoPay.get_config('wrong').apply_configuration
 
     expect {
       MangoPay::User.fetch()
@@ -42,7 +42,7 @@ describe MangoPay::Configuration do
     }
 
     # apply valid configuration
-    MangoPay::get_config('valid').apply_configuration
+    MangoPay.get_config('valid').apply_configuration
 
     # expect success
     users = MangoPay::User.fetch()
@@ -51,7 +51,7 @@ describe MangoPay::Configuration do
 
   it 'fails when fetching a config that does not exist' do
     expect {
-      MangoPay::get_config('placeholder')
+      MangoPay.get_config('placeholder')
     }.to raise_error { |err|
       expect(err).to be_a RuntimeError
       expect(err.message).to eq "Could not find any configuration with name 'placeholder'"
@@ -64,17 +64,17 @@ describe MangoPay::Configuration do
     wrong_config.client_apiKey = '0000'
     wrong_config.preproduction = true
 
-    MangoPay::add_config('wrong', wrong_config)
+    MangoPay.add_config('wrong', wrong_config)
 
     # pass when fetching config before removing it
-    MangoPay::get_config('wrong')
+    MangoPay.get_config('wrong')
 
     # remove config
-    MangoPay::remove_config('wrong')
+    MangoPay.remove_config('wrong')
 
     # fail when trying to fetch after removal
     expect {
-      MangoPay::get_config('wrong')
+      MangoPay.get_config('wrong')
     }.to raise_error { |err|
       expect(err).to be_a RuntimeError
       expect(err.message).to eq "Could not find any configuration with name 'wrong'"
