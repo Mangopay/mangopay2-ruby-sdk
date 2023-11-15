@@ -1,3 +1,26 @@
+## [3.20.0] - 2023-11-15
+### Added
+
+Now, our SDK enables seamless integration with multiple clientIDs, offering enhanced flexibility and customization.
+
+You can effortlessly create multiple configuration objects tailored to your specific needs:
+
+```
+config = MangoPay::Configuration.new
+config.client_id = 'your-client-id'
+config.client_apiKey = 'your-api-key'
+config.preproduction = true
+```
+add them using :
+
+`MangoPay.add_config('config1', config)`
+
+and perform a call with them using :
+
+`MangoPay.get_config('config1').apply_configuration`
+
+The previous method configure() is still working.
+
 ## [3.19.0] - 2023-11-02
 ### Updated
 

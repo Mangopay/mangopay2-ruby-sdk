@@ -85,6 +85,25 @@ rescue MangoPay::ResponseError => ex
 end
 ```
 
+### Using multiple clientIDs
+You can effortlessly create multiple configuration objects tailored to your specific needs:
+
+```
+config = MangoPay::Configuration.new
+config.client_id = 'your-client-id'
+config.client_apiKey = 'your-api-key'
+config.preproduction = true
+```
+add them using :
+
+`MangoPay.add_config('config1', config)`
+
+and perform a call with them using :
+
+`MangoPay.get_config('config1').apply_configuration`
+
+The previous method configure() is still working.
+
 ### Accessing RateLimit Headers
 Along with each request, the rate limiting headers are automatically updated in MangoPay object:
 
