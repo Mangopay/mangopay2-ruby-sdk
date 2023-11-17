@@ -10,6 +10,18 @@ describe MangoPay::KycDocument do
       expect(new_document['RefusedReasonMessage']).to be_nil
       expect(new_document['Flags']).to match_array([])
     end
+
+    context 'when snakify_response_keys is true' do
+      include_context 'snakify_response_keys'
+      it 'creates a document' do
+        expect(new_document2['id']).to_not be_nil
+        expect(new_document2['type']).to eq('IDENTITY_PROOF')
+        expect(new_document2['status']).to eq('CREATED')
+        expect(new_document2['refused_reason_type']).to be_nil
+        expect(new_document2['refused_reason_message']).to be_nil
+        expect(new_document2['flags']).to match_array([])
+      end
+    end
   end
 
   describe 'UPDATE' do
@@ -22,6 +34,20 @@ describe MangoPay::KycDocument do
       })
       expect(updated_document['Id']).to eq(new_document['Id'])
       expect(updated_document['Status']).to eq('VALIDATION_ASKED')
+    end
+
+    context 'when snakify_response_keys is true' do
+      include_context 'snakify_response_keys'
+      it 'updates a document' do
+        fnm = __FILE__.sub('.rb', '.png')
+        MangoPay::KycDocument.create_page(new_natural_user['id'], new_document2['id'], nil, fnm)
+
+        updated_document = MangoPay::KycDocument.update(new_natural_user['id'], new_document2['id'], {
+          Status: 'VALIDATION_ASKED'
+        })
+        expect(updated_document['id']).to eq(new_document2['id'])
+        expect(updated_document['status']).to eq('VALIDATION_ASKED')
+      end
     end
   end
 
@@ -112,6 +138,18 @@ describe MangoPay::KycDocument do
         consult = MangoPay::KycDocument.create_documents_consult(new_document['Id'])
         expect(consult).not_to be_nil
         expect(consult).to be_kind_of(Array)
+      end
+
+      context 'when snakify_response_keys is true' do
+        include_context 'snakify_response_keys'
+        it 'creates document pages consult' do
+          fnm = __FILE__.sub('.rb', '.png')
+          MangoPay::KycDocument.create_page(new_natural_user['id'], new_document2['id'], nil, fnm)
+
+          consult = MangoPay::KycDocument.create_documents_consult(new_document2['id'])
+          expect(consult).not_to be_nil
+          expect(consult).to be_kind_of(Array)
+        end
       end
     end
   end

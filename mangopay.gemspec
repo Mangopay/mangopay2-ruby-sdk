@@ -16,9 +16,10 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://docs.mangopay.com/'
   s.license     = 'MIT'
 
-  s.required_ruby_version = '>= 1.9.2'
+  s.required_ruby_version = '>= 2.2.2'
 
   s.add_dependency('multi_json', '>= 1.7.7')
+  s.add_dependency('activesupport', '>= 5.0')
 
   s.add_development_dependency('rake', '>= 10.1.0')
   s.add_development_dependency('rspec', '>= 3.0.0')

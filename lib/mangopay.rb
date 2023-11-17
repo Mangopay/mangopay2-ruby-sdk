@@ -5,6 +5,7 @@ require 'multi_json'
 require 'benchmark'
 require 'logger'
 require 'time'
+require 'active_support/core_ext/hash'
 
 # helpers
 require 'mangopay/version'
@@ -56,7 +57,7 @@ module MangoPay
                   :client_id, :client_apiKey,
                   :temp_dir, :log_file, :http_timeout,
                   :http_max_retries, :http_open_timeout,
-                  :logger, :use_ssl
+                  :logger, :use_ssl, :snakify_response_keys
 
     def apply_configuration
       MangoPay.configure do |config|
@@ -99,6 +100,10 @@ module MangoPay
 
       true
     end
+
+    def snakify_response_keys?
+      @snakify_response_keys || false
+    end
   end
 
   class << self
@@ -127,9 +132,9 @@ module MangoPay
       config = Thread.current[:mangopay_configuration]
 
       config                                                ||
-      ( @last_configuration_set &&
-        (self.configuration = @last_configuration_set.dup)) ||
-      (self.configuration = MangoPay::Configuration.new)
+        ( @last_configuration_set &&
+          (self.configuration = @last_configuration_set.dup)) ||
+        (self.configuration = MangoPay::Configuration.new)
     end
 
     def configure
@@ -223,7 +228,11 @@ module MangoPay
         }
       end
 
-      data
+      if configuration.snakify_response_keys?
+        transform_keys_to_snake_case(data)
+      else
+        data
+      end
     end
 
     # Retrieve a previous response by idempotency_key
@@ -233,15 +242,18 @@ module MangoPay
       request(:get, url)
     end
 
+    def camelize_keys(hash)
+      transform_keys_to_camel_case(hash)
+    end
     private
 
     def user_agent
       {
-          bindings_version: VERSION,
-          lang: 'ruby',
-          lang_version: "#{RUBY_VERSION} p#{RUBY_PATCHLEVEL} (#{RUBY_RELEASE_DATE})",
-          platform: RUBY_PLATFORM,
-          uname: get_uname
+        bindings_version: VERSION,
+        lang: 'ruby',
+        lang_version: "#{RUBY_VERSION} p#{RUBY_PATCHLEVEL} (#{RUBY_RELEASE_DATE})",
+        platform: RUBY_PLATFORM,
+        uname: get_uname
       }
     end
 
@@ -254,9 +266,9 @@ module MangoPay
     def request_headers
       auth_token = AuthorizationToken::Manager.get_token
       headers = {
-          'User-Agent' => "MangoPay V2 SDK Ruby Bindings #{VERSION}",
-          'Authorization' => "#{auth_token['token_type']} #{auth_token['access_token']}",
-          'Content-Type' => 'application/json'
+        'User-Agent' => "MangoPay V2 SDK Ruby Bindings #{VERSION}",
+        'Authorization' => "#{auth_token['token_type']} #{auth_token['access_token']}",
+        'Content-Type' => 'application/json'
       }
       begin
         headers.update('x_mangopay_client_user_agent' => JSON.dump(user_agent))
@@ -326,6 +338,29 @@ module MangoPay
 
     def logs_required?
       !configuration.log_file.nil? || !configuration.logger.nil?
+    end
+
+    def transform_keys_to_snake_case(response)
+      _deep_transform_keys_in_object!(response, &:underscore)
+    end
+
+    def transform_keys_to_camel_case(hash)
+      _deep_transform_keys_in_object!(hash, &:camelize)
+    end
+
+    def _deep_transform_keys_in_object!(object, &block)
+      case object
+      when Hash
+        object.keys.each do |key|
+          value = object.delete(key)
+          object[yield(key)] = _deep_transform_keys_in_object!(value, &block)
+        end
+        object
+      when Array
+        object.map! { |e| _deep_transform_keys_in_object!(e, &block) }
+      else
+        object
+      end
     end
   end
 end

@@ -117,6 +117,15 @@ describe MangoPay::Configuration do
     end
   end
 
+  describe '.snakify_response_keys??' do
+    let(:configuration) { MangoPay::Configuration.new }
+
+    it 'defaults to false' do
+      expect(configuration.snakify_response_keys?).to eq(false)
+    end
+  end
+
+
   describe 'logger' do
     around(:each) do |example|
       c = MangoPay.configuration
