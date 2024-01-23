@@ -40,6 +40,11 @@ module MangoPay
         url = "#{MangoPay.api_path}/cards/#{card_id}/validation"
         MangoPay.request(:post, url, params)
       end
+
+      def get_card_validation(card_id, validation_id)
+        url = "#{MangoPay.api_path}/cards/#{card_id}/validation/#{validation_id}"
+        MangoPay.request(:get, url)
+      end
     end
   end
 end
