@@ -100,5 +100,13 @@ describe MangoPay::CardRegistration do
 
       expect(validated).to_not be_nil
     end
+
+    it "fetches card validation" do
+      created = new_card_registration_completed
+      card_validation = create_card_validation(created['UserId'], created['CardId'])
+      fetched_card_validation = MangoPay::Card.get_card_validation(created['CardId'], card_validation['Id'])
+
+      expect(card_validation['Id']).equal? fetched_card_validation['Id']
+    end
   end
 end
