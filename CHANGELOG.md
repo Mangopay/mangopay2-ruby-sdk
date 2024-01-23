@@ -1,3 +1,8 @@
+## [3.21.0] - 2024-01-23
+### Added
+
+- The endpoint [View a card Validation](https://mangopay.com/docs/endpoints/card-validations#view-card-validation) is now available
+
 ## [3.20.0] - 2023-11-15
 ### Added
 
