@@ -28,7 +28,7 @@ jobs:
           ruby-version: 2.6.10
       - name: Install Rspec
         run: |
-          gem install bundler
+          gem install bundler -v 2.4.22
           bundler install
       - name: Test
         run: bundle exec rspec
