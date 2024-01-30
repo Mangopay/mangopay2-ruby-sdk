@@ -514,8 +514,8 @@ shared_context 'payins' do
     MangoPay::PayIn::Klarna::Web.create(
       AuthorId: new_natural_user['Id'],
       CreditedWalletId: new_wallet['Id'],
-      DebitedFunds: {Currency: 'EUR', Amount: 400},
-      Fees: {Currency: 'EUR', Amount: 10},
+      DebitedFunds: { Currency: 'EUR', Amount: 400 },
+      Fees: { Currency: 'EUR', Amount: 10 },
       ReturnURL: 'http://www.my-site.com/returnURL',
       LineItems: [
         {
@@ -574,8 +574,8 @@ shared_context 'payins' do
     MangoPay::PayIn::Ideal::Web.create(
       AuthorId: new_natural_user['Id'],
       CreditedWalletId: new_wallet['Id'],
-      DebitedFunds: {Currency: 'EUR', Amount: 400},
-      Fees: {Currency: 'EUR', Amount: 10},
+      DebitedFunds: { Currency: 'EUR', Amount: 400 },
+      Fees: { Currency: 'EUR', Amount: 10 },
       ReturnURL: 'http://www.my-site.com/returnURL',
       Bic: 'REVOLT21',
       StatementDescriptor: "test",
@@ -590,8 +590,8 @@ shared_context 'payins' do
     MangoPay::PayIn::Giropay::Web.create(
       AuthorId: new_natural_user['Id'],
       CreditedWalletId: new_wallet['Id'],
-      DebitedFunds: {Currency: 'EUR', Amount: 400},
-      Fees: {Currency: 'EUR', Amount: 10},
+      DebitedFunds: { Currency: 'EUR', Amount: 400 },
+      Fees: { Currency: 'EUR', Amount: 10 },
       ReturnURL: 'http://www.my-site.com/returnURL',
       StatementDescriptor: "test",
       Tag: 'Test PayIn/Giropay/Web'
@@ -785,7 +785,7 @@ shared_context 'payins' do
   # wallet with money
   ###############################################
   #
-  let(:new_wallet_with_money){ create_new_wallet_with_money(new_natural_user) }
+  let(:new_wallet_with_money) { create_new_wallet_with_money(new_natural_user) }
 
   def create_new_wallet_with_money(user)
     wallet = MangoPay::Wallet.create(
@@ -940,6 +940,7 @@ end
 ###############################################
 shared_context 'instant_conversion' do
   include_context 'payins'
+
   def get_conversion_rate(debited_currency, credited_currency)
     MangoPay::InstantConversion.get_rate(debited_currency, credited_currency, params = {})
   end
@@ -970,5 +971,23 @@ shared_context 'instant_conversion' do
 
   def get_instant_conversion(id)
     MangoPay::InstantConversion.get(id, params = {})
+  end
+end
+
+###############################################
+# payment methods metadata
+###############################################
+shared_context 'payment_method_metadata' do
+  include_context 'payins'
+
+  def get_payment_method_metadata
+
+    wlt = new_wallet
+    pay_in = create_new_payin_card_direct(wlt, 1000)
+
+    MangoPay::PaymentMethodMetadata.get_metadata(
+      Type: 'BIN',
+      Bin: pay_in['CardInfo']['BIN']
+    )
   end
 end
