@@ -48,6 +48,8 @@ describe MangoPay::Wallet do
     it 'fetches list with two transactions after payin and payout done' do
       payin = new_payin_card_direct
       payout = create_new_payout_bankwire(payin)
+      # wait for the transactions to be created
+      sleep(2)
       transactions = MangoPay::Wallet.transactions(new_wallet['Id'])
 
       expect(transactions).to be_kind_of(Array)
@@ -62,6 +64,9 @@ describe MangoPay::Wallet do
       payin = new_payin_card_direct
       payout = create_new_payout_bankwire(payin)
       wallet_id = new_wallet['Id']
+
+      # wait for the transactions to be created
+      sleep(2)
 
       by_nature_reg = MangoPay::Wallet.transactions(wallet_id, {'Nature' => 'REGULAR'})
       by_nature_ref = MangoPay::Wallet.transactions(wallet_id, {'Nature' => 'REFUND'})

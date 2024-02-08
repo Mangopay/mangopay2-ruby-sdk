@@ -379,51 +379,7 @@ shared_context 'payins' do
     data = {
       data: cardreg['PreregistrationData'],
       accessKeyRef: cardreg['AccessKey'],
-      cardNumber: 4970105191923460,
-      cardExpirationDate: 1226,
-      cardCvx: 123 }
-
-    res = Net::HTTP.post_form(URI(cardreg['CardRegistrationURL']), data)
-    raise Exception, [res, res.body] unless res.is_a?(Net::HTTPOK) && res.body.start_with?('data=')
-
-    cardreg['RegistrationData'] = res.body
-
-    # 3rd step: update (fills-in CardId) and return it
-    MangoPay::CardRegistration.update(cardreg['Id'],
-                                      RegistrationData: cardreg['RegistrationData'])
-  end
-
-  let(:new_card_registration_3dsecure_completed) do
-    # 1st step: create
-    cardreg = new_card_registration
-
-    # 2nd step: tokenize by payline (fills-in RegistrationData)
-    data = {
-      data: cardreg['PreregistrationData'],
-      accessKeyRef: cardreg['AccessKey'],
-      cardNumber: 4970105191923460,
-      cardExpirationDate: 1224,
-      cardCvx: 123 }
-
-    res = Net::HTTP.post_form(URI(cardreg['CardRegistrationURL']), data)
-    raise Exception, [res, res.body] unless res.is_a?(Net::HTTPOK) && res.body.start_with?('data=')
-
-    cardreg['RegistrationData'] = res.body
-
-    # 3rd step: update (fills-in CardId) and return it
-    MangoPay::CardRegistration.update(cardreg['Id'],
-                                      RegistrationData: cardreg['RegistrationData'])
-  end
-
-  let(:new_card_registration_completed_for_deposit) do
-    # 1st step: create
-    cardreg = new_card_registration
-
-    # 2nd step: tokenize by payline (fills-in RegistrationData)
-    data = {
-      data: cardreg['PreregistrationData'],
-      accessKeyRef: cardreg['AccessKey'],
-      cardNumber: 4970105181818183,
+      cardNumber: 4970107111111119,
       cardExpirationDate: 1226,
       cardCvx: 123 }
 
@@ -514,8 +470,8 @@ shared_context 'payins' do
     MangoPay::PayIn::Klarna::Web.create(
       AuthorId: new_natural_user['Id'],
       CreditedWalletId: new_wallet['Id'],
-      DebitedFunds: {Currency: 'EUR', Amount: 400},
-      Fees: {Currency: 'EUR', Amount: 10},
+      DebitedFunds: { Currency: 'EUR', Amount: 400 },
+      Fees: { Currency: 'EUR', Amount: 10 },
       ReturnURL: 'http://www.my-site.com/returnURL',
       LineItems: [
         {
@@ -574,8 +530,8 @@ shared_context 'payins' do
     MangoPay::PayIn::Ideal::Web.create(
       AuthorId: new_natural_user['Id'],
       CreditedWalletId: new_wallet['Id'],
-      DebitedFunds: {Currency: 'EUR', Amount: 400},
-      Fees: {Currency: 'EUR', Amount: 10},
+      DebitedFunds: { Currency: 'EUR', Amount: 400 },
+      Fees: { Currency: 'EUR', Amount: 10 },
       ReturnURL: 'http://www.my-site.com/returnURL',
       Bic: 'REVOLT21',
       StatementDescriptor: "test",
@@ -590,8 +546,8 @@ shared_context 'payins' do
     MangoPay::PayIn::Giropay::Web.create(
       AuthorId: new_natural_user['Id'],
       CreditedWalletId: new_wallet['Id'],
-      DebitedFunds: {Currency: 'EUR', Amount: 400},
-      Fees: {Currency: 'EUR', Amount: 10},
+      DebitedFunds: { Currency: 'EUR', Amount: 400 },
+      Fees: { Currency: 'EUR', Amount: 10 },
       ReturnURL: 'http://www.my-site.com/returnURL',
       StatementDescriptor: "test",
       Tag: 'Test PayIn/Giropay/Web'
@@ -785,7 +741,7 @@ shared_context 'payins' do
   # wallet with money
   ###############################################
   #
-  let(:new_wallet_with_money){ create_new_wallet_with_money(new_natural_user) }
+  let(:new_wallet_with_money) { create_new_wallet_with_money(new_natural_user) }
 
   def create_new_wallet_with_money(user)
     wallet = MangoPay::Wallet.create(
@@ -940,6 +896,7 @@ end
 ###############################################
 shared_context 'instant_conversion' do
   include_context 'payins'
+
   def get_conversion_rate(debited_currency, credited_currency)
     MangoPay::InstantConversion.get_rate(debited_currency, credited_currency, params = {})
   end
@@ -970,5 +927,23 @@ shared_context 'instant_conversion' do
 
   def get_instant_conversion(id)
     MangoPay::InstantConversion.get(id, params = {})
+  end
+end
+
+###############################################
+# payment methods metadata
+###############################################
+shared_context 'payment_method_metadata' do
+  include_context 'payins'
+
+  def get_payment_method_metadata
+
+    wlt = new_wallet
+    pay_in = create_new_payin_card_direct(wlt, 1000)
+
+    MangoPay::PaymentMethodMetadata.get_metadata(
+      Type: 'BIN',
+      Bin: pay_in['CardInfo']['BIN']
+    )
   end
 end
