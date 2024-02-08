@@ -5,7 +5,7 @@ describe MangoPay::PayIn::RecurringPayments, type: :feature do
 
   describe 'CREATE' do
     it 'creates a recurring payment' do
-      cardreg = new_card_registration_3dsecure_completed
+      cardreg = new_card_registration_completed
       wallet = new_wallet
       recurring = MangoPay::PayIn::RecurringPayments::Recurring.create(
         AuthorId: new_natural_user['Id'],

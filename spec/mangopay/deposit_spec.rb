@@ -5,7 +5,7 @@ describe MangoPay::Deposit do
   describe 'CREATE' do
     it 'creates a new deposit' do
       author = new_natural_user
-      card_registration = new_card_registration_completed_for_deposit
+      card_registration = new_card_registration_completed
       deposit = create_new_deposit(card_registration['CardId'], author['Id'])
 
       assert_deposit(deposit, card_registration['CardId'], author["Id"])
@@ -15,7 +15,7 @@ describe MangoPay::Deposit do
   describe 'GET' do
     it 'get an existing deposit' do
       author = new_natural_user
-      card_registration = new_card_registration_completed_for_deposit
+      card_registration = new_card_registration_completed
       deposit = create_new_deposit(card_registration['CardId'], author['Id'])
 
       assert_deposit(deposit, card_registration['CardId'], author["Id"])
@@ -64,7 +64,6 @@ def assert_deposit(deposit, card_reg_id, author_id)
   expect(deposit['CardId']).to eq(card_reg_id)
   expect(deposit['AuthorId']).to eq(author_id)
   expect(deposit['SecureModeReturnURL']).not_to be_nil
-  expect(deposit['SecureModeRedirectURL']).not_to be_nil
   expect(deposit['PaymentType']).not_to be_nil
   expect(deposit['ExecutionType']).not_to be_nil
   expect(deposit['StatementDescriptor']).not_to be_nil

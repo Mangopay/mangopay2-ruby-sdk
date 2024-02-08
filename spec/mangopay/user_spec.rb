@@ -95,6 +95,8 @@ describe MangoPay::User do
     it 'fetches list with two transactions after payin and payout done' do
       payin = new_payin_card_direct
       payout = create_new_payout_bankwire(payin)
+      # wait for the transactions to be created
+      sleep(2)
       transactions = MangoPay::User.transactions(new_natural_user['Id'])
 
       expect(transactions).to be_kind_of(Array)
