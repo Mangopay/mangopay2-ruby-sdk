@@ -15,7 +15,9 @@ describe MangoPay::InstantConversion, type: :feature do
       conversion = create_instant_conversion
 
       expect(conversion['DebitedFunds']['Amount']).not_to be_nil
-      expect(conversion['CreditedFunds']['Amount']).not_to be_nil
+      expect(conversion['CreditedFunds']).not_to be_nil
+      expect(conversion['Fees']).not_to be_nil
+      expect(conversion['Fees']['Amount']).equal? 9
       expect(conversion['Status']).equal? 'SUCCEEDED'
     end
   end
