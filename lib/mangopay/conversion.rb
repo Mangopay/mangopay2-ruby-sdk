@@ -1,6 +1,6 @@
 module MangoPay
 
-  class InstantConversion < Resource
+  class Conversion < Resource
     include HTTPCalls::Fetch
     include HTTPCalls::Update
 
@@ -17,6 +17,16 @@ module MangoPay
 
       def get(id, params)
         url = "#{MangoPay.api_path}/instant-conversion/#{id}"
+        MangoPay.request(:get, url, params)
+      end
+
+      def create_quote(params)
+        url = "#{MangoPay.api_path}/conversions/quote"
+        MangoPay.request(:post, url, params)
+      end
+
+      def get_quote(id, params)
+        url = "#{MangoPay.api_path}/conversions/quote/#{id}"
         MangoPay.request(:get, url, params)
       end
     end
