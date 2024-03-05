@@ -14,6 +14,8 @@ def reset_mangopay_configuration
     c.client_apiKey = 'cqFfFrWfCcb7UadHNxx2C9Lo6Djw8ZduLi7J9USTmu8bhxxpju'
 
     c.temp_dir = File.expand_path('../tmp', __FILE__)
+    c.logger = Logger.new(STDOUT)
+    c.uk_header_flag = true
     require 'fileutils'
     FileUtils.mkdir_p(c.temp_dir) unless File.directory?(c.temp_dir)
   end

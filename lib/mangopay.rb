@@ -57,7 +57,7 @@ module MangoPay
                   :client_id, :client_apiKey,
                   :temp_dir, :log_file, :http_timeout,
                   :http_max_retries, :http_open_timeout,
-                  :logger, :use_ssl
+                  :logger, :use_ssl, :uk_header_flag
 
     def apply_configuration
       MangoPay.configure do |config|
@@ -70,6 +70,7 @@ module MangoPay
         config.http_open_timeout = @http_open_timeout
         config.use_ssl = @use_ssl
         config.logger = @logger
+        config.uk_header_flag = @uk_header_flag
       end
     end
 
@@ -99,6 +100,10 @@ module MangoPay
       return false if @use_ssl == false
 
       true
+    end
+
+    def uk_header_flag
+      @uk_header_flag || false
     end
   end
 
@@ -191,6 +196,10 @@ module MangoPay
       else
         headers = request_headers
         headers['Idempotency-Key'] = headers_or_idempotency_key if headers_or_idempotency_key != nil
+      end
+
+      if configuration.uk_header_flag
+        headers['x-tenant-id '] = 'uk'
       end
 
       res = Net::HTTP.start(uri.host, uri.port, :use_ssl => configuration.use_ssl?, :read_timeout => configuration.http_timeout,
