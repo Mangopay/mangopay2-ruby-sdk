@@ -199,7 +199,7 @@ module MangoPay
       end
 
       if configuration.uk_header_flag
-        headers['x-tenant-id '] = 'uk'
+        headers['x-tenant-id'] = 'uk'
       end
 
       res = Net::HTTP.start(uri.host, uri.port, :use_ssl => configuration.use_ssl?, :read_timeout => configuration.http_timeout,

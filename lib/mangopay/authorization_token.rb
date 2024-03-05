@@ -18,9 +18,6 @@ module MangoPay
           env_key = get_environment_key_for_token
           if token.nil? || token['timestamp'].nil? || token['timestamp'] <= Time.now || token['environment_key'] != env_key
             headers = {}
-            if MangoPay.configuration.uk_header_flag
-              headers['x-tenant-id '] = 'uk'
-            end
             token = MangoPay.request(:post, "/#{MangoPay.version_code}/oauth/token", {}, {}, headers, Proc.new do |req|
               cfg = MangoPay.configuration
               req.basic_auth cfg.client_id, cfg.client_apiKey
