@@ -17,8 +17,7 @@ module MangoPay
           token = storage.get
           env_key = get_environment_key_for_token
           if token.nil? || token['timestamp'].nil? || token['timestamp'] <= Time.now || token['environment_key'] != env_key
-            headers = {}
-            token = MangoPay.request(:post, "/#{MangoPay.version_code}/oauth/token", {}, {}, headers, Proc.new do |req|
+            token = MangoPay.request(:post, "/#{MangoPay.version_code}/oauth/token", {}, {}, {}, Proc.new do |req|
               cfg = MangoPay.configuration
               req.basic_auth cfg.client_id, cfg.client_apiKey
               req.body = 'grant_type=client_credentials'
@@ -74,7 +73,7 @@ module MangoPay
       end
 
       def store(token)
-        File.open(file_path, File::RDWR|File::CREAT, 0644) do |f|
+        File.open(file_path, File::RDWR | File::CREAT, 0644) do |f|
           f.flock(File::LOCK_EX)
           f.truncate(0)
           f.rewind
