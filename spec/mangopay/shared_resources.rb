@@ -921,6 +921,10 @@ shared_context 'instant_conversion' do
         Currency: 'EUR',
         Amount: 79
       },
+      Fees: {
+        Currency: 'EUR',
+        Amount: 9
+      },
       Tag: 'Instant conversion test'
     )
   end
