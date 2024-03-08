@@ -6,17 +6,17 @@ module MangoPay
 
     class << self
       def get_rate(debited_currency, credited_currency, params)
-        url = "#{MangoPay.api_path}/conversion/rate/#{debited_currency}/#{credited_currency}"
+        url = "#{MangoPay.api_path}/conversions/rate/#{debited_currency}/#{credited_currency}"
         MangoPay.request(:get, url, params)
       end
 
       def create(params)
-        url = "#{MangoPay.api_path}/instant-conversion"
+        url = "#{MangoPay.api_path}/conversions/instant-conversion"
         MangoPay.request(:post, url, params)
       end
 
       def get(id, params)
-        url = "#{MangoPay.api_path}/instant-conversion/#{id}"
+        url = "#{MangoPay.api_path}/conversions/#{id}"
         MangoPay.request(:get, url, params)
       end
 
