@@ -44,7 +44,7 @@ module MangoPay
   autoload :Ubo, 'mangopay/ubo'
   autoload :Regulatory, 'mangopay/regulatory'
   autoload :Deposit, 'mangopay/deposit'
-  autoload :InstantConversion, 'mangopay/instant_conversion'
+  autoload :Conversion, 'mangopay/conversion'
   autoload :PaymentMethodMetadata, 'mangopay/payment_method_metadata'
 
   # temporary
