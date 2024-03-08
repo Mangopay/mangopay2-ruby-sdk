@@ -901,7 +901,7 @@ shared_context 'instant_conversion' do
     MangoPay::Conversion.get_rate(debited_currency, credited_currency, params = {})
   end
 
-  def create_conversion()
+  def create_instant_conversion()
     user = new_natural_user
     credited_wallet = MangoPay::Wallet.create(
       Owners: [user['Id']],
@@ -910,7 +910,7 @@ shared_context 'instant_conversion' do
       Tag: 'Test wallet'
     )
 
-    MangoPay::Conversion.create(
+    MangoPay::Conversion.create_instant_conversion(
       AuthorId: user['Id'],
       CreditedWalletId: credited_wallet['Id'],
       DebitedWalletId: new_wallet_with_money['Id'],
@@ -926,6 +926,25 @@ shared_context 'instant_conversion' do
         Amount: 9
       },
       Tag: 'Instant conversion test'
+    )
+  end
+
+  def create_quoted_conversion()
+    user = new_natural_user
+    credited_wallet = MangoPay::Wallet.create(
+      Owners: [user['Id']],
+      Description: 'A test wallet',
+      Currency: 'GBP',
+      Tag: 'Test wallet'
+    )
+    quote = create_conversion_quote
+
+    MangoPay::Conversion.create_quoted_conversion(
+      AuthorId: user['Id'],
+      QuoteId: quote['Id'],
+      CreditedWalletId: credited_wallet['Id'],
+      DebitedWalletId: new_wallet_with_money['Id'],
+      Tag: 'Quoted conversion test'
     )
   end
 

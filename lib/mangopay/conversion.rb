@@ -10,8 +10,13 @@ module MangoPay
         MangoPay.request(:get, url, params)
       end
 
-      def create(params)
+      def create_instant_conversion(params)
         url = "#{MangoPay.api_path}/conversions/instant-conversion"
+        MangoPay.request(:post, url, params)
+      end
+
+      def create_quoted_conversion(params)
+        url = "#{MangoPay.api_path}/conversions/quoted-conversion"
         MangoPay.request(:post, url, params)
       end
 

@@ -10,9 +10,20 @@ describe MangoPay::Conversion, type: :feature do
     end
   end
 
-  describe 'CREATE CONVERSION' do
-    it 'creates a new conversion' do
-      conversion = create_conversion
+  describe 'CREATE INSTANT CONVERSION' do
+    it 'creates a new instant conversion' do
+      conversion = create_instant_conversion
+
+      expect(conversion['DebitedFunds']['Amount']).not_to be_nil
+      expect(conversion['CreditedFunds']['Amount']).not_to be_nil
+      expect(conversion['Fees']['Amount']).not_to be_nil
+      expect(conversion['Status']).equal? 'SUCCEEDED'
+    end
+  end
+
+  describe 'CREATE QUOTED CONVERSION' do
+    it 'creates a new quoted conversion' do
+      conversion = create_quoted_conversion
 
       expect(conversion['DebitedFunds']['Amount']).not_to be_nil
       expect(conversion['CreditedFunds']['Amount']).not_to be_nil
@@ -22,11 +33,12 @@ describe MangoPay::Conversion, type: :feature do
 
   describe 'GET EXISTING CONVERSION' do
     it 'get an existing conversion' do
-      conversion = create_conversion
+      conversion = create_instant_conversion
       returned_conversion = get_conversion(conversion['Id'])
 
       expect(returned_conversion['DebitedFunds']['Amount']).not_to be_nil
       expect(returned_conversion['CreditedFunds']['Amount']).not_to be_nil
+      expect(conversion['Fees']['Amount']).not_to be_nil
       expect(returned_conversion['Status']).equal? 'SUCCEEDED'
     end
   end
