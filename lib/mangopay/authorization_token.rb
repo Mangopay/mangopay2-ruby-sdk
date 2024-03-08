@@ -73,7 +73,7 @@ module MangoPay
       end
 
       def store(token)
-        File.open(file_path, File::RDWR|File::CREAT, 0644) do |f|
+        File.open(file_path, File::RDWR | File::CREAT, 0644) do |f|
           f.flock(File::LOCK_EX)
           f.truncate(0)
           f.rewind
