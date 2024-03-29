@@ -21,6 +21,7 @@ module MangoPay
       # See http://docs.mangopay.com/api-references/payins/payins-card-web/
       class Web < Resource
         include HTTPCalls::Create
+
         def self.url(*)
           "#{MangoPay.api_path}/payins/card/#{CGI.escape(class_name.downcase)}"
         end
@@ -40,6 +41,7 @@ module MangoPay
       # See http://docs.mangopay.com/api-references/payins/payindirectcard/
       class Direct < Resource
         include HTTPCalls::Create
+
         def self.url(*)
           "#{MangoPay.api_path}/payins/card/#{CGI.escape(class_name.downcase)}"
         end
@@ -52,6 +54,7 @@ module MangoPay
       # See http://docs.mangopay.com/api-references/payins/preauthorized-payin/
       class Direct < Resource
         include HTTPCalls::Create
+
         def self.url(*)
           "#{MangoPay.api_path}/payins/preauthorized/direct"
         end
@@ -68,6 +71,7 @@ module MangoPay
       # See http://docs.mangopay.com/api-references/payins/payinbankwire/
       class Direct < Resource
         include HTTPCalls::Create
+
         def self.url(*)
           "#{MangoPay.api_path}/payins/bankwire/direct"
         end
@@ -83,6 +87,7 @@ module MangoPay
       # See http://docs.mangopay.com/api-references/payins/direct-debit-pay-in-web/
       class Web < Resource
         include HTTPCalls::Create
+
         def self.url(*)
           "#{MangoPay.api_path}/payins/directdebit/#{CGI.escape(class_name.downcase)}"
         end
@@ -91,6 +96,7 @@ module MangoPay
       # See https://docs.mangopay.com/api-references/payins/direct-debit-pay-in-direct/
       class Direct < Resource
         include HTTPCalls::Create
+
         def self.url(*)
           "#{MangoPay.api_path}/payins/directdebit/#{CGI.escape(class_name.downcase)}"
         end
@@ -105,12 +111,21 @@ module MangoPay
       # Please use the 'create_v2' function - MangoPay::PayIn::PayPal::Web.create_new(params)
       class Web < Resource
         include HTTPCalls::Create
+
         def self.url(*)
           "#{MangoPay.api_path}/payins/paypal/#{CGI.escape(class_name.downcase)}"
         end
 
         def self.create_v2(params, idempotency_key = nil)
           MangoPay.request(:post, "#{MangoPay.api_path}/payins/payment-methods/paypal", params, {}, idempotency_key)
+        end
+
+        # Add tracking information to a PayPal PayIn (add the tracking number and carrier for LineItems shipments.)
+        # Caution – Tracking information cannot be edited
+        # You can’t modify the TrackingNumber, Carrier, or NotifyBuyer once added.
+        # You can only send a unique tracking number once.
+        def self.add_trackings(pay_in_id, params, idempotency_key = nil)
+          MangoPay.request(:put, "#{MangoPay.api_path}/payins/#{pay_in_id}/trackings", params, {}, idempotency_key)
         end
       end
 
@@ -120,6 +135,7 @@ module MangoPay
 
       class Web < Resource
         include HTTPCalls::Create
+
         def self.url(*)
           "#{MangoPay.api_path}/payins/payconiq/#{CGI.escape(class_name.downcase)}"
         end
