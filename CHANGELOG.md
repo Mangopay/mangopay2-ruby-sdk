@@ -1,3 +1,8 @@
+## [3.24.0] - 2024-04-02
+### Added
+
+- New endpoint [Add tracking to Paypal payin](https://mangopay.com/docs/endpoints/paypal#add-tracking-paypal-payin)
+
 ## [3.23.0] - 2024-03-08
 ### Fixed
 
