@@ -124,7 +124,7 @@ module MangoPay
         # Caution – Tracking information cannot be edited
         # You can’t modify the TrackingNumber, Carrier, or NotifyBuyer once added.
         # You can only send a unique tracking number once.
-        def self.add_trackings(pay_in_id, params, idempotency_key = nil)
+        def self.add_paypal_tracking_information(pay_in_id, params, idempotency_key = nil)
           MangoPay.request(:put, "#{MangoPay.api_path}/payins/#{pay_in_id}/trackings", params, {}, idempotency_key)
         end
       end
