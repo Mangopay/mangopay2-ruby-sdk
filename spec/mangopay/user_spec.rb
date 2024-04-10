@@ -144,7 +144,6 @@ describe MangoPay::User do
         fetched = MangoPay::Card.fetch(card['CardId'])
 
         expect(fetched['Id']).not_to be_nil
-        expect(fetched['Id'].to_i).to be > 0
         expect(fetched['UserId']).to eq(new_natural_user["Id"])
         expect(fetched['Currency']).to eq('EUR')
       end

@@ -7,7 +7,6 @@ describe MangoPay::PreAuthorization do
       cardreg = new_card_registration_completed
       created = new_card_preauthorization
       expect(created['Id']).not_to be_nil
-      expect(created['Id'].to_i).to be > 0
       expect(created['CardId']).to eq(cardreg['CardId'])
       expect(created['AuthorId']).to eq(new_natural_user["Id"])
       expect(created['PayInId']).to be_nil

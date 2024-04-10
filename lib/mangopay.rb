@@ -214,7 +214,13 @@ module MangoPay
       raise MangoPay::ResponseError.new(uri, '408', {'Message' => 'Request Timeout'}) if res.nil?
 
       # decode json data
-      data = res.body.to_s.empty? ? {} : JSON.load(res.body.to_s)
+      begin
+        data = res.body.to_s.empty? ? {} : JSON.load(res.body.to_s)
+      rescue MultiJson::ParseError
+        details = {}
+        details['Message'] = res.body
+        raise MangoPay::ResponseError.new(uri, res.code, details)
+      end
 
       unless res.is_a?(Net::HTTPOK)
         raise MangoPay::ResponseError.new(uri, res.code, data)
@@ -298,12 +304,17 @@ module MangoPay
         res
       ensure
         line = "#{log_severity(res)} #{line}"
+        if time.nil?
+          time_log = "[Unknown ms]"
+        else
+          time_log = "[#{(time * 1000).round(1)}ms]"
+        end
         if res.nil?
           params = ''
-          line += "\n  [#{(time * 1000).round(1)}ms] 408 Request Timeout #{params}\n"
+          line += "\n  #{time_log} 408 Request Timeout #{params}\n"
         else
           params = FilterParameters.response(res.body)
-          line += "\n  [#{(time * 1000).round(1)}ms] #{res.code} #{params}\n"
+          line += "\n  #{time_log} #{res.code} #{params}\n"
         end
         logger.info { line }
       end
