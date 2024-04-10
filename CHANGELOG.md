@@ -1,3 +1,9 @@
+## [3.24.1] - 2024-04-10
+### Fixed
+
+- #249 Improve error handling when logging is enabled
+- #226 MultiJson::ParseError is thrown on HTTP error 5XX
+
 ## [3.24.0] - 2024-04-02
 ### Added
 
