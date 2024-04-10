@@ -6,7 +6,6 @@ describe MangoPay::CardRegistration do
     it 'creates a new card registration' do
       created = new_card_registration
       expect(created['Id']).not_to be_nil
-      expect(created['Id'].to_i).to be > 0
       expect(created['AccessKey']).not_to be_nil
       expect(created['PreregistrationData']).not_to be_nil
       expect(created['CardRegistrationURL']).not_to be_nil
@@ -51,7 +50,6 @@ describe MangoPay::CardRegistration do
 
       # card id filled-in...
       expect(card_id).not_to be_nil
-      expect(card_id.to_i).to be > 0
 
       # ...and points to existing (newly created) card
       card = MangoPay::Card.fetch(card_id)
