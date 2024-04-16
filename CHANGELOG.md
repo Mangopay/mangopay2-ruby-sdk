@@ -1,3 +1,8 @@
+## [3.25.0] - 2024-04-16
+### Added
+
+- Add trace header logging : Introduced the `log_trace_headers` boolean configuration key. Set it to true to enable logging of `x_mangopay_trace-id` and `IdempotencyKey` in the log of the http requests.
+
 ## [3.24.1] - 2024-04-10
 ### Fixed
 

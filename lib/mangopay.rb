@@ -5,6 +5,7 @@ require 'multi_json'
 require 'benchmark'
 require 'logger'
 require 'time'
+require 'securerandom'
 
 # helpers
 require 'mangopay/version'
@@ -55,7 +56,7 @@ module MangoPay
   class Configuration
     attr_accessor :preproduction, :root_url,
                   :client_id, :client_apiKey,
-                  :temp_dir, :log_file, :http_timeout,
+                  :temp_dir, :log_file, :log_trace_headers, :http_timeout,
                   :http_max_retries, :http_open_timeout,
                   :logger, :use_ssl, :uk_header_flag
 
@@ -65,6 +66,7 @@ module MangoPay
         config.client_id = @client_id
         config.client_apiKey = @client_apiKey
         config.log_file = @log_file
+        config.log_trace_headers = @log_trace_headers
         config.http_timeout = @http_timeout
         config.http_max_retries = @http_max_retries
         config.http_open_timeout = @http_open_timeout
@@ -100,6 +102,10 @@ module MangoPay
       return false if @use_ssl == false
 
       true
+    end
+    
+    def log_trace_headers
+      @log_trace_headers || false
     end
 
     def uk_header_flag
@@ -274,6 +280,9 @@ module MangoPay
           'Authorization' => "#{auth_token['token_type']} #{auth_token['access_token']}",
           'Content-Type' => 'application/json'
       }
+      if configuration.log_trace_headers
+        headers.update('x_mangopay_trace-id' => SecureRandom.uuid)
+      end
       begin
         headers.update('x_mangopay_client_user_agent' => JSON.dump(user_agent))
       rescue => e
@@ -292,7 +301,12 @@ module MangoPay
     def do_request_with_log(http, req, uri)
       res, time = nil, nil
       params = FilterParameters.request(req.body)
-      line = "[#{Time.now.iso8601}] #{req.method.upcase} \"#{uri.to_s}\" #{params}"
+      if configuration.log_trace_headers
+        trace_headers = JSON.dump({ 'Idempotency-Key' => req['Idempotency-Key'] , 'x_mangopay_trace-id' =>  req['x_mangopay_trace-id'] })
+        line = "[#{Time.now.iso8601}] #{req.method.upcase} \"#{uri.to_s}\" #{params} #{trace_headers}"
+      else
+        line = "[#{Time.now.iso8601}] #{req.method.upcase} \"#{uri.to_s}\" #{params}"
+      end
       begin
         time = Benchmark.realtime {
           begin
@@ -347,6 +361,23 @@ module MangoPay
 
     def logs_required?
       !configuration.log_file.nil? || !configuration.logger.nil?
+    end
+
+    def filter_headers(hash, to_filter)
+      hash.each do |k,v|
+        if v.is_a?(Hash)
+          filter_hash(v, to_filter)
+        else
+          hash[k] = '[FILTERED]' if to_filter.include?(k)
+        end
+      end
+    end
+
+    def trace_headers_keys
+      @@trace_headers_keys ||= [
+        'Idempotency-Key', 'Traceparent', 'trace-id', 'X-Datadog-Trace-Id', 'X-Datadog-Parent-Id',
+        
+      ].freeze
     end
   end
 end
