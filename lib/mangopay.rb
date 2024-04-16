@@ -362,22 +362,5 @@ module MangoPay
     def logs_required?
       !configuration.log_file.nil? || !configuration.logger.nil?
     end
-
-    def filter_headers(hash, to_filter)
-      hash.each do |k,v|
-        if v.is_a?(Hash)
-          filter_hash(v, to_filter)
-        else
-          hash[k] = '[FILTERED]' if to_filter.include?(k)
-        end
-      end
-    end
-
-    def trace_headers_keys
-      @@trace_headers_keys ||= [
-        'Idempotency-Key', 'Traceparent', 'trace-id', 'X-Datadog-Trace-Id', 'X-Datadog-Parent-Id',
-        
-      ].freeze
-    end
   end
 end
