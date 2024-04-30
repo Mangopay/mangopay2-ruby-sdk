@@ -1,3 +1,8 @@
+## [3.25.1] - 2024-04-30
+### Fixed
+
+- Updated tests for [Look up metadata for a payment method](https://mangopay.com/docs/endpoints/payment-method-metadata#lookup-payment-method-metadata).
+
 ## [3.25.0] - 2024-04-16
 ### Added
 
