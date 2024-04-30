@@ -9,7 +9,7 @@ describe MangoPay::PaymentMethodMetadata, type: :feature do
       expect(metadata['IssuerCountryCode']).not_to be_nil
       expect(metadata['IssuingBank']).not_to be_nil
       expect(metadata['BinData']).not_to be_nil
-      expect(metadata['CardType']).not_to be_nil
+      expect(metadata['BinData'][0]['CardType']).not_to be_nil
     end
   end
 end
