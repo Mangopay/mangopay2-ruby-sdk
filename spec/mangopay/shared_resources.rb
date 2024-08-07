@@ -555,6 +555,22 @@ shared_context 'payins' do
   end
 
   ###############################################
+  # Bancontact/web
+  ###############################################
+  let(:new_payin_bancontact_web) do
+    MangoPay::PayIn::Bancontact::Web.create(
+      AuthorId: new_natural_user['Id'],
+      CreditedWalletId: new_wallet['Id'],
+      DebitedFunds: { Currency: 'EUR', Amount: 400 },
+      Fees: { Currency: 'EUR', Amount: 10 },
+      ReturnURL: 'http://www.my-site.com/returnURL',
+      StatementDescriptor: "test",
+      Tag: 'Test PayIn/Bancontact/Web',
+      Culture: 'FR'
+    )
+  end
+
+  ###############################################
   # PAYPAL/web V2
   ###############################################
   let(:new_payin_paypal_web_v2) do
