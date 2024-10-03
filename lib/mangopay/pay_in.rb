@@ -137,7 +137,7 @@ module MangoPay
         include HTTPCalls::Create
 
         def self.url(*)
-          "#{MangoPay.api_path}/payins/payconiq/#{CGI.escape(class_name.downcase)}"
+          "#{MangoPay.api_path}/payins/payment-methods/payconiq"
         end
       end
 
