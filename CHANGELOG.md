@@ -1,3 +1,8 @@
+## [3.26.1] - 2024-10-03
+### Fixed
+
+- Updated `RedirectURL` for the [Payconiq PayIn](https://docs.mangopay.com/api-reference/payconiq/payconiq-payin-object#the-payconiq-payin-object)
+
 ## [3.26.0] - 2024-08-07
 ### Added
 
