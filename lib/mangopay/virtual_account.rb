@@ -1,18 +1,19 @@
 module MangoPay
 
   class VirtualAccount < Resource
-    include HTTPCalls::Create
-    include HTTPCalls::Update
-    include HTTPCalls::Fetch
-
     class << self
+      # Creates a new virtual account
+      def create(wallet_id, params, idempotency_key = nil)
+        url = "#{MangoPay.api_path}/wallets/#{wallet_id}/virtual-accounts"
+        MangoPay.request(:post, url, params, {}, idempotency_key)
+      end
 
       # Updates:
       # - irreversibly deactivates a virtual account with +virtual_account_id+
       # see https://docs.mangopay.com/api-reference/virtual-accounts/deactivate-virtual-account
-      def deactivate(wallet_id, virtual_account_id)
+      def deactivate(wallet_id, virtual_account_id, idempotency_key = nil)
         url = "#{MangoPay.api_path}/wallets/#{wallet_id}/virtual-accounts/#{virtual_account_id}"
-        MangoPay.request(:put, url)
+        MangoPay.request(:put, url, {}, {}, idempotency_key)
       end
 
       # Fetches:
