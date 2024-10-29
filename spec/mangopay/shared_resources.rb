@@ -999,3 +999,20 @@ shared_context 'payment_method_metadata' do
     )
   end
 end
+
+###############################################
+shared_context 'virtual_account' do
+  ###############################################
+  include_context 'users'
+  include_context 'wallets'
+
+  def new_virtual_account(wallet_id)
+    create_virtual_account = {
+      Country: 'FR',
+      VirtualAccountPurpose: 'Collection',
+      Tag: 'create virtual account tag'
+    }
+
+    MangoPay::VirtualAccount.create(wallet_id, create_virtual_account)
+  end
+end
