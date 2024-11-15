@@ -83,6 +83,15 @@ shared_context 'wallets' do
     )
   end
 
+  def create_new_custom_wallet(user, currency)
+    MangoPay::Wallet.create(
+      Owners: [user['Id']],
+      Description: 'A test wallet',
+      Currency: currency,
+      Tag: 'Test wallet'
+    )
+  end
+
   def wallets_check_amounts(wlt1, amnt1, wlt2 = nil, amnt2 = nil)
     expect(wlt1['Balance']['Amount']).to eq amnt1
     expect(wlt2['Balance']['Amount']).to eq amnt2 if wlt2
@@ -567,6 +576,36 @@ shared_context 'payins' do
       StatementDescriptor: "test",
       Tag: 'Test PayIn/Bancontact/Web',
       Culture: 'FR'
+    )
+  end
+
+  ###############################################
+  # Twint/web
+  ###############################################
+  let(:new_payin_twint_web) do
+    MangoPay::PayIn::Twint::Web.create(
+      AuthorId: new_natural_user['Id'],
+      CreditedWalletId: create_new_custom_wallet(new_natural_user, 'CHF')['Id'],
+      DebitedFunds: { Currency: 'CHF', Amount: 50 },
+      Fees: { Currency: 'CHF', Amount: 10 },
+      ReturnURL: 'http://www.my-site.com/returnURL',
+      StatementDescriptor: "test",
+      Tag: 'Test PayIn/Twint/Web'
+    )
+  end
+
+  ###############################################
+  # Swish/web
+  ###############################################
+  let(:new_payin_swish_web) do
+    MangoPay::PayIn::Swish::Web.create(
+      AuthorId: new_natural_user['Id'],
+      CreditedWalletId: create_new_custom_wallet(new_natural_user, 'SEK')['Id'],
+      DebitedFunds: { Currency: 'SEK', Amount: 400 },
+      Fees: { Currency: 'SEK', Amount: 10 },
+      ReturnURL: 'http://www.my-site.com/returnURL',
+      StatementDescriptor: "test",
+      Tag: 'Test PayIn/Swish/Web'
     )
   end
 

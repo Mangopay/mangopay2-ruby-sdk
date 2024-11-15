@@ -243,6 +243,26 @@ module MangoPay
       end
     end
 
+    module Twint
+      class Web < Resource
+        include HTTPCalls::Create
+
+        def self.url(*)
+          "#{MangoPay.api_path}/payins/payment-methods/twint"
+        end
+      end
+    end
+
+    module Swish
+      class Web < Resource
+        include HTTPCalls::Create
+
+        def self.url(*)
+          "#{MangoPay.api_path}/payins/payment-methods/swish"
+        end
+      end
+    end
+
     module RecurringPayments
       class Recurring < Resource
         include HTTPCalls::Create
