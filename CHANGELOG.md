@@ -1,3 +1,14 @@
+## [3.28.0] - 2024-11-15
+### Added
+
+New endpoint for [The TWINT PayIn object](https://docs.mangopay.com/api-reference/twint/twint-payin-object#the-twint-payin-object):
+- [Create a TWINT PayIn](https://docs.mangopay.com/api-reference/twint/create-twint-payin)
+- [View a PayIn (TWINT)](https://docs.mangopay.com/api-reference/twint/view-payin-twint)
+
+New endpoint for [The Swish PayIn object](https://docs.mangopay.com/api-reference/swish/swish-payin-object):
+- [Create a Swish PayIn](https://docs.mangopay.com/api-reference/swish/create-swish-payin)
+- [View a PayIn (Swish)](https://docs.mangopay.com/api-reference/swish/view-payin-swish)
+
 ## [3.27.0] - 2024-10-29
 ### Added
 
