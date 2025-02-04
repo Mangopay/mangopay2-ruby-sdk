@@ -32,11 +32,13 @@ describe MangoPay::PayOut::BankWire, type: :feature do
 
     it 'fails if not enough money' do
       payin = new_payin_card_web # this payin is NOT processed yet so payout may NOT happen
-      payout = create_new_payout_bankwire(payin)
-      check_type_and_status(payout, false)
-      expect(payout['Status']).to eq('FAILED')
-      expect(payout['ResultCode']).to eq('001001')
-      expect(payout['ResultMessage']).to eq('Unsufficient wallet balance')
+      payout = create_new_payout_bankwire(payin, 10000)
+      sleep(2)
+      fetched = MangoPay::PayOut::BankWire.get_bankwire(payout['Id'])
+      check_type_and_status(payout, true)
+      expect(fetched['Status']).to eq('FAILED')
+      expect(fetched['ResultCode']).to eq('001001')
+      expect(fetched['ResultMessage']).to eq('Unsufficient wallet balance')
     end
   end
 

@@ -21,7 +21,7 @@ describe MangoPay::PayIn::BankWire::ExternalInstruction, type: :feature do
         c.http_timeout = 10000
       end
 
-      id = "66142029"
+      id = "payin_m_01JK6199ED4VGBP98ABRJVDS9D"
       payIn = MangoPay::PayIn.fetch(id)
       expect(payIn['Id']).to eq(id)
       check_type_and_status(payIn)
@@ -38,7 +38,7 @@ describe MangoPay::PayIn::BankWire::ExternalInstruction, type: :feature do
         c.http_timeout = 10000
       end
 
-      payInId = "74980101"
+      payInId = "payin_m_01JK6199ED4VGBP98ABRJVDS9D"
       payIn = MangoPay::PayIn.fetch(payInId)
       expect(payIn).to_not be(nil)
       expect(payIn['Id']).to eq(payInId)
@@ -56,7 +56,7 @@ describe MangoPay::PayIn::BankWire::ExternalInstruction, type: :feature do
         c.http_timeout = 10000
       end
 
-      payInId = "74981216"
+      payInId = "payin_m_01JK6199ED4VGBP98ABRJVDS9D"
       payIn = MangoPay::PayIn.fetch(payInId)
       expect(payIn).to_not be(nil)
       expect(payIn['Id']).to eq(payInId)

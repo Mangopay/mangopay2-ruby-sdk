@@ -389,7 +389,7 @@ shared_context 'payins' do
       data: cardreg['PreregistrationData'],
       accessKeyRef: cardreg['AccessKey'],
       cardNumber: 4970107111111119,
-      cardExpirationDate: 1226,
+      cardExpirationDate: 1229,
       cardCvx: 123 }
 
     res = Net::HTTP.post_form(URI(cardreg['CardRegistrationURL']), data)
@@ -1007,7 +1007,7 @@ shared_context 'instant_conversion' do
     MangoPay::Conversion.create_quote(
       CreditedFunds:  { Currency: 'GBP' },
       DebitedFunds:  { Currency: 'EUR', Amount: 50 },
-      Duration: 90,
+      Duration: 300,
       Tag: 'Created using the Mangopay Ruby SDK'
     )
   end
