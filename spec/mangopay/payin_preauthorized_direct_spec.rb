@@ -44,6 +44,7 @@ describe MangoPay::PayIn::PreAuthorized::Direct, type: :feature do
   describe 'REFUND' do
     it 'refunds a payin' do
       payin = new_payin_preauthorized_direct
+      sleep(2)
       refund = MangoPay::PayIn.refund(payin['Id'], {AuthorId: payin['AuthorId']})
       expect(refund['Id']).not_to be_nil
       expect(refund['Status']).to eq('SUCCEEDED')
