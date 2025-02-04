@@ -1,3 +1,8 @@
+## [3.28.1] - 2025-02-04
+### Updated
+
+Revised tests to improve reliability and address any outdated tests.
+
 ## [3.28.0] - 2024-11-15
 ### Added
 
