@@ -1,3 +1,8 @@
+## [3.28.2] - 2025-02-13
+### Updated
+
+#259 Added idempotency key to create conversion methods. Thank you for your contribution [@kaderate](https://github.com/kaderate)!
+
 ## [3.28.1] - 2025-02-04
 ### Updated
 
