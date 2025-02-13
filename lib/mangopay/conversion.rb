@@ -10,14 +10,14 @@ module MangoPay
         MangoPay.request(:get, url, params)
       end
 
-      def create_instant_conversion(params)
+      def create_instant_conversion(params, idempotency_key = nil)
         url = "#{MangoPay.api_path}/conversions/instant-conversion"
-        MangoPay.request(:post, url, params)
+        MangoPay.request(:post, url, params, {}, idempotency_key)
       end
 
-      def create_quoted_conversion(params)
+      def create_quoted_conversion(params, idempotency_key = nil)
         url = "#{MangoPay.api_path}/conversions/quoted-conversion"
-        MangoPay.request(:post, url, params)
+        MangoPay.request(:post, url, params, {}, idempotency_key)
       end
 
       def get(id, params)
@@ -25,9 +25,9 @@ module MangoPay
         MangoPay.request(:get, url, params)
       end
 
-      def create_quote(params)
+      def create_quote(params, idempotency_key = nil)
         url = "#{MangoPay.api_path}/conversions/quote"
-        MangoPay.request(:post, url, params)
+        MangoPay.request(:post, url, params, {}, idempotency_key)
       end
 
       def get_quote(id, params)
