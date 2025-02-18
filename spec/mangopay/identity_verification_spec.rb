@@ -12,7 +12,7 @@ describe MangoPay::IdentityVerification do
   end
 
   describe 'GET' do
-    it 'creates fetches existing identity verification' do
+    it 'fetches existing identity verification' do
       created = create_new_identity_verification
       fetched = MangoPay::IdentityVerification.get(created['Id'])
 
@@ -20,6 +20,20 @@ describe MangoPay::IdentityVerification do
       expect(created['HostedUrl']).to eq(fetched['HostedUrl'])
       expect(created['ReturnUrl']).to eq(fetched['ReturnUrl'])
       expect(created['Status']).to eq(fetched['Status'])
+    end
+  end
+
+  describe 'GET CHECKS' do
+    it 'fetches checks for an existing identity verification' do
+      created = create_new_identity_verification
+      checks = MangoPay::IdentityVerification.get_checks(created['Id'])
+
+      expect(checks).not_to be_nil
+      expect(created['Id']).to eq(checks['SessionId'])
+      expect(checks['Status']).not_to be_nil
+      expect(checks['CreationDate']).not_to be_nil
+      expect(checks['LastUpdate']).not_to be_nil
+      expect(checks['Checks']).not_to be_nil
     end
   end
 
