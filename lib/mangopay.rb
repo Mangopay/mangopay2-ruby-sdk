@@ -48,6 +48,7 @@ module MangoPay
   autoload :Conversion, 'mangopay/conversion'
   autoload :PaymentMethodMetadata, 'mangopay/payment_method_metadata'
   autoload :VirtualAccount, 'mangopay/virtual_account'
+  autoload :IdentityVerification, 'mangopay/identity_verification'
 
   # temporary
   autoload :Temp, 'mangopay/temp'
