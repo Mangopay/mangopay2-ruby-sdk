@@ -43,8 +43,6 @@ describe MangoPay::VirtualAccount do
 
   describe 'FETCH AVAILABILITIES' do
     it 'get availabilities' do
-      # TODO
-      pending("API issue. Re-enable when fixed.")
       availabilities = MangoPay::VirtualAccount.fetch_availabilities
       expect(availabilities).not_to be_nil
       expect(availabilities['Collection']).not_to be_nil
