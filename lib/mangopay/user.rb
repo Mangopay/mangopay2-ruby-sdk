@@ -4,6 +4,8 @@ module MangoPay
   # See also children classes:
   # - MangoPay::NaturalUser
   # - MangoPay::LegalUser
+  # - MangoPay::NaturalUserSca
+  # - MangoPay::LegalUserSca
   class User < Resource
     include HTTPCalls::Create
     include HTTPCalls::Update
@@ -73,6 +75,11 @@ module MangoPay
       # Fetches User Regulatory
       def regulatory(user_id, filters = {})
         MangoPay.request(:get, url(user_id) + '/Regulatory', {}, filters)
+      end
+
+      def fetch_sca(user_id)
+        url = "#{MangoPay.api_path}/sca/users/#{user_id}"
+        MangoPay.request(:get, url, {}, {})
       end
     end
   end

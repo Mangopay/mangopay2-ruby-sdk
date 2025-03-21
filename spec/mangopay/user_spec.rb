@@ -109,6 +109,32 @@ describe MangoPay::User do
     end
   end
 
+  describe 'FETCH SCA' do
+    it 'fetches a SCA legal user using the User module' do
+      user = new_legal_user_sca_owner
+      fetched = MangoPay::User.fetch_sca(new_legal_user_sca_owner['Id'])
+      expect(fetched['Id']).to eq(user['Id'])
+    end
+
+    it 'fetches a SCA natural user using the User module' do
+      user = new_natural_user_sca_owner
+      fetched = MangoPay::User.fetch_sca(user['Id'])
+      expect(fetched['Id']).to eq(user['Id'])
+    end
+
+    it 'fetches a SCA legal user' do
+      user = new_legal_user_sca_owner
+      fetched = MangoPay::LegalUserSca.fetch(user['Id'])
+      expect(fetched['Id']).to eq(user['Id'])
+    end
+
+    it 'fetches a SCA natural user' do
+      user = new_natural_user_sca_owner
+      fetched = MangoPay::NaturalUserSca.fetch(user['Id'])
+      expect(fetched['Id']).to eq(user['Id'])
+    end
+  end
+
   describe 'FETCH TRANSACTIONS' do
     it 'fetches empty list of transactions if no transactions done' do
       transactions = MangoPay::User.transactions(new_natural_user['Id'])
