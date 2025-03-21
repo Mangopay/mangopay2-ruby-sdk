@@ -19,6 +19,38 @@ describe MangoPay::User do
     end
   end
 
+  describe 'CREATE SCA' do
+    it 'creates a new SCA natural user payer' do
+      user = new_natural_user_sca_payer
+      expect(user["FirstName"]).to eq('Alex')
+      expect(user["UserCategory"]).to eq('PAYER')
+      expect(user["UserStatus"]).to eq('ACTIVE')
+    end
+
+    it 'creates a new SCA natural user owner' do
+      user = new_natural_user_sca_owner
+      expect(user["FirstName"]).to eq('Alex')
+      expect(user["UserCategory"]).to eq('OWNER')
+      expect(user["UserStatus"]).to eq('PENDING_USER_ACTION')
+      expect(user["PendingUserAction"]["RedirectUrl"]).not_to be_nil
+    end
+
+    it 'creates a new SCA legal user payer' do
+      user = new_legal_user_sca_payer
+      expect(user["Name"]).to eq('Alex Smith')
+      expect(user["UserCategory"]).to eq('PAYER')
+      expect(user["UserStatus"]).to eq('ACTIVE')
+    end
+
+    it 'creates a new SCA legal user owner' do
+      user = new_legal_user_sca_owner
+      expect(user["Name"]).to eq('Alex Smith')
+      expect(user["UserCategory"]).to eq('OWNER')
+      expect(user["UserStatus"]).to eq('PENDING_USER_ACTION')
+      expect(user["PendingUserAction"]["RedirectUrl"]).not_to be_nil
+    end
+  end
+
   describe 'UPDATE' do
     it 'updates a natural user' do
       updated_user = MangoPay::NaturalUser.update(new_natural_user['Id'] ,{

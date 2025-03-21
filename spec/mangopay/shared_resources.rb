@@ -3,6 +3,10 @@ shared_context 'users' do
   ###############################################
 
   let(:new_natural_user) { create_new_natural_user }
+  let(:new_natural_user_sca_payer) { create_new_natural_user_sca_payer }
+  let(:new_natural_user_sca_owner) { create_new_natural_user_sca_owner }
+  let(:new_legal_user_sca_payer) { create_new_legal_user_sca_payer }
+  let(:new_legal_user_sca_owner) { create_new_legal_user_sca_owner }
 
   def define_new_natural_user
     {
@@ -27,8 +31,133 @@ shared_context 'users' do
     }
   end
 
+  def define_new_natural_user_sca_payer
+    {
+      "UserCategory": "PAYER",
+      "TermsAndConditionsAccepted": false,
+      "FirstName": "Alex",
+      "LastName": "Smith",
+      "Email": "alex.smith@example.com",
+      "Address": {
+        "AddressLine1": "3 rue de la Cité",
+        "AddressLine2": "Appartement 7",
+        "City": "Paris",
+        "Region": "Île-de-France",
+        "PostalCode": "75004",
+        "Country": "FR"
+      },
+      "Tag": "Created using the Mangopay API Postman collection",
+      "PhoneNumber": "0611111111",
+      "PhoneNumberCountry": "FR"
+    }
+  end
+
+  def define_new_natural_user_sca_owner
+    {
+      "UserCategory": "OWNER",
+      "TermsAndConditionsAccepted": true,
+      "FirstName": "Alex",
+      "LastName": "Smith",
+      "Email": "alex.smith@example.com",
+      "Address": {
+        "AddressLine1": "3 rue de la Cité",
+        "AddressLine2": "Appartement 7",
+        "City": "Paris",
+        "Region": "Île-de-France",
+        "PostalCode": "75004",
+        "Country": "FR"
+      },
+      "Birthday": 652117514,
+      "CountryOfResidence": "FR",
+      "Nationality": "FR",
+      "Tag": "Created using the Mangopay API Postman collection",
+      "PhoneNumber": "0611111111",
+      "PhoneNumberCountry": "FR"
+    }
+  end
+
+  def define_new_legal_user_sca_payer
+    {
+      "UserCategory": "PAYER",
+      "TermsAndConditionsAccepted": false,
+      "LegalPersonType": "SOLETRADER",
+      "Name": "Alex Smith",
+      "Email": "alex.smith.services@example.com",
+      "LegalRepresentative": {
+        "FirstName": "Alex",
+        "LastName": "Smith",
+        "Email": "alex.smith@example.com",
+        "PhoneNumber": "0611111111",
+        "PhoneNumberCountry": "FR"
+      },
+      "LegalRepresentativeAddress": {
+        "AddressLine1": "3 rue de la Cité",
+        "AddressLine2": "Appartement 7",
+        "City": "Paris",
+        "Region": "Île-de-France",
+        "PostalCode": "75004",
+        "Country": "FR"
+      },
+      "Tag": "Created using the Mangopay API Postman collection"
+    }
+  end
+
+  def define_new_legal_user_sca_owner
+    {
+      "UserCategory": "OWNER",
+      "TermsAndConditionsAccepted": true,
+      "LegalPersonType": "SOLETRADER",
+      "Name": "Alex Smith",
+      "Email": "alex.smith.services@example.com",
+      "LegalRepresentative": {
+        "FirstName": "Alex",
+        "LastName": "Smith",
+        "Birthday": 652117514,
+        "Nationality": "FR",
+        "CountryOfResidence": "FR",
+        "Email": "alex.smith@example.com",
+        "PhoneNumber": "0611111111",
+        "PhoneNumberCountry": "FR"
+      },
+      "CompanyNumber": "123456789",
+      "HeadquartersAddress": {
+        "AddressLine1": "3 rue de la Cité",
+        "AddressLine2": "Appartement 7",
+        "City": "Paris",
+        "Region": "Île-de-France",
+        "PostalCode": "75004",
+        "Country": "FR"
+      },
+      "LegalRepresentativeAddress": {
+        "AddressLine1": "3 rue de la Cité",
+        "AddressLine2": "Appartement 7",
+        "City": "Paris",
+        "Region": "Île-de-France",
+        "PostalCode": "75004",
+        "Country": "FR"
+      },
+      "Tag": "Created using the Mangopay API Postman collection"
+    }
+  end
+
   def create_new_natural_user
     MangoPay::NaturalUser.create(define_new_natural_user)
+  end
+
+  def create_new_natural_user_sca_payer
+    MangoPay::NaturalUserSca.create(define_new_natural_user_sca_payer)
+  end
+
+  def create_new_natural_user_sca_owner
+    MangoPay::NaturalUserSca.create(define_new_natural_user_sca_owner)
+  end
+
+  def create_new_legal_user_sca_payer
+    MangoPay::LegalUserSca.create(define_new_legal_user_sca_payer)
+  end
+
+  def create_new_legal_user_sca_owner
+    MangoPay::LegalUserSca.create(define_new_legal_user_sca_owner)
   end
 
   let(:new_legal_user) do

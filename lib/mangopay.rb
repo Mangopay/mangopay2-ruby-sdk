@@ -19,6 +19,8 @@ module MangoPay
   autoload :Client, 'mangopay/client'
   autoload :User, 'mangopay/user'
   autoload :NaturalUser, 'mangopay/natural_user'
+  autoload :NaturalUserSca, 'mangopay/natural_user_sca'
+  autoload :LegalUserSca, 'mangopay/legal_user_sca'
   autoload :LegalUser, 'mangopay/legal_user'
   autoload :PayIn, 'mangopay/pay_in'
   autoload :PayOut, 'mangopay/pay_out'
