@@ -12,6 +12,10 @@ module MangoPay
     end
 
     class << self
+      def categorize(user_id, params)
+        url = "#{MangoPay.api_path}/sca/users/legal/#{user_id}/category"
+        MangoPay.request(:put, url, params)
+      end
     end
   end
 end

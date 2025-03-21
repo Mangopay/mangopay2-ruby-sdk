@@ -105,6 +105,50 @@ describe MangoPay::User do
     end
   end
 
+  describe 'CATEGORIZE SCA' do
+    it 'transitions SCA natural user Payer to Owner' do
+      user = new_natural_user_sca_payer
+      categorized = MangoPay::NaturalUserSca.categorize(user['Id'] ,{
+        "UserCategory": "OWNER",
+        "TermsAndConditionsAccepted": true,
+        "Birthday": 652117514,
+        "Nationality": "FR",
+        "CountryOfResidence": "FR"
+      })
+      fetched = MangoPay::NaturalUserSca.fetch(user['Id'])
+      expect(user['UserCategory']).to eq('PAYER')
+      expect(categorized['UserCategory']).to eq('OWNER')
+      expect(fetched['UserCategory']).to eq('OWNER')
+    end
+
+    it 'transitions SCA legal user Payer to Owner' do
+      user = new_legal_user_sca_payer
+      categorized = MangoPay::LegalUserSca.categorize(user['Id'] ,{
+        "UserCategory": "OWNER",
+        "TermsAndConditionsAccepted": true,
+        "LegalRepresentative": {
+          "Birthday": 652117514,
+          "Nationality": "FR",
+          "CountryOfResidence": "FR",
+          "Email": "alex.smith@example.com"
+        },
+        "HeadquartersAddress": {
+          "AddressLine1": "3 rue de la Cité",
+          "AddressLine2": "Appartement 7",
+          "City": "Paris",
+          "Region": "Île-de-France",
+          "PostalCode": "75004",
+          "Country": "FR"
+        },
+        "CompanyNumber": "123456789"
+      })
+      fetched = MangoPay::LegalUserSca.fetch(user['Id'])
+      expect(user['UserCategory']).to eq('PAYER')
+      expect(categorized['UserCategory']).to eq('OWNER')
+      expect(fetched['UserCategory']).to eq('OWNER')
+    end
+  end
+
   describe 'FETCH' do
     it 'fetches all the users' do
       users = MangoPay::User.fetch()

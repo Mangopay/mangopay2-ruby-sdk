@@ -86,6 +86,9 @@ shared_context 'users' do
       "LegalRepresentative": {
         "FirstName": "Alex",
         "LastName": "Smith",
+        "Birthday": 652117514,
+        "Nationality": "FR",
+        "CountryOfResidence": "FR",
         "Email": "alex.smith@example.com",
         "PhoneNumber": "0611111111",
         "PhoneNumberCountry": "FR"
