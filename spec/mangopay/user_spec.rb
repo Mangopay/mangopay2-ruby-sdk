@@ -149,6 +149,14 @@ describe MangoPay::User do
     end
   end
 
+  describe 'ENROLL SCA' do
+    it 'enrolls user' do
+      user = new_natural_user
+      enrollment_result = MangoPay::User.enroll_sca(user['Id'])
+      expect(enrollment_result["PendingUserAction"]["RedirectUrl"]).not_to be_nil
+    end
+  end
+
   describe 'FETCH' do
     it 'fetches all the users' do
       users = MangoPay::User.fetch()

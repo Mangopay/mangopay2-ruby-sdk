@@ -11,6 +11,12 @@ module MangoPay
     include HTTPCalls::Update
     include HTTPCalls::Fetch
     class << self
+      def enroll_sca(user_id)
+        url = "#{MangoPay.api_path}/sca/users/#{user_id}/enrollment"
+        MangoPay.request(:post, url, {}, {})
+      end
+
+
       # Fetches list of wallets belonging to the given +user_id+.
       # Optional +filters+ is a hash accepting following keys:
       # - +page+, +per_page+, +sort+: pagination and sorting params (see MangoPay::HTTPCalls::Fetch::ClassMethods#fetch)
