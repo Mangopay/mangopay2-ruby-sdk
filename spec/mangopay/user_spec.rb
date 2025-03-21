@@ -81,6 +81,30 @@ describe MangoPay::User do
     end
   end
 
+  describe 'UPDATE SCA' do
+    it 'updates a SCA natural user' do
+      user = new_natural_user_sca_owner
+      updated_user = MangoPay::NaturalUserSca.update(user['Id'] ,{
+        FirstName: 'Jack'
+      })
+      fetched = MangoPay::NaturalUserSca.fetch(user['Id'])
+      expect(updated_user['FirstName']).to eq('Jack')
+      expect(updated_user['FirstName']).to eq(fetched['FirstName'])
+    end
+
+    it 'updates a SCA legal user' do
+      user = new_legal_user_sca_owner
+      legal_representative = user['LegalRepresentative']
+      legal_representative['FirstName'] = 'Jack'
+      updated_user = MangoPay::LegalUserSca.update(user['Id'] ,{
+        LegalRepresentative: legal_representative
+      })
+      fetched = MangoPay::LegalUserSca.fetch(user['Id'])
+      expect(updated_user['LegalRepresentative']['FirstName']).to eq('Jack')
+      expect(updated_user['LegalRepresentative']['FirstName']).to eq(fetched['LegalRepresentative']['FirstName'])
+    end
+  end
+
   describe 'FETCH' do
     it 'fetches all the users' do
       users = MangoPay::User.fetch()
