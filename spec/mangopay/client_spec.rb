@@ -58,9 +58,8 @@ describe MangoPay::Client do
       file = 'any file content...'
       expect { MangoPay::Client.upload_logo(file) }.to raise_error { |err|
         expect(err).to be_a MangoPay::ResponseError
-        expect(err.code).to eq '500'
-        # expect(err.code).to eq '400'
-        # expect(err.type).to eq 'param_error'
+        expect(err.code).to eq '400'
+        expect(err.type).to eq 'param_error'
       }
     end
   end
