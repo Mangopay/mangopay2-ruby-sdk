@@ -19,6 +19,38 @@ describe MangoPay::User do
     end
   end
 
+  describe 'CREATE SCA' do
+    it 'creates a new SCA natural user payer' do
+      user = new_natural_user_sca_payer
+      expect(user["FirstName"]).to eq('Alex')
+      expect(user["UserCategory"]).to eq('PAYER')
+      expect(user["UserStatus"]).to eq('ACTIVE')
+    end
+
+    it 'creates a new SCA natural user owner' do
+      user = new_natural_user_sca_owner
+      expect(user["FirstName"]).to eq('Alex')
+      expect(user["UserCategory"]).to eq('OWNER')
+      expect(user["UserStatus"]).to eq('PENDING_USER_ACTION')
+      expect(user["PendingUserAction"]["RedirectUrl"]).not_to be_nil
+    end
+
+    it 'creates a new SCA legal user payer' do
+      user = new_legal_user_sca_payer
+      expect(user["Name"]).to eq('Alex Smith')
+      expect(user["UserCategory"]).to eq('PAYER')
+      expect(user["UserStatus"]).to eq('ACTIVE')
+    end
+
+    it 'creates a new SCA legal user owner' do
+      user = new_legal_user_sca_owner
+      expect(user["Name"]).to eq('Alex Smith')
+      expect(user["UserCategory"]).to eq('OWNER')
+      expect(user["UserStatus"]).to eq('PENDING_USER_ACTION')
+      expect(user["PendingUserAction"]["RedirectUrl"]).not_to be_nil
+    end
+  end
+
   describe 'UPDATE' do
     it 'updates a natural user' do
       updated_user = MangoPay::NaturalUser.update(new_natural_user['Id'] ,{
@@ -49,6 +81,82 @@ describe MangoPay::User do
     end
   end
 
+  describe 'UPDATE SCA' do
+    it 'updates a SCA natural user' do
+      user = new_natural_user_sca_owner
+      updated_user = MangoPay::NaturalUserSca.update(user['Id'] ,{
+        FirstName: 'Jack'
+      })
+      fetched = MangoPay::NaturalUserSca.fetch(user['Id'])
+      expect(updated_user['FirstName']).to eq('Jack')
+      expect(updated_user['FirstName']).to eq(fetched['FirstName'])
+    end
+
+    it 'updates a SCA legal user' do
+      user = new_legal_user_sca_owner
+      legal_representative = user['LegalRepresentative']
+      legal_representative['FirstName'] = 'Jack'
+      updated_user = MangoPay::LegalUserSca.update(user['Id'] ,{
+        LegalRepresentative: legal_representative
+      })
+      fetched = MangoPay::LegalUserSca.fetch(user['Id'])
+      expect(updated_user['LegalRepresentative']['FirstName']).to eq('Jack')
+      expect(updated_user['LegalRepresentative']['FirstName']).to eq(fetched['LegalRepresentative']['FirstName'])
+    end
+  end
+
+  describe 'CATEGORIZE SCA' do
+    it 'transitions SCA natural user Payer to Owner' do
+      user = new_natural_user_sca_payer
+      categorized = MangoPay::NaturalUserSca.categorize(user['Id'] ,{
+        "UserCategory": "OWNER",
+        "TermsAndConditionsAccepted": true,
+        "Birthday": 652117514,
+        "Nationality": "FR",
+        "CountryOfResidence": "FR"
+      })
+      fetched = MangoPay::NaturalUserSca.fetch(user['Id'])
+      expect(user['UserCategory']).to eq('PAYER')
+      expect(categorized['UserCategory']).to eq('OWNER')
+      expect(fetched['UserCategory']).to eq('OWNER')
+    end
+
+    it 'transitions SCA legal user Payer to Owner' do
+      user = new_legal_user_sca_payer
+      categorized = MangoPay::LegalUserSca.categorize(user['Id'] ,{
+        "UserCategory": "OWNER",
+        "TermsAndConditionsAccepted": true,
+        "LegalRepresentative": {
+          "Birthday": 652117514,
+          "Nationality": "FR",
+          "CountryOfResidence": "FR",
+          "Email": "alex.smith@example.com"
+        },
+        "HeadquartersAddress": {
+          "AddressLine1": "3 rue de la Cité",
+          "AddressLine2": "Appartement 7",
+          "City": "Paris",
+          "Region": "Île-de-France",
+          "PostalCode": "75004",
+          "Country": "FR"
+        },
+        "CompanyNumber": "123456789"
+      })
+      fetched = MangoPay::LegalUserSca.fetch(user['Id'])
+      expect(user['UserCategory']).to eq('PAYER')
+      expect(categorized['UserCategory']).to eq('OWNER')
+      expect(fetched['UserCategory']).to eq('OWNER')
+    end
+  end
+
+  describe 'ENROLL SCA' do
+    it 'enrolls user' do
+      user = new_natural_user
+      enrollment_result = MangoPay::User.enroll_sca(user['Id'])
+      expect(enrollment_result["PendingUserAction"]["RedirectUrl"]).not_to be_nil
+    end
+  end
+
   describe 'FETCH' do
     it 'fetches all the users' do
       users = MangoPay::User.fetch()
@@ -74,6 +182,32 @@ describe MangoPay::User do
     it 'fetches a natural user' do
       user = MangoPay::NaturalUser.fetch(new_natural_user['Id'])
       expect(user['Id']).to eq(new_natural_user['Id'])
+    end
+  end
+
+  describe 'FETCH SCA' do
+    it 'fetches a SCA legal user using the User module' do
+      user = new_legal_user_sca_owner
+      fetched = MangoPay::User.fetch_sca(new_legal_user_sca_owner['Id'])
+      expect(fetched['Id']).to eq(user['Id'])
+    end
+
+    it 'fetches a SCA natural user using the User module' do
+      user = new_natural_user_sca_owner
+      fetched = MangoPay::User.fetch_sca(user['Id'])
+      expect(fetched['Id']).to eq(user['Id'])
+    end
+
+    it 'fetches a SCA legal user' do
+      user = new_legal_user_sca_owner
+      fetched = MangoPay::LegalUserSca.fetch(user['Id'])
+      expect(fetched['Id']).to eq(user['Id'])
+    end
+
+    it 'fetches a SCA natural user' do
+      user = new_natural_user_sca_owner
+      fetched = MangoPay::NaturalUserSca.fetch(user['Id'])
+      expect(fetched['Id']).to eq(user['Id'])
     end
   end
 
