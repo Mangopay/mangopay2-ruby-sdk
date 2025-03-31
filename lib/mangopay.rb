@@ -280,7 +280,7 @@ module MangoPay
     def request_headers
       auth_token = AuthorizationToken::Manager.get_token
       headers = {
-          'User-Agent' => "MangoPay-SDK/#{VERSION} (Ruby/#{RUBY_FRAMEWORK_VERSION})",
+          'User-Agent' => "Mangopay-SDK/#{VERSION} (Ruby/#{RUBY_FRAMEWORK_VERSION})",
           'Authorization' => "#{auth_token['token_type']} #{auth_token['access_token']}",
           'Content-Type' => 'application/json'
       }
