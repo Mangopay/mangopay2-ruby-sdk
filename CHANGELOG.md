@@ -1,3 +1,7 @@
+## [3.30.2] - 2025-04-02
+### Fixed
+- Fixed the way User-Agent Header is built
+
 ## [3.30.1] - 2025-04-02
 ### Changed
 - User-Agent Header value standardized on format: User-Agent: Mangopay-SDK/`SDKVersion` (`Language`/`LanguageVersion`)
