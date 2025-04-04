@@ -263,6 +263,16 @@ module MangoPay
       end
     end
 
+    module PayByBank
+      class Web < Resource
+        include HTTPCalls::Create
+
+        def self.url(*)
+          "#{MangoPay.api_path}/payins/payment-methods/openbanking"
+        end
+      end
+    end
+
     module RecurringPayments
       class Recurring < Resource
         include HTTPCalls::Create

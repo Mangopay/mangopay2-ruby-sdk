@@ -942,6 +942,25 @@ shared_context 'payins' do
     MangoPay::Wallet.fetch(pay_in['CreditedWalletId'])
   end
 
+  let(:new_payin_paybybank_web) do
+    MangoPay::PayIn::PayByBank::Web.create(
+      AuthorId: new_natural_user['Id'],
+      CreditedWalletId: create_new_custom_wallet(new_natural_user, 'EUR')['Id'],
+      DebitedFunds: { Currency: 'EUR', Amount: 400 },
+      Fees: { Currency: 'EUR', Amount: 0 },
+      ReturnURL: 'http://www.my-site.com/returnURL',
+      StatementDescriptor: "test",
+      Tag: 'Test PayIn/PayByBank/Web',
+      Country: 'DE',
+      IBAN: 'DE03500105177564668331',
+      BIC: 'AACSDE33',
+      Scheme: 'SEPA_INSTANT_CREDIT_TRANSFER',
+      BankName: 'de-demobank-open-banking-embedded-templates',
+      Culture: 'EN',
+      PaymentFlow: 'WEB'
+    )
+  end
+
 end
 
 ###############################################
