@@ -36,6 +36,8 @@ describe MangoPay::Recipient do
       expect(schema['Currency']).not_to be_nil
       expect(schema['RecipientType']).not_to be_nil
       expect(schema['PayoutMethodType']).not_to be_nil
+      expect(schema['RecipientScope']).not_to be_nil
+      expect(schema['Tag']).not_to be_nil
       expect(schema['IndividualRecipient']).not_to be_nil
       expect(schema['LocalBankTransfer']).not_to be_nil
       expect(schema['BusinessRecipient']).to be_nil
@@ -49,6 +51,8 @@ describe MangoPay::Recipient do
       expect(schema['Currency']).not_to be_nil
       expect(schema['RecipientType']).not_to be_nil
       expect(schema['PayoutMethodType']).not_to be_nil
+      expect(schema['RecipientScope']).not_to be_nil
+      expect(schema['Tag']).not_to be_nil
       expect(schema['BusinessRecipient']).not_to be_nil
       expect(schema['InternationalBankTransfer']).not_to be_nil
       expect(schema['IndividualRecipient']).to be_nil
