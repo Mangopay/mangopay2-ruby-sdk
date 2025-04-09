@@ -293,6 +293,22 @@ module MangoPay
           "#{MangoPay.api_path}/payins/recurring/card/direct"
         end
       end
+
+      class PayPalCIT < Resource
+        include HTTPCalls::Create
+
+        def self.url(*)
+          "#{MangoPay.api_path}/payins/payment-methods/paypal/recurring"
+        end
+      end
+
+      class PayPalMIT < Resource
+        include HTTPCalls::Create
+
+        def self.url(*)
+          "#{MangoPay.api_path}/payins/payment-methods/paypal/recurring"
+        end
+      end
     end
 
   end

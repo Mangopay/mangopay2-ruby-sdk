@@ -78,5 +78,145 @@ describe MangoPay::PayIn::RecurringPayments, type: :feature do
 
       expect(update).not_to be_nil
     end
+
+    it 'creates a recurring paypal payment CIT' do
+      wallet = new_wallet
+      recurring = MangoPay::PayIn::RecurringPayments::Recurring.create(
+        AuthorId: new_natural_user['Id'],
+        CreditedUserId: wallet['Owners'][0],
+        CreditedWalletId: wallet['Id'],
+        FirstTransactionDebitedFunds: {Currency: 'EUR', Amount: 1000},
+        FirstTransactionFees: {Currency: 'EUR', Amount: 0},
+        Billing: {
+          Address: {
+            AddressLine1: 'AddressLine1',
+            AddressLine2: 'AddressLine2',
+            City: 'City',
+            Region: 'Region',
+            PostalCode: 'PostalCode',
+            Country: 'FR'
+          },
+          FirstName: 'Joe',
+          LastName: 'Blogs'
+        },
+        Shipping: {
+          Address: {
+            AddressLine1: 'AddressLine1',
+            AddressLine2: 'AddressLine2',
+            City: 'City',
+            Region: 'Region',
+            PostalCode: 'PostalCode',
+            Country: 'FR'
+          },
+          FirstName: 'Joe',
+          LastName: 'Blogs'
+        },
+        PaymentType: 'PAYPAL'
+      )
+      expect(recurring).not_to be_nil
+      expect(recurring['Status']).not_to be_nil
+      expect(recurring['Id']).not_to be_nil
+
+      cit = MangoPay::PayIn::RecurringPayments::PayPalCIT.create(
+        {
+          "ReturnURL": "http://example.com",
+          "CancelURL": "http://example.net",
+          "LineItems": [
+            {
+              "Name": "Running shoes",
+              "Quantity": 1,
+              "UnitAmount": 1000,
+              "TaxAmount": 0,
+              "Description": "ID of Seller 1",
+              "Category": "PHYSICAL_GOODS"
+            }
+          ],
+          "Tag": "Created using the Mangopay API Postman collection",
+          "RecurringPayinRegistrationId": recurring['Id'],
+          "ShippingPreference": "SET_PROVIDED_ADDRESS",
+          "Reference": "abcd-efgh-ijkl",
+          "StatementDescriptor": "Example123"
+        }
+      )
+
+      expect(cit).not_to be_nil
+      expect(cit['Status']).to eq('CREATED')
+      expect(cit['PaymentType']).to eq('PAYPAL')
+      expect(cit['ExecutionType']).to eq('WEB')
+    end
+
+    it 'creates a recurring paypal payment MIT' do
+      wallet = new_wallet
+      recurring = MangoPay::PayIn::RecurringPayments::Recurring.create(
+        AuthorId: new_natural_user['Id'],
+        CreditedUserId: wallet['Owners'][0],
+        CreditedWalletId: wallet['Id'],
+        FirstTransactionDebitedFunds: {Currency: 'EUR', Amount: 1000},
+        FirstTransactionFees: {Currency: 'EUR', Amount: 0},
+        Billing: {
+          Address: {
+            AddressLine1: 'AddressLine1',
+            AddressLine2: 'AddressLine2',
+            City: 'City',
+            Region: 'Region',
+            PostalCode: 'PostalCode',
+            Country: 'FR'
+          },
+          FirstName: 'Joe',
+          LastName: 'Blogs'
+        },
+        Shipping: {
+          Address: {
+            AddressLine1: 'AddressLine1',
+            AddressLine2: 'AddressLine2',
+            City: 'City',
+            Region: 'Region',
+            PostalCode: 'PostalCode',
+            Country: 'FR'
+          },
+          FirstName: 'Joe',
+          LastName: 'Blogs'
+        },
+        PaymentType: 'PAYPAL'
+      )
+      expect(recurring).not_to be_nil
+      expect(recurring['Status']).not_to be_nil
+      expect(recurring['Id']).not_to be_nil
+
+      cit = MangoPay::PayIn::RecurringPayments::PayPalMIT.create(
+        {
+          "ReturnURL": "http://example.com",
+          "CancelURL": "http://example.net",
+          "LineItems": [
+            {
+              "Name": "Running shoes",
+              "Quantity": 1,
+              "UnitAmount": 1000,
+              "TaxAmount": 0,
+              "Description": "ID of Seller 1",
+              "Category": "PHYSICAL_GOODS"
+            }
+          ],
+          "Tag": "Created using the Mangopay API Postman collection",
+          "RecurringPayinRegistrationId": recurring['Id'],
+          "ShippingPreference": "SET_PROVIDED_ADDRESS",
+          "Reference": "abcd-efgh-ijkl",
+          "StatementDescriptor": "Example123",
+          "DebitedFunds": {
+            "Currency": "EUR",
+            "Amount": 1000
+          },
+          "Fees": {
+            "Currency": "EUR",
+            "Amount": 0
+          }
+        }
+      )
+
+      expect(cit).not_to be_nil
+      expect(cit['Status']).to eq('CREATED')
+      expect(cit['PaymentType']).to eq('PAYPAL')
+      expect(cit['ExecutionType']).to eq('WEB')
+    end
   end
 end
