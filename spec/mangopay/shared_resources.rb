@@ -1187,3 +1187,38 @@ shared_context 'virtual_account' do
     MangoPay::VirtualAccount.create(wallet_id, create_virtual_account)
   end
 end
+
+shared_context 'recipient' do
+  include_context 'users'
+
+  let(:new_recipient) { create_new_recipient(create_new_natural_user_sca_owner['Id']) }
+
+  def create_new_recipient(user_id)
+    MangoPay::Recipient.create(define_new_recipient, user_id)
+  end
+
+  def define_new_recipient
+    {
+      "DisplayName": "Alex Smith GBP account",
+      "PayoutMethodType": "LocalBankTransfer",
+      "RecipientType": "Individual",
+      "Currency": "GBP",
+      "IndividualRecipient": {
+        "FirstName": "Alex",
+        "LastName": "Smith",
+        "Address": {
+          "AddressLine1": "10 Kingsway",
+          "City": "London",
+          "PostalCode": "WC2B 6LH",
+          "Country": "GB"
+        }
+      },
+      "LocalBankTransfer": {
+        "GBP": {
+          "SortCode": "200000",
+          "AccountNumber": "55779911"
+        }
+      }
+    }
+  end
+end
