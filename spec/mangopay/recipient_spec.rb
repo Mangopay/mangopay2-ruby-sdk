@@ -108,4 +108,6 @@ def assert_recipient(recipient)
   expect(recipient['RecipientType']).not_to be_nil
   expect(recipient['IndividualRecipient']).not_to be_nil
   expect(recipient['LocalBankTransfer']).not_to be_nil
+  expect(recipient['RecipientScope']).not_to be_nil
+  expect(recipient['UserId']).not_to be_nil
 end
