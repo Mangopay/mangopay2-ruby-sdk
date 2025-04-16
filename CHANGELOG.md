@@ -1,3 +1,8 @@
+## [3.31.0] - 2025-04-16
+### Added
+- [POST Create a Pay by Bank PayIn](https://docs.mangopay.com/api-reference/pay-by-bank/create-pay-by-bank-payin)
+- PayPal recurring payments, thanks to the `PaymentType` value `PAYPAL` on [Recurring PayIn Registrations](https://docs.mangopay.com/api-reference/recurring-payin-registrations/create-recurring-payin-registration-paypal) and new endpoints ([POST Create a Recurring PayPal PayIn (CIT)](https://docs.mangopay.com/api-reference/paypal/create-recurring-paypal-payin-cit) and [POST Create a Recurring PayPal PayIn (MIT)](https://docs.mangopay.com/api-reference/paypal/create-recurring-paypal-payin-mit)
+
 ## [3.30.2] - 2025-04-02
 ### Fixed
 - Fixed the way User-Agent Header is built
