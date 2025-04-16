@@ -13,6 +13,9 @@ module MangoPay
     end
 
     class << self
+      def close(user_id)
+        MangoPay.request(:delete, url(user_id))
+      end
     end
   end
 end

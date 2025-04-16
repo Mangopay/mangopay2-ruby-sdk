@@ -16,6 +16,10 @@ module MangoPay
         url = "#{MangoPay.api_path}/sca/users/natural/#{user_id}/category"
         MangoPay.request(:put, url, params)
       end
+
+      def close(user_id)
+        MangoPay.request(:delete, url(user_id))
+      end
     end
   end
 end
