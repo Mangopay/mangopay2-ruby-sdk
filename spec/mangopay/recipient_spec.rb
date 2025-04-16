@@ -88,7 +88,7 @@ describe MangoPay::Recipient do
 
   describe 'DEACTIVATE' do
     it 'deactivates a recipient' do
-      pending("a recipient needs to be manually activated before running the test")
+      # pending("a recipient needs to be manually activated before running the test")
       john = create_new_natural_user_sca_owner
       recipient = create_new_recipient(john['Id'])
       deactivated = MangoPay::Recipient.deactivate(recipient['Id'])

@@ -26,7 +26,10 @@ module MangoPay
     end
 
     def self.deactivate(recipient_id)
-      MangoPay.request(:put, "#{MangoPay.api_path}/recipients/#{recipient_id}", {}, {})
+      params = {
+        Status: 'DEACTIVATED'
+      }
+      MangoPay.request(:put, "#{MangoPay.api_path}/recipients/#{recipient_id}", params, {})
     end
   end
 end
