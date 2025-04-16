@@ -367,4 +367,20 @@ describe MangoPay::User do
     end
   end
 =end
+
+  describe 'CLOSE' do
+    it 'closes a natural user' do
+      new_user = create_new_natural_user
+      MangoPay::NaturalUser.close(new_user['Id'])
+      closed = MangoPay::User.fetch(new_user['Id'])
+      expect(closed['UserStatus']).to eq('CLOSED')
+    end
+
+    it 'closes a legal user' do
+      new_user = new_legal_user
+      MangoPay::LegalUser.close(new_user['Id'])
+      closed = MangoPay::User.fetch(new_user['Id'])
+      expect(closed['UserStatus']).to eq('CLOSED')
+    end
+  end
 end

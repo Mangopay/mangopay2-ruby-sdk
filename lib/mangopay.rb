@@ -232,7 +232,7 @@ module MangoPay
         raise MangoPay::ResponseError.new(uri, res.code, details)
       end
 
-      unless res.is_a?(Net::HTTPOK)
+      unless res.is_a?(Net::HTTPOK) or res.is_a?(Net::HTTPNoContent)
         raise MangoPay::ResponseError.new(uri, res.code, data)
       end
 
