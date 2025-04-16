@@ -86,13 +86,13 @@ describe MangoPay::KycDocument do
       bts = File.open(fnm, 'rb') { |f| f.read }
       b64 = Base64.encode64(bts)
       ret = create_page(b64)
-      expect(ret).to be_nil
+      expect(ret).to_not be_nil
     end
 
     it 'accepts file path' do
       fnm = __FILE__.sub('.rb', '.png')
       ret = MangoPay::KycDocument.create_page(new_natural_user['Id'], new_document['Id'], nil, fnm)
-      expect(ret).to be_nil
+      expect(ret).to_not be_nil
     end
 
     it 'fails when input string is not base64-encoded' do

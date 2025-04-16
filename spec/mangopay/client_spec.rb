@@ -45,13 +45,13 @@ describe MangoPay::Client do
       bts = File.open(fnm, 'rb') { |f| f.read }
       b64 = Base64.encode64(bts)
       ret = MangoPay::Client.upload_logo(b64)
-      expect(ret).to be_nil
+      expect(ret).to_not be_nil
     end
 
     it 'accepts file path' do
       fnm = __FILE__.sub('.rb', '.png')
       ret = MangoPay::Client.upload_logo(nil, fnm)
-      expect(ret).to be_nil
+      expect(ret).to_not be_nil
     end
 
     it 'fails when input string is not base64-encoded' do
