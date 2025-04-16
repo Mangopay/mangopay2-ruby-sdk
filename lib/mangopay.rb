@@ -51,6 +51,7 @@ module MangoPay
   autoload :PaymentMethodMetadata, 'mangopay/payment_method_metadata'
   autoload :VirtualAccount, 'mangopay/virtual_account'
   autoload :IdentityVerification, 'mangopay/identity_verification'
+  autoload :Recipient, 'mangopay/recipient'
 
   # temporary
   autoload :Temp, 'mangopay/temp'
@@ -232,7 +233,7 @@ module MangoPay
         raise MangoPay::ResponseError.new(uri, res.code, details)
       end
 
-      unless res.is_a?(Net::HTTPOK) or res.is_a?(Net::HTTPNoContent)
+      unless res.is_a?(Net::HTTPOK) or res.is_a?(Net::HTTPCreated) or res.is_a?(Net::HTTPNoContent)
         raise MangoPay::ResponseError.new(uri, res.code, data)
       end
 
