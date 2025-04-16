@@ -1,3 +1,19 @@
+## [3.32.0] - 2025-04-16
+### Added
+
+#### Recipients
+- [GET View payout methods](/api-reference/recipients/view-payout-methods)
+- [GET View the schema for a Recipient](/api-reference/recipients/view-recipient-schema)
+- [POST Validate data for a Recipient](/api-reference/recipients/validate-recipient-data)
+- [POST Create a Recipient](/api-reference/recipients/create-recipient)
+- [GET View a Recipient](/api-reference/recipients/view-recipient)
+- [GET List Recipients for a user](/api-reference/recipients/list-recipients-user)
+- [PUT Deactivate a Recipient](/api-reference/recipients/deactivate-recipient)
+
+#### Endpoints to close a user account
+- [DELETE Close a Natural User](/api-reference/users/close-natural-user)
+- [DELETE Close a Legal User](/api-reference/users/close-legal-user)
+
 ## [3.31.0] - 2025-04-16
 ### Added
 - [POST Create a Pay by Bank PayIn](https://docs.mangopay.com/api-reference/pay-by-bank/create-pay-by-bank-payin)
