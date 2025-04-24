@@ -240,6 +240,14 @@ describe MangoPay::User do
       expect(transactions_ids).to include payin['Id']
       expect(transactions_ids).to include payout['Id']
     end
+
+    it 'fetches transactions sca' do
+      begin
+        MangoPay::User.transactions(new_natural_user['Id'], {'ScaContext': 'USER_PRESENT'})
+      rescue MangoPay::ResponseError => ex
+        expect(ex.details['RedirectUrl']).not_to be_nil
+      end
+    end
   end
 
   describe 'FETCH WALLETS' do
@@ -255,6 +263,14 @@ describe MangoPay::User do
       expect(wallets).to be_kind_of(Array)
       expect(wallets.count).to eq 1
       expect(wallets.first['Id']).to eq wallet['Id']
+    end
+
+    it 'fetches wallets sca' do
+      begin
+        MangoPay::User.wallets(new_natural_user['Id'], {'ScaContext': 'USER_PRESENT'})
+      rescue MangoPay::ResponseError => ex
+        expect(ex.details['RedirectUrl']).not_to be_nil
+      end
     end
   end
 
