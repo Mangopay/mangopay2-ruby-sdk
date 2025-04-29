@@ -234,6 +234,12 @@ module MangoPay
       end
 
       unless res.is_a?(Net::HTTPOK) or res.is_a?(Net::HTTPCreated) or res.is_a?(Net::HTTPNoContent)
+        if res.is_a?(Net::HTTPUnauthorized) and res['www-authenticate'] != nil
+          redirect_url = res['www-authenticate'][/RedirectUrl=(.+)/, 1]
+          data['RedirectUrl'] = redirect_url
+          data['message'] = 'SCA required to perform this action.'
+          raise MangoPay::ResponseError.new(uri, res.code, data)
+        end
         raise MangoPay::ResponseError.new(uri, res.code, data)
       end
 

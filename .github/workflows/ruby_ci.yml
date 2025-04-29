@@ -1,4 +1,4 @@
-name: mangopay2-net-ruby-ci
+name: mangopay2-ruby-ci
 
 on:
   push:

@@ -27,6 +27,14 @@ describe MangoPay::Wallet do
       wallet = MangoPay::Wallet.fetch(new_wallet['Id'])
       expect(wallet['Id']).to eq(new_wallet['Id'])
     end
+
+    it 'fetches a wallet sca' do
+      begin
+        MangoPay::Wallet.fetch(new_wallet['Id'], nil, {'ScaContext': 'USER_PRESENT'})
+      rescue MangoPay::ResponseError => ex
+        expect(ex.details['RedirectUrl']).not_to be_nil
+      end
+    end
   end
 
   describe 'FETCH TRANSACTIONS' do
@@ -81,5 +89,12 @@ describe MangoPay::Wallet do
       expect(by_type_pyout.first['Id']).to eq payout['Id']
     end
 
+    it 'fetches transactions sca' do
+      begin
+        MangoPay::Wallet.transactions(new_wallet['Id'], {'ScaContext': 'USER_PRESENT'})
+      rescue MangoPay::ResponseError => ex
+        expect(ex.details['RedirectUrl']).not_to be_nil
+      end
+    end
   end
 end
