@@ -1,4 +1,4 @@
-name: mangopay2-net-ruby-cd
+name: mangopay2-ruby-cd
 
 on:
   push:
