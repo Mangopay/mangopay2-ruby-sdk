@@ -17,6 +17,15 @@ describe MangoPay::PayIn::Blik::Web, type: :feature do
       expect(created['ReturnURL']).not_to be_nil
       check_type_and_status(created)
     end
+
+    it 'creates a blik web payin with code' do
+      created = new_payin_blik_web_with_code
+      expect(created['Id']).not_to be_nil
+      expect(created['Code']).not_to be_nil
+      expect(created['IpAddress']).not_to be_nil
+      expect(created['BrowserInfo']).not_to be_nil
+      check_type_and_status(created)
+    end
   end
 
   describe 'FETCH' do
