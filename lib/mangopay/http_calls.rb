@@ -52,8 +52,11 @@ module MangoPay
         #   MangoPay::User.fetch(filter = {'page' => 2, 'per_page' => 3})
         #   filter # => {"page"=>2, "per_page"=>3, "total_pages"=>1969, "total_items"=>5905}
         #
-        def fetch(id_or_filters = nil, idempotency_key = nil)
+        def fetch(id_or_filters = nil, idempotency_key = nil, query_params_get_by_id = nil)
           id, filters = HTTPCalls::Fetch.parse_id_or_filters(id_or_filters)
+          if query_params_get_by_id != nil and query_params_get_by_id != {}
+            filters = query_params_get_by_id
+          end
           response = MangoPay.request(:get, url(id), {}, filters, idempotency_key)
         end
       end
