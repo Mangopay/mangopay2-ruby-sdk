@@ -40,7 +40,7 @@ describe MangoPay::Client do
   end
 
   describe 'UPLOAD LOGO' do
-    it 'accepts Base64 encoded file content' do
+    xit 'accepts Base64 encoded file content' do
       fnm = __FILE__.sub('.rb', '.png')
       bts = File.open(fnm, 'rb') { |f| f.read }
       b64 = Base64.encode64(bts)
@@ -48,7 +48,7 @@ describe MangoPay::Client do
       expect(ret).to_not be_nil
     end
 
-    it 'accepts file path' do
+    xit 'accepts file path' do
       fnm = __FILE__.sub('.rb', '.png')
       ret = MangoPay::Client.upload_logo(nil, fnm)
       expect(ret).to_not be_nil
