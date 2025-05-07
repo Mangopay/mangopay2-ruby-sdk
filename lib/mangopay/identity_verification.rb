@@ -9,8 +9,8 @@ module MangoPay
       MangoPay.request(:get, "#{MangoPay.api_path}/identity-verifications/#{identity_verification_id}", {}, filters)
     end
 
-    def self.get_checks(identity_verification_id, filters = {})
-      MangoPay.request(:get, "#{MangoPay.api_path}/identity-verifications/#{identity_verification_id}/checks", {}, filters)
+    def self.get_all(user_id, filters = {})
+      MangoPay.request(:get, "#{MangoPay.api_path}/users/#{user_id}/identity-verifications", {}, filters)
     end
   end
 end

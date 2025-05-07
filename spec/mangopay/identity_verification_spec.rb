@@ -21,22 +21,17 @@ describe MangoPay::IdentityVerification do
       expect(created['ReturnUrl']).to eq(fetched['ReturnUrl'])
       expect(created['Status']).to eq(fetched['Status'])
     end
-  end
 
-  # endpoint returning 404
-  # describe 'GET CHECKS' do
-  #   it 'fetches checks for an existing identity verification' do
-  #     created = create_new_identity_verification
-  #     checks = MangoPay::IdentityVerification.get_checks(created['Id'])
-  #
-  #     expect(checks).not_to be_nil
-  #     expect(created['Id']).to eq(checks['SessionId'])
-  #     expect(checks['Status']).not_to be_nil
-  #     expect(checks['CreationDate']).not_to be_nil
-  #     expect(checks['LastUpdate']).not_to be_nil
-  #     expect(checks['Checks']).not_to be_nil
-  #   end
-  # end
+    it 'fetches all identity verifications for a user' do
+      create_new_identity_verification
+      user = new_natural_user
+      fetched = MangoPay::IdentityVerification.get_all(user['Id'])
+
+      expect(fetched).not_to be_nil
+      expect(fetched).to be_kind_of(Array)
+      expect(fetched).not_to be_empty
+    end
+  end
 
   def create_new_identity_verification
     user = new_natural_user
