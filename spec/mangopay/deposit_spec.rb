@@ -24,6 +24,26 @@ describe MangoPay::Deposit do
 
       assert_deposit(fetched_deposit, card_registration['CardId'], author["Id"])
     end
+
+    it 'gets all deposits for a user' do
+      author = new_natural_user
+      card_registration = new_card_registration_completed
+      create_new_deposit(card_registration['CardId'], author['Id'])
+
+      result = MangoPay::Deposit.get_all_for_user(author['Id'])
+      expect(result).to be_kind_of(Array)
+      expect(result.count).to be > 0
+    end
+
+    it 'gets all deposits for a card' do
+      author = new_natural_user
+      card_registration = new_card_registration_completed
+      create_new_deposit(card_registration['CardId'], author['Id'])
+
+      result = MangoPay::Deposit.get_all_for_card(card_registration['CardId'])
+      expect(result).to be_kind_of(Array)
+      expect(result.count).to be > 0
+    end
   end
 
 # the Cancel flow will be teste manually for now
