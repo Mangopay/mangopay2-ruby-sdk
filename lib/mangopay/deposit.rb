@@ -16,5 +16,13 @@ module MangoPay
       }
       MangoPay.request(:put, "#{MangoPay.api_path}/deposit-preauthorizations/#{deposit_id}", params)
     end
+
+    def self.get_all_for_user(user_id, filters = {})
+      MangoPay.request(:get, "#{MangoPay.api_path}/users/#{user_id}/deposit-preauthorizations", {}, filters)
+    end
+
+    def self.get_all_for_card(card_id, filters = {})
+      MangoPay.request(:get, "#{MangoPay.api_path}/cards/#{card_id}/deposit-preauthorizations", {}, filters)
+    end
   end
 end
