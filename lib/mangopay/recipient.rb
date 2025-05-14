@@ -13,8 +13,8 @@ module MangoPay
       MangoPay.request(:get, "#{MangoPay.api_path}/users/#{user_id}/recipients", {}, filters)
     end
 
-    def self.get_schema(payout_method_type, recipient_type, currency, filters = {})
-      MangoPay.request(:get, "#{MangoPay.api_path}/recipients/schema?payoutMethodType=#{payout_method_type}&recipientType=#{recipient_type}&currency=#{currency}", {}, filters)
+    def self.get_schema(payout_method_type, recipient_type, currency, country, filters = {})
+      MangoPay.request(:get, "#{MangoPay.api_path}/recipients/schema?payoutMethodType=#{payout_method_type}&recipientType=#{recipient_type}&currency=#{currency}&country=#{country}", {}, filters)
     end
 
     def self.get_payout_methods(country, currency, filters = {})
