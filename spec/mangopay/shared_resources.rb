@@ -1251,6 +1251,7 @@ shared_context 'recipient' do
       "PayoutMethodType": "LocalBankTransfer",
       "RecipientType": "Individual",
       "Currency": "GBP",
+      "Country": "GB",
       "IndividualRecipient": {
         "FirstName": "Alex",
         "LastName": "Smith",

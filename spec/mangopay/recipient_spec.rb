@@ -30,7 +30,7 @@ describe MangoPay::Recipient do
 
   describe 'GET Schema' do
     it 'fetches schema for LocalBankTransfer, Individual' do
-      schema = MangoPay::Recipient.get_schema('LocalBankTransfer', 'Individual', 'GBP')
+      schema = MangoPay::Recipient.get_schema('LocalBankTransfer', 'Individual', 'GBP', 'GB')
       expect(schema).not_to be_nil
       expect(schema['DisplayName']).not_to be_nil
       expect(schema['Currency']).not_to be_nil
@@ -42,10 +42,11 @@ describe MangoPay::Recipient do
       expect(schema['LocalBankTransfer']).not_to be_nil
       expect(schema['BusinessRecipient']).to be_nil
       expect(schema['InternationalBankTransfer']).to be_nil
+      expect(schema['Country']).not_to be_nil
     end
 
     it 'fetches schema for InternationalBankTransfer, Business' do
-      schema = MangoPay::Recipient.get_schema('InternationalBankTransfer', 'Business', 'GBP')
+      schema = MangoPay::Recipient.get_schema('InternationalBankTransfer', 'Business', 'GBP', 'GB')
       expect(schema).not_to be_nil
       expect(schema['DisplayName']).not_to be_nil
       expect(schema['Currency']).not_to be_nil
@@ -57,6 +58,7 @@ describe MangoPay::Recipient do
       expect(schema['InternationalBankTransfer']).not_to be_nil
       expect(schema['IndividualRecipient']).to be_nil
       expect(schema['LocalBankTransfer']).to be_nil
+      expect(schema['Country']).not_to be_nil
     end
   end
 
@@ -110,4 +112,5 @@ def assert_recipient(recipient)
   expect(recipient['LocalBankTransfer']).not_to be_nil
   expect(recipient['RecipientScope']).not_to be_nil
   expect(recipient['UserId']).not_to be_nil
+  expect(recipient['Country']).not_to be_nil
 end
