@@ -45,7 +45,7 @@ describe MangoPay::PayIn::PreAuthorized::Direct, type: :feature do
     it 'refunds a payin' do
       payin = new_payin_preauthorized_direct
       sleep(2)
-      refund = MangoPay::PayIn.refund(payin['Id'], {AuthorId: payin['AuthorId']})
+      refund = MangoPay::PayIn.refund(payin['Id'], { AuthorId: payin['AuthorId'] })
       expect(refund['Id']).not_to be_nil
       expect(refund['Status']).to eq('SUCCEEDED')
       expect(refund['Type']).to eq('PAYOUT')
@@ -66,26 +66,52 @@ describe MangoPay::PayIn::PreAuthorized::Direct, type: :feature do
       wallets_reload_and_check_amounts(wlt, 1000)
 
       # refund the payin
-      refund = MangoPay::PayIn.refund(payin['Id'], {AuthorId: payin['AuthorId']})
+      refund = MangoPay::PayIn.refund(payin['Id'], { AuthorId: payin['AuthorId'] })
       wallets_reload_and_check_amounts(wlt, 0)
     end
   end
 
-    # this flow is tested manually for the moment
-=begin
-  describe 'CREATE AND VIEW PRE AUTHORIZED DEPOSIT' do
-    it 'creates a card direct pre authorized deposit payin' do
-      wallet = new_wallet
-      author = new_natural_user
-      card_registration = new_card_registration_completed
-      deposit = create_new_deposit(card_registration['CardId'], author['Id'])
+  begin
+    describe 'CREATE AND VIEW PRE AUTHORIZED DEPOSIT' do
+      it 'creates a card direct pre authorized deposit payin' do
+        wallet = new_wallet
+        author = new_natural_user
+        card_registration = new_card_registration_completed
+        deposit = create_new_deposit(card_registration['CardId'], author['Id'])
 
-      created = create_new_payin_pre_authorized_deposit_direct(deposit['Id'], author['Id'], wallet['Id'])
+        created = create_new_payin_pre_authorized_deposit_direct(deposit['Id'], author['Id'], wallet['Id'])
 
-      expect(created['Id']).not_to be_nil
-      check_type_and_status(created)
-      expect(created['DepositId']).to eq(deposit['Id'])
+        expect(created['Id']).not_to be_nil
+        check_type_and_status(created)
+        expect(created['DepositId']).to eq(deposit['Id'])
+      end
+
+      it 'creates a card direct pre authorized deposit payin prior to complement' do
+        wallet = new_wallet
+        author = new_natural_user
+        card_registration = new_card_registration_completed
+        deposit = create_new_deposit(card_registration['CardId'], author['Id'])
+
+        created = create_new_deposit_pre_authorized_pay_in_prior_to_complement(deposit['Id'], author['Id'], wallet['Id'])
+
+        expect(created['Id']).not_to be_nil
+        check_type_and_status(created)
+        expect(created['DepositId']).to eq(deposit['Id'])
+      end
+
+      it 'creates a card direct pre authorized deposit payin complement' do
+        wallet = new_wallet
+        author = new_natural_user
+        card_registration = new_card_registration_completed
+        deposit = create_new_deposit(card_registration['CardId'], author['Id'])
+        MangoPay::Deposit.update(deposit['Id'], {PaymentStatus: 'NO_SHOW_REQUESTED'})
+
+        created = create_new_deposit_pre_authorized_pay_in_complement(deposit['Id'], author['Id'], wallet['Id'])
+
+        expect(created['Id']).not_to be_nil
+        check_type_and_status(created)
+        expect(created['DepositId']).to eq(deposit['Id'])
+      end
     end
   end
-=end
 end
