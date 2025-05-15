@@ -936,6 +936,28 @@ shared_context 'payins' do
     )
   end
 
+  def create_new_deposit_pre_authorized_pay_in_prior_to_complement(deposit_id, author_id, credited_wallet_id)
+    MangoPay::PayIn::PreAuthorized::Direct.create_deposit_preauthorized_pay_in_prior_to_complement(
+      AuthorId: author_id,
+      CreditedWalletId: credited_wallet_id,
+      DebitedFunds: { Currency: 'EUR', Amount: 1000 },
+      Fees: { Currency: 'EUR', Amount: 0 },
+      DepositId: deposit_id,
+      Tag: 'lorem ipsum'
+    )
+  end
+
+  def create_new_deposit_pre_authorized_pay_in_complement(deposit_id, author_id, credited_wallet_id)
+    MangoPay::PayIn::PreAuthorized::Direct.create_deposit_preauthorized_pay_in_complement(
+      AuthorId: author_id,
+      CreditedWalletId: credited_wallet_id,
+      DebitedFunds: { Currency: 'EUR', Amount: 1000 },
+      Fees: { Currency: 'EUR', Amount: 0 },
+      DepositId: deposit_id,
+      Tag: 'lorem ipsum'
+    )
+  end
+
   ###############################################
   # bankwire/direct
   ###############################################
