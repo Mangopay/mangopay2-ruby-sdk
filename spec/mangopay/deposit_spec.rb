@@ -44,6 +44,18 @@ describe MangoPay::Deposit do
       expect(result).to be_kind_of(Array)
       expect(result.count).to be > 0
     end
+
+    it 'fetches transactions for a deposit' do
+      author = new_natural_user
+      wallet = new_wallet
+      card_registration = new_card_registration_completed
+      deposit = create_new_deposit(card_registration['CardId'], author['Id'])
+      create_new_payin_pre_authorized_deposit_direct(deposit['Id'], author['Id'], wallet['Id'])
+
+      transactions = MangoPay::Deposit.get_transactions(deposit['Id'])
+      expect(transactions).to be_kind_of(Array)
+      expect(transactions.count).to be > 0
+    end
   end
 
 # the Cancel flow will be teste manually for now
