@@ -62,6 +62,14 @@ module MangoPay
         def self.create_pre_authorized_deposit_pay_in(params, idempotency_key = nil)
           MangoPay.request(:post, "#{MangoPay.api_path}/payins/deposit-preauthorized/direct/full-capture", params, {}, idempotency_key)
         end
+
+        def self.create_deposit_preauthorized_pay_in_prior_to_complement(params, idempotency_key = nil)
+          MangoPay.request(:post, "#{MangoPay.api_path}/payins/deposit-preauthorized/direct/capture-with-complement", params, {}, idempotency_key)
+        end
+
+        def self.create_deposit_preauthorized_pay_in_complement(params, idempotency_key = nil)
+          MangoPay.request(:post, "#{MangoPay.api_path}/payins/deposit-preauthorized/direct/complement", params, {}, idempotency_key)
+        end
       end
 
     end
