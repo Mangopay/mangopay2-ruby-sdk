@@ -13,19 +13,13 @@ Tested on the following versions of Ruby: 1.9.2, 1.9.3, 2.0.0 and 2.x up to 2.5
 
 Since [v3.0.17](https://github.com/Mangopay/mangopay2-ruby-sdk/releases/tag/v3.0.17) of the SDK, you must be using at least v2.01 of the API (more information about the changes required [here](https://docs.mangopay.com/api-v2-01-overview/))
 
-Account creation
--------------------------------------------------
-You can get yourself a free sandbox account or sign up for a production account by [registering on the Mangopay site](https://www.mangopay.com/start/) (note that validation of your production account involves several steps, so think about doing it in advance of when you actually want to go live).
-
 ## Usage
 
 ### Install
-* You can get yourself a free sandbox account or sign up for a production account [on the Mangopay site](https://www.mangopay.com/start/) (note that validation of your production account will involve several steps, so think about doing it in advance of when you actually want to go live).
-
 * Install the gem by either running ```gem install mangopay```
 or by adding it to your Gemfile ```gem 'mangopay'```
 
-* Using the credential info from the signup process above, call ```MangoPay.configure``` in your script as shown in the snippet below.
+* Call ```MangoPay.configure``` in your script as shown in the snippet below.
 
 ### Examples
 
