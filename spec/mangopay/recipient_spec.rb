@@ -18,13 +18,31 @@ describe MangoPay::Recipient do
   end
 
   describe 'GET User Recipients' do
-    it 'fetches a recipient' do
+    it 'fetches recipients without query param' do
       john = create_new_natural_user_sca_owner
       create_new_recipient(john['Id'])
       fetched = MangoPay::Recipient.get_user_recipients(john['Id'])
       expect(fetched).not_to be_nil
       expect(fetched).to be_kind_of(Array)
       expect(fetched).not_to be_empty
+    end
+
+    it 'fetches recipients with scope PAYOUT' do
+      john = create_new_natural_user_sca_owner
+      create_new_recipient(john['Id'])
+      fetched = MangoPay::Recipient.get_user_recipients(john['Id'], {RecipientScope: "PAYOUT"})
+      expect(fetched).not_to be_nil
+      expect(fetched).to be_kind_of(Array)
+      expect(fetched).not_to be_empty
+    end
+
+    it 'fetches recipients with scope PAYIN' do
+      john = create_new_natural_user_sca_owner
+      create_new_recipient(john['Id'])
+      fetched = MangoPay::Recipient.get_user_recipients(john['Id'], {RecipientScope: "PAYIN"})
+      expect(fetched).not_to be_nil
+      expect(fetched).to be_kind_of(Array)
+      expect(fetched).to be_empty
     end
   end
 
