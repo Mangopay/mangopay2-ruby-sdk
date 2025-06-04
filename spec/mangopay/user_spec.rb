@@ -399,4 +399,30 @@ describe MangoPay::User do
       expect(closed['UserStatus']).to eq('CLOSED')
     end
   end
+
+  describe 'Validate User Data Format' do
+    it 'validates successfully' do
+      validation = {
+        "CompanyNumber": {
+          "CompanyNumber": "AB123456",
+          "CountryCode": "IT"
+        }
+      }
+      result = MangoPay::User.validate_data_format(validation)
+      expect(result['CompanyNumber']).not_to be_nil
+    end
+
+    it 'validates with error' do
+      validation = {
+        "CompanyNumber": {
+          "CompanyNumber": "123"
+        }
+      }
+      expect { MangoPay::User.validate_data_format(validation) }.to raise_error { |err|
+        expect(err).to be_a MangoPay::ResponseError
+        expect(err.code).to eq '400'
+        expect(err.type).to eq 'param_error'
+      }
+    end
+  end
 end
