@@ -1,27 +1,25 @@
-# Mangopay Ruby SDK [![Build Status](https://travis-ci.org/Mangopay/mangopay2-ruby-sdk.svg?branch=master)](https://travis-ci.org/Mangopay/mangopay2-ruby-sdk)
+# Mangopay Ruby SDK
 
-The gem for interacting with the version 2 of the Mangopay API.
-See the [API documentation](http://docs.mangopay.com/api-references/)
-for more details on the API.
+[![Gem Version](https://badge.fury.io/rb/mangopay.svg)](https://rubygems.org/gems/mangopay) 
 
-Tested on the following versions of Ruby: 1.9.2, 1.9.3, 2.0.0 and 2.x up to 2.5
+Official [Mangopay Gem](https://rubygems.org/gems/mangopay) to access the [Mangopay API](https://docs.mangopay.com/api-reference) from applications written in Ruby.
 
-## NEWS
+See the [Mangopay API documentation](https://docs.mangopay.com/) for Ruby samples and details on product features. See the [SDK tests](#tests) for further usage examples.
 
-### Version 3.*
-**BREAKING CHANGES:** This version (3.\*) of the gem is targeting the Mangopay API Version 2. It has a brand new structure to make the api calls easier to use and is not backward compatible with 2.\* series.
+## Prerequisites
+- * A `ClientId` and an API key – if you don't have these, <a href="https://mangopay.com/contact" target="_blank">contact Sales</a> to get access to the <a href="https://hub.mangopay.com/" target="_blank">Mangopay Dashboard</a>
+- Ruby 1.9.2 or higher (tested from 1.9.2 up to 3.4.4)
 
-Since [v3.0.17](https://github.com/Mangopay/mangopay2-ruby-sdk/releases/tag/v3.0.17) of the SDK, you must be using at least v2.01 of the API (more information about the changes required [here](https://docs.mangopay.com/api-v2-01-overview/))
+Since SDK [v3.0.17](https://github.com/Mangopay/mangopay2-ruby-sdk/releases/tag/v3.0.17), the library uses v2.01 of the API. The older API version (v2) is no longer available.
 
-## Usage
+## Installation
 
-### Install
 * Install the gem by either running ```gem install mangopay```
 or by adding it to your Gemfile ```gem 'mangopay'```
 
 * Call ```MangoPay.configure``` in your script as shown in the snippet below.
 
-### Examples
+### Usage
 
 ```ruby
 require 'mangopay'
@@ -79,8 +77,8 @@ rescue MangoPay::ResponseError => ex
 end
 ```
 
-### Using multiple clientIDs
-You can effortlessly create multiple configuration objects tailored to your specific needs:
+### Using multiple Client IDs 
+The Ruby SDK offers the option to create multiple configuration objects tailored to your specific needs:
 
 ```
 config = MangoPay::Configuration.new
@@ -88,18 +86,19 @@ config.client_id = 'your-client-id'
 config.client_apiKey = 'your-api-key'
 config.preproduction = true
 ```
-add them using :
+
+Add them using:
 
 `MangoPay.add_config('config1', config)`
 
-and perform a call with them using :
+And perform a call with them using:
 
 `MangoPay.get_config('config1').apply_configuration`
 
-The previous method configure() is still working.
+The previous method `configure()` is still working.
 
-### Accessing RateLimit Headers
-Along with each request, the rate limiting headers are automatically updated in MangoPay object:
+### Accessing rate limiting headers
+The API returns rate limiting headers which are automatically updated in the `MangoPay` object:
 
 * X-RateLimit-Limit
 * X-RateLimit-Remaining
@@ -115,18 +114,28 @@ Along with each request, the rate limiting headers are automatically updated in 
   }
 ```
 
-Read more about rate limiting on [our documentation](https://docs.mangopay.com/guide/rate-limiting).
+For more information, see the [rate limiting](https://docs.mangopay.com/api-reference/overview/rate-limiting) article on the Mangopay docs.
 
 ### Log requests and responses
-You can easily enable logs by setting the ```log_file``` configuration option (see the section **configuration** above). If you don't want logs, remove the ```log_file``` line.
+You can enable logs by setting the ```log_file``` configuration option (see [usage](#usage) above). If you don't want logs, remove the ```log_file``` line.
 
 Requests and responses are filtered, so confidential data is not saved in logs.
 
 ### Tests
-Make sure that you have run: ```bundle install```
-Then you just have to run rspec ```rspec``` to run all the test suite.
-Feel free to report any test failure by creating an issue
-on the [Gem's Github](https://github.com/Mangopay/mangopay2-ruby-sdk/issues)
+Make sure that you have run: 
+```
+bundle install
+```
+Then to run the test suite, run: 
+```
+rspec
+```
+
+## Issues
+
+Create a [GitHub issue](https://github.com/Mangopay/mangopay2-ruby-sdk/issues) to report any problems or request features.
+
+We aim to reply to issues and contributions in a timely manner. For additional followup or anything that can't be shared over GitHub, please get in touch with our Support teams via the <a href="https://hub.mangopay.com/" target="_blank">Mangopay Dashboard</a>.
 
 ## Contributing
 
@@ -143,10 +152,6 @@ a test!
 
 5. Push to your fork and submit a pull request.
 
-At this point you're waiting on us. We like to at least comment on, if not
-accept, pull requests within three business days (and, typically, one business
-day). We may suggest some changes or improvements or alternatives.
-
 Syntax:
 
 * Two spaces, no tabs.
@@ -155,8 +160,3 @@ Syntax:
 * MyClass.my_method(my_arg) not my_method( my_arg ) or my_method my_arg.
 * a = b and not a=b.
 * Follow the conventions you see used in the source already.
-
-A contribution can also be as simple as a +1 on issues tickets to show us
-what you would like to see in this gem.
-
-That's it for now. Good Hacking...
