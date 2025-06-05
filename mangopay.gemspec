@@ -18,10 +18,10 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = '>= 1.9.2'
 
-  s.add_dependency('multi_json', '>= 1.7.7')
+  s.add_dependency('multi_json', '>= 1.15.0')
 
-  s.add_development_dependency('rake', '>= 10.1.0')
-  s.add_development_dependency('rspec', '>= 3.0.0')
+  s.add_development_dependency('rake', '>= 13.2.1')
+  s.add_development_dependency('rspec', '>= 3.13.0')
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- spec/*`.split("\n")
