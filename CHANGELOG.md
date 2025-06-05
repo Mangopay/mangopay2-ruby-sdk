@@ -1,3 +1,11 @@
+## [3.35.1] - 2025-06-05
+### Added
+- Support for `RecipientScope` query parameter on [GET List Recipients for a User](https://docs.mangopay.com/api-reference/recipients/list-recipients-user)
+- [POST Validate the format of User data](https://docs.mangopay.com/api-reference/user-data-format/validate-user-data-format)
+
+### Fixed
+- Support for legacy Payconiq integration via `MangoPay::PayIn::Payconiq::Web.create_legacy` (removed in error).
+
 ## [3.35.0] - 2025-05-23
 ### Added
 
