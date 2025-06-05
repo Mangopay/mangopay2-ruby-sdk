@@ -147,6 +147,10 @@ module MangoPay
         def self.url(*)
           "#{MangoPay.api_path}/payins/payment-methods/payconiq"
         end
+
+        def self.create_legacy(params, idempotency_key = nil)
+          MangoPay.request(:post, "#{MangoPay.api_path}/payins/payconiq/web", params, {}, idempotency_key)
+        end
       end
 
     end
