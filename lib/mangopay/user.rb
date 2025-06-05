@@ -87,6 +87,10 @@ module MangoPay
         url = "#{MangoPay.api_path}/sca/users/#{user_id}"
         MangoPay.request(:get, url, {}, {})
       end
+
+      def validate_data_format(params, idempotency_key = nil)
+        MangoPay.request(:post, "#{MangoPay.api_path}/users/data-formats/validation", params, {}, idempotency_key)
+      end
     end
   end
 end

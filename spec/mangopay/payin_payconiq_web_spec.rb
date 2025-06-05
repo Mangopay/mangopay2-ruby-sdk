@@ -20,6 +20,12 @@ describe MangoPay::PayIn::Payconiq::Web, type: :feature do
       expect(created['Id']).not_to be_nil
       check_type_and_status(created)
     end
+
+    it 'creates a payconiq web payin using the old endpoint' do
+      created = new_payin_payconiq_web_legacy
+      expect(created['Id']).not_to be_nil
+      check_type_and_status(created)
+    end
   end
 
 end
