@@ -40,6 +40,11 @@ module MangoPay
         MangoPay.request(:get, url, {}, filters)
       end
 
+      def fetch_for_pay_in(pay_in_id, filters = {})
+        url = "#{MangoPay.api_path}/payins/#{pay_in_id}/disputes"
+        MangoPay.request(:get, url, {}, filters)
+      end
+
       def fetch_pending_settlement(filters = {})
         url = "#{MangoPay.api_path}/disputes/pendingsettlement"
         MangoPay.request(:get, url, {}, filters)
