@@ -49,11 +49,14 @@ and it's infact not suitable like that
       expect(disputes).not_to be_empty
     end
     it 'fetches disputes for wallet' do
-      dispute = @disputes.find {|disp| disp['InitialTransactionId'] != nil}
-      expect(dispute).not_to be_nil, "Cannot test fetching disputes for wallet because there's no disputes with transaction ID in the disputes list."
-      payin = MangoPay::PayIn.fetch(dispute['InitialTransactionId'])
+      payin = MangoPay::PayIn.fetch("133379281")
       wallet_id = payin['CreditedWalletId']
       disputes = MangoPay::Dispute.fetch_for_wallet(wallet_id, {'per_page' => 1})
+      expect(disputes).to be_kind_of(Array)
+      expect(disputes).not_to be_empty
+    end
+    it 'fetches disputes for payin' do
+      disputes = MangoPay::Dispute.fetch_for_pay_in("133379281", {'per_page' => 1})
       expect(disputes).to be_kind_of(Array)
       expect(disputes).not_to be_empty
     end
