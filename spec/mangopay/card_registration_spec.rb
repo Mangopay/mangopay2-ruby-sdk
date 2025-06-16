@@ -107,4 +107,17 @@ describe MangoPay::CardRegistration do
       expect(card_validation['Id']).equal? fetched_card_validation['Id']
     end
   end
+
+  describe 'Get transactions by card fingerprint' do
+    it 'retrieves list of transactions for a fingerprint' do
+      completed = new_card_registration_completed
+      card_id = completed['CardId']
+      card = MangoPay::Card.fetch(card_id)
+      fingerprint = card['Fingerprint']
+      result = MangoPay::Card.get_transactions_by_fingerprint(fingerprint)
+
+      expect(result).to be_kind_of(Array)
+      expect(result.count).to be > 0
+    end
+  end
 end
