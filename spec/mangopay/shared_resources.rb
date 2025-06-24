@@ -1273,7 +1273,7 @@ end
 shared_context 'recipient' do
   include_context 'users'
 
-  let(:new_recipient) { create_new_recipient(create_new_natural_user_sca_owner['Id']) }
+  let(:new_recipient) { create_new_recipient(create_new_natural_user_sca_payer['Id']) }
 
   def create_new_recipient(user_id)
     MangoPay::Recipient.create(define_new_recipient, user_id)
