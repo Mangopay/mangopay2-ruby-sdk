@@ -5,7 +5,7 @@ describe MangoPay::Recipient do
     it 'creates a new recipient' do
       recipient = new_recipient
       assert_recipient(recipient)
-      expect(recipient['PendingUserAction']).not_to be_nil
+      expect(recipient['Status']).to eq('PENDING')
     end
   end
 
@@ -19,7 +19,7 @@ describe MangoPay::Recipient do
 
   describe 'GET User Recipients' do
     it 'fetches recipients without query param' do
-      john = create_new_natural_user_sca_owner
+      john = create_new_natural_user_sca_payer
       create_new_recipient(john['Id'])
       fetched = MangoPay::Recipient.get_user_recipients(john['Id'])
       expect(fetched).not_to be_nil
@@ -28,7 +28,7 @@ describe MangoPay::Recipient do
     end
 
     it 'fetches recipients with scope PAYOUT' do
-      john = create_new_natural_user_sca_owner
+      john = create_new_natural_user_sca_payer
       create_new_recipient(john['Id'])
       fetched = MangoPay::Recipient.get_user_recipients(john['Id'], {RecipientScope: "PAYOUT"})
       expect(fetched).not_to be_nil
@@ -37,7 +37,7 @@ describe MangoPay::Recipient do
     end
 
     it 'fetches recipients with scope PAYIN' do
-      john = create_new_natural_user_sca_owner
+      john = create_new_natural_user_sca_payer
       create_new_recipient(john['Id'])
       fetched = MangoPay::Recipient.get_user_recipients(john['Id'], {RecipientScope: "PAYIN"})
       expect(fetched).not_to be_nil
@@ -92,7 +92,7 @@ describe MangoPay::Recipient do
   describe 'VALIDATE' do
     it 'validates a recipient' do
       recipient = define_new_recipient
-      john = create_new_natural_user_sca_owner
+      john = create_new_natural_user_sca_payer
       # it should pass
       MangoPay::Recipient.validate(recipient, john['Id'])
 
