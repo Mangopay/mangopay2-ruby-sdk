@@ -124,12 +124,20 @@ module MangoPay
       "v2.01"
     end
 
+    def version_code_v3
+      "V3.0"
+    end
+
     def api_path
       "/#{version_code}/#{MangoPay.configuration.client_id}"
     end
 
     def api_path_no_client
       "/#{version_code}"
+    end
+
+    def api_path_v3
+      "/#{version_code_v3}/#{MangoPay.configuration.client_id}"
     end
 
     def api_uri(url='')

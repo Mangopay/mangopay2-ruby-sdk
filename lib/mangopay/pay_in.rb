@@ -333,5 +333,23 @@ module MangoPay
       end
     end
 
+    module Intent
+      class Authorization < Resource
+        class << self
+          def create(params, idempotency_key = nil)
+            MangoPay.request(:post, "#{MangoPay.api_path_v3}/payins/intents", params, {}, idempotency_key)
+          end
+        end
+      end
+
+      class Capture < Resource
+        class << self
+          def create(intent_id, params, idempotency_key = nil)
+            MangoPay.request(:post, "#{MangoPay.api_path_v3}/payins/intents/#{intent_id}/captures", params, {}, idempotency_key)
+          end
+        end
+      end
+    end
+
   end
 end
