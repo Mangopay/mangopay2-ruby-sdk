@@ -45,6 +45,10 @@ module MangoPay
         url = "#{MangoPay.api_path}/cards/#{card_id}/validation/#{validation_id}"
         MangoPay.request(:get, url)
       end
+
+      def get_transactions_by_fingerprint(fingerprint, filters = {})
+        MangoPay.request(:get, "#{fingerprint_url(fingerprint)}/transactions", {}, filters)
+      end
     end
   end
 end
