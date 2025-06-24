@@ -1,3 +1,11 @@
+## [3.37.0] - 2025-06-24
+### Changed
+- `multi_json` library version updated to 1.15.0 (latest, release 2020) to enable compatibility with later versions of Ruby
+
+> ⚠️ **Caution - Breaking change**
+>
+> If you use version 1.7.7 (2013) of the `multi_json` [gem](https://rubygems.org/gems/multi_json/versions/1.15.0) in your project, you need to update to 1.15.0 to use this version v3.37.0 of the Mangopay Ruby SDK
+
 ## [3.36.0] - 2025-06-24
 ### Added
 
