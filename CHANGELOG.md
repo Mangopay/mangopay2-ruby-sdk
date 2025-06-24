@@ -1,3 +1,15 @@
+## [3.36.0] - 2025-06-24
+### Added
+
+[New Reporting Service](https://docs.mangopay.com/release-notes/api/2025-06-05) endpoints (#287 ):
+- [POST Create a Report](https://docs.mangopay.com/api-reference/reporting/create-report)
+- [GET View a Report](https://docs.mangopay.com/api-reference/reporting/view-report)
+- [GET List all Reports](https://docs.mangopay.com/api-reference/reporting/list-reports)
+
+Support for:
+- [GET List Disputes for a PayIn](https://docs.mangopay.com/api-reference/disputes/list-disputes-payin) (#287)
+- [GET List Transactions for a Card Fingerprint](https://docs.mangopay.com/api-reference/transactions/list-transactions-card-fingerprint) (#289)
+
 ## [3.35.1] - 2025-06-05
 ### Added
 - Support for `RecipientScope` query parameter on [GET List Recipients for a User](https://docs.mangopay.com/api-reference/recipients/list-recipients-user)
