@@ -255,6 +255,16 @@ module MangoPay
       end
     end
 
+    module Bizum
+      class Web < Resource
+        include HTTPCalls::Create
+
+        def self.url(*)
+          "#{MangoPay.api_path}/payins/payment-methods/bizum"
+        end
+      end
+    end
+
     module Twint
       class Web < Resource
         include HTTPCalls::Create
