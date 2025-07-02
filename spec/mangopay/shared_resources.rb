@@ -753,6 +753,37 @@ shared_context 'payins' do
   end
 
   ###############################################
+  # Bizum/web
+  ###############################################
+  let(:new_payin_bizum_web_with_phone) do
+    user = new_natural_user
+    wallet = new_wallet
+    bizum = define_new_bizum(user, wallet, '+34700000000', nil)
+    MangoPay::PayIn::Bizum::Web.create(bizum)
+  end
+
+  let(:new_payin_bizum_web_with_return_url) do
+    user = new_natural_user
+    wallet = new_wallet
+    bizum = define_new_bizum(user, wallet, nil, 'https://docs.mangopay.com/please-ignore')
+    MangoPay::PayIn::Bizum::Web.create(bizum)
+  end
+
+  def define_new_bizum(user, wallet, phone, return_url)
+    {
+      AuthorId: user['Id'],
+      CreditedWalletId: wallet['Id'],
+      DebitedFunds: { Currency: 'EUR', Amount: 400 },
+      Fees: { Currency: 'EUR', Amount: 1 },
+      StatementDescriptor: "test bizum",
+      Phone: phone,
+      ReturnUrl: return_url,
+      Tag: 'Test PayIn/Bizum/Web',
+      ProfilingAttemptReference: nil
+    }
+  end
+
+  ###############################################
   # Twint/web
   ###############################################
   let(:new_payin_twint_web) do
