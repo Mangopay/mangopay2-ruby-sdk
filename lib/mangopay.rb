@@ -53,6 +53,7 @@ module MangoPay
   autoload :VirtualAccount, 'mangopay/virtual_account'
   autoload :IdentityVerification, 'mangopay/identity_verification'
   autoload :Recipient, 'mangopay/recipient'
+  autoload :Settlement, 'mangopay/settlement'
 
   # temporary
   autoload :Temp, 'mangopay/temp'
@@ -124,12 +125,20 @@ module MangoPay
       "v2.01"
     end
 
+    def version_code_v3
+      "V3.0"
+    end
+
     def api_path
       "/#{version_code}/#{MangoPay.configuration.client_id}"
     end
 
     def api_path_no_client
       "/#{version_code}"
+    end
+
+    def api_path_v3
+      "/#{version_code_v3}/#{MangoPay.configuration.client_id}"
     end
 
     def api_uri(url='')
@@ -248,6 +257,68 @@ module MangoPay
       ['x-number-of-pages', 'x-number-of-items'].each { |k|
         filters[k.gsub('x-number-of-', 'total_')] = res[k].to_i if res[k]
       }
+
+      if res['x-ratelimit']
+        self.ratelimit = {
+          limit: res['x-ratelimit'].split(", "),
+          remaining: res['x-ratelimit-remaining'].split(", "),
+          reset: res['x-ratelimit-reset'].split(", ")
+        }
+      end
+
+      data
+    end
+
+    def request_multipart(method, url, file, file_name, idempotency_key = nil)
+      uri = api_uri(url)
+
+      # Set headers
+      headers = request_headers
+      headers['Idempotency-Key'] = idempotency_key if idempotency_key
+      headers['x-tenant-id'] = 'uk' if configuration.uk_header_flag
+
+      boundary = "#{SecureRandom.hex}"
+      headers['Content-Type'] = "multipart/form-data; boundary=#{boundary}"
+
+      multipart_body = []
+      multipart_body << "--#{boundary}"
+      multipart_body << "Content-Disposition: form-data; name=\"file\"; filename=\"#{file_name}\""
+      multipart_body << ""
+      multipart_body << file
+      multipart_body << "--#{boundary}--"
+      multipart_body << ""
+
+      # Join string parts and ensure binary content is preserved
+      body = multipart_body.map { |part| part.is_a?(String) ? part.force_encoding("ASCII-8BIT") : part }.join("\r\n")
+
+      res = Net::HTTP.start(uri.host, uri.port,
+                            use_ssl: configuration.use_ssl?,
+                            read_timeout: configuration.http_timeout,
+                            open_timeout: configuration.http_open_timeout,
+                            max_retries: configuration.http_max_retries,
+                            ssl_version: :TLSv1_2) do |http|
+        req_class = Net::HTTP.const_get(method.capitalize)
+        req = req_class.new(uri.request_uri, headers)
+        req.body = body
+        do_request(http, req, uri)
+      end
+
+      raise MangoPay::ResponseError.new(uri, '408', { 'Message' => 'Request Timeout' }) if res.nil?
+
+      begin
+        data = res.body.to_s.empty? ? {} : JSON.load(res.body.to_s)
+      rescue MultiJson::ParseError
+        raise MangoPay::ResponseError.new(uri, res.code, { 'Message' => res.body })
+      end
+
+      unless res.is_a?(Net::HTTPOK) || res.is_a?(Net::HTTPCreated) || res.is_a?(Net::HTTPNoContent)
+        if res.is_a?(Net::HTTPUnauthorized) && res['www-authenticate']
+          redirect_url = res['www-authenticate'][/RedirectUrl=(.+)/, 1]
+          data['RedirectUrl'] = redirect_url
+          data['message'] = 'SCA required to perform this action.'
+        end
+        raise MangoPay::ResponseError.new(uri, res.code, data)
+      end
 
       if res['x-ratelimit']
         self.ratelimit = {
