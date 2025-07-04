@@ -33,9 +33,11 @@ describe MangoPay::Settlement do
       file = File.binread(file_path)
       before_update = MangoPay::Settlement.upload(file)
       expect(before_update['Status']).to eq('UPLOADED')
-      after_update = MangoPay::Settlement.update(before_update['SettlementId'], file)
+      updated = MangoPay::Settlement.update(before_update['SettlementId'], file)
+      expect(updated['Status']).to eq('UPLOADED')
       sleep 10
-      expect(after_update['Status']).to eq('PARTIALLY_SETTLED')
+      fetched = MangoPay::Settlement.get(@settlement['SettlementId'])
+      expect(fetched['Status']).to eq('PARTIALLY_SETTLED')
     end
   end
 end
