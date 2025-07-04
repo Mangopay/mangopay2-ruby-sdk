@@ -4,7 +4,7 @@ module MangoPay
     class << self
       def upload(file, idempotency_key = nil)
         url = "#{MangoPay.api_path_v3}/payins/intents/settlements"
-        MangoPay.request_multipart(:post, url, file, 'settlement_sample.csv', idempotency_key)
+        MangoPay.request_multipart(:post, url, file, 'settlement_file.csv', idempotency_key)
       end
 
       def get(settlement_id)
@@ -14,7 +14,7 @@ module MangoPay
 
       def update(settlement_id, file, idempotency_key = nil)
         url = "#{MangoPay.api_path_v3}/payins/intents/settlements/#{settlement_id}"
-        MangoPay.request_multipart(:post, url, file, 'settlement_sample.csv', idempotency_key)
+        MangoPay.request_multipart(:post, url, file, 'settlement_file.csv', idempotency_key)
       end
     end
   end
