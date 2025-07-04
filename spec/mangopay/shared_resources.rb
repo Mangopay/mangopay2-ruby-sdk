@@ -1312,7 +1312,7 @@ shared_context 'intents' do
   let(:new_payin_intent_authorization) { create_new_payin_intent_authorization(create_new_natural_user_sca_payer['Id']) }
 
   def create_new_payin_intent_authorization(user_id)
-    MangoPay::PayIn::Intent::Authorization.create(define_new_payin_intent_authorization(user_id))
+    MangoPay::PayIn::PayInIntent::Authorization.create(define_new_payin_intent_authorization(user_id))
   end
 
   def define_new_payin_intent_authorization(user_id)

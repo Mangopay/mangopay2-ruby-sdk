@@ -1,4 +1,4 @@
-describe MangoPay::PayIn::Intent, type: :feature do
+describe MangoPay::PayIn::PayInIntent, type: :feature do
   include_context 'wallets'
   include_context 'intents'
 
@@ -21,7 +21,7 @@ describe MangoPay::PayIn::Intent, type: :feature do
         }
       }
 
-      created = MangoPay::PayIn::Intent::Capture.create(intent['Id'], to_create)
+      created = MangoPay::PayIn::PayInIntent::Capture.create(intent['Id'], to_create)
       expect(created['Id']).not_to be_nil
       expect(created['Status']).to eq('CAPTURED')
     end
@@ -47,9 +47,18 @@ describe MangoPay::PayIn::Intent, type: :feature do
         ]
       }
 
-      created = MangoPay::PayIn::Intent::Capture.create(intent['Id'], to_create)
+      created = MangoPay::PayIn::PayInIntent::Capture.create(intent['Id'], to_create)
       expect(created['Id']).not_to be_nil
       expect(created['Status']).to eq('CAPTURED')
+    end
+  end
+
+  describe 'GET' do
+    it 'fetches an intent' do
+      intent = new_payin_intent_authorization
+      fetched =  MangoPay::PayIn::PayInIntent::Intent.get(intent['Id'])
+      expect(intent['Id']).to eq(fetched['Id'])
+      expect(intent['Status']).to eq(fetched['Status'])
     end
   end
 end
