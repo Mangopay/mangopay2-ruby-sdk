@@ -61,4 +61,17 @@ describe MangoPay::PayIn::PayInIntent, type: :feature do
       expect(intent['Status']).to eq(fetched['Status'])
     end
   end
+
+  describe 'CANCEL' do
+    it 'cancels an intent' do
+      intent = new_payin_intent_authorization
+      canceled =  MangoPay::PayIn::PayInIntent::Intent.cancel(intent['Id'], {
+        "ExternalData": {
+          "ExternalProcessingDate": 1728133765,
+          "ExternalProviderReference": SecureRandom.uuid,
+        }
+      })
+      expect(canceled['Status']).to eq('CANCELED')
+    end
+  end
 end

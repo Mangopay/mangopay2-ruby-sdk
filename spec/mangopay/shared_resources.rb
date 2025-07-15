@@ -1320,7 +1320,7 @@ shared_context 'intents' do
       "Amount": 1000,
       "Currency": "EUR",
       "ExternalData": {
-        "ExternalProcessingDate": "01-10-2030",
+        "ExternalProcessingDate": 1728133765,
         "ExternalProviderReference": SecureRandom.uuid,
         "ExternalMerchantReference": "Order-xyz-35e8490e-2ec9-4c82-978e-c712a3f5ba16",
         "ExternalProviderName": "Stripe",
@@ -1333,7 +1333,7 @@ shared_context 'intents' do
         {
           "Seller": {
             "AuthorId": user_id,
-            "TransferDate": "13-11-2024"
+            "TransferDate": 1728133765
           },
           "Sku": "item-123456",
           "Quantity": 1,
