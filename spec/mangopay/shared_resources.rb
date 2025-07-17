@@ -1309,13 +1309,14 @@ end
 shared_context 'intents' do
   include_context 'users'
 
-  let(:new_payin_intent_authorization) { create_new_payin_intent_authorization(create_new_natural_user_sca_payer['Id']) }
+  let(:new_payin_intent_authorization) { create_new_payin_intent_authorization(create_new_natural_user_sca_payer) }
 
-  def create_new_payin_intent_authorization(user_id)
-    MangoPay::PayIn::PayInIntent::Authorization.create(define_new_payin_intent_authorization(user_id))
+  def create_new_payin_intent_authorization(user)
+    MangoPay::PayIn::PayInIntent::Authorization.create(define_new_payin_intent_authorization(user))
   end
 
-  def define_new_payin_intent_authorization(user_id)
+  def define_new_payin_intent_authorization(user)
+    wallet = create_new_wallet(user)
     {
       "Amount": 1000,
       "Currency": "EUR",
@@ -1327,12 +1328,13 @@ shared_context 'intents' do
         "ExternalProviderPaymentMethod": "PAYPAL"
       },
       "Buyer": {
-        "Id": user_id
+        "Id": user['Id']
       },
       "LineItems": [
         {
           "Seller": {
-            "AuthorId": user_id,
+            "AuthorId": user['Id'],
+            "WalletId": wallet['Id'],
             "TransferDate": 1728133765
           },
           "Sku": "item-123456",

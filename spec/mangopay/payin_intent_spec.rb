@@ -74,4 +74,32 @@ describe MangoPay::PayIn::PayInIntent, type: :feature do
       expect(canceled['Status']).to eq('CANCELED')
     end
   end
+
+  describe 'CREATE SPLITS' do
+    it 'creates a split' do
+      intent = new_payin_intent_authorization
+      full_capture = {
+        "ExternalData": {
+          "ExternalProcessingDate": "01-10-2029",
+          "ExternalProviderReference": SecureRandom.uuid,
+          "ExternalMerchantReference": "Order-xyz-35e8490e-2ec9-4c82-978e-c712a3f5ba16",
+          "ExternalProviderName": "Stripe",
+          "ExternalProviderPaymentMethod": "PAYPAL"
+        }
+      }
+      MangoPay::PayIn::PayInIntent::Capture.create(intent['Id'], full_capture)
+      split = {
+        "Splits": [
+          {
+            "LineItemId": intent['LineItems'][0]['Id'],
+            "SplitAmount": 10
+          }
+        ]
+      }
+      created =  MangoPay::PayIn::PayInIntent::Split.create(intent['Id'], split)
+      expect(created['Splits']).to be_kind_of(Array)
+      expect(created['Splits']).not_to be_empty
+      expect(created['Splits'][0]['Status']).to eq('CREATED')
+    end
+  end
 end

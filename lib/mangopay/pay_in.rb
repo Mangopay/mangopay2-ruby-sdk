@@ -361,6 +361,14 @@ module MangoPay
           end
         end
       end
+
+      class Split < Resource
+        class << self
+          def create(intent_id, params, idempotency_key = nil)
+            MangoPay.request(:post, "#{MangoPay.api_path_v3}/payins/intents/#{intent_id}/splits", params, {}, idempotency_key)
+          end
+        end
+      end
     end
 
   end
