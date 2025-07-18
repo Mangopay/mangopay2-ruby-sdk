@@ -343,5 +343,43 @@ module MangoPay
       end
     end
 
+    module PayInIntent
+      class Authorization < Resource
+        class << self
+          def create(params, idempotency_key = nil)
+            MangoPay.request(:post, "#{MangoPay.api_path_v3}/payins/intents", params, {}, idempotency_key)
+          end
+        end
+      end
+
+      class Capture < Resource
+        class << self
+          def create(intent_id, params, idempotency_key = nil)
+            MangoPay.request(:post, "#{MangoPay.api_path_v3}/payins/intents/#{intent_id}/captures", params, {}, idempotency_key)
+          end
+        end
+      end
+
+      class Intent < Resource
+        class << self
+          def get(intent_id)
+            MangoPay.request(:get, "#{MangoPay.api_path_v3}/payins/intents/#{intent_id}")
+          end
+
+          # def cancel(intent_id, params)
+          #   MangoPay.request(:put, "#{MangoPay.api_path_v3}/payins/intents/#{intent_id}/cancel", params)
+          # end
+        end
+      end
+
+      class Split < Resource
+        class << self
+          def create(intent_id, params, idempotency_key = nil)
+            MangoPay.request(:post, "#{MangoPay.api_path_v3}/payins/intents/#{intent_id}/splits", params, {}, idempotency_key)
+          end
+        end
+      end
+    end
+
   end
 end

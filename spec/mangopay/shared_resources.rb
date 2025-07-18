@@ -1336,3 +1336,43 @@ shared_context 'recipient' do
     }
   end
 end
+
+shared_context 'intents' do
+  include_context 'users'
+
+  let(:new_payin_intent_authorization) { create_new_payin_intent_authorization(create_new_natural_user_sca_payer) }
+
+  def create_new_payin_intent_authorization(user)
+    MangoPay::PayIn::PayInIntent::Authorization.create(define_new_payin_intent_authorization(user))
+  end
+
+  def define_new_payin_intent_authorization(user)
+    wallet = create_new_wallet(user)
+    {
+      "Amount": 1000,
+      "Currency": "EUR",
+      "ExternalData": {
+        "ExternalProcessingDate": 1728133765,
+        "ExternalProviderReference": SecureRandom.uuid,
+        "ExternalMerchantReference": "Order-xyz-35e8490e-2ec9-4c82-978e-c712a3f5ba16",
+        "ExternalProviderName": "Stripe",
+        "ExternalProviderPaymentMethod": "PAYPAL"
+      },
+      "Buyer": {
+        "Id": user['Id']
+      },
+      "LineItems": [
+        {
+          "Seller": {
+            "AuthorId": user['Id'],
+            "WalletId": wallet['Id'],
+            "TransferDate": 1728133765
+          },
+          "Sku": "item-123456",
+          "Quantity": 1,
+          "UnitAmount": 1000,
+        }
+      ]
+    }
+  end
+end
