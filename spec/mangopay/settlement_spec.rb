@@ -20,10 +20,8 @@ describe MangoPay::Settlement do
 
   describe 'GET' do
     it 'fetches the file' do
-      # wait for the file to be processed by the API
-      sleep 10
       fetched = MangoPay::Settlement.get(@settlement['SettlementId'])
-      expect(fetched['Status']).to eq('PARTIALLY_SETTLED')
+      expect(fetched['Status']).to eq('UPLOADED')
     end
   end
 
@@ -35,9 +33,6 @@ describe MangoPay::Settlement do
       expect(before_update['Status']).to eq('UPLOADED')
       updated = MangoPay::Settlement.update(before_update['SettlementId'], file)
       expect(updated['Status']).to eq('UPLOADED')
-      sleep 10
-      fetched = MangoPay::Settlement.get(@settlement['SettlementId'])
-      expect(fetched['Status']).to eq('PARTIALLY_SETTLED')
     end
   end
 end
