@@ -292,6 +292,12 @@ module MangoPay
         def self.url(*)
           "#{MangoPay.api_path}/payins/payment-methods/openbanking"
         end
+
+        class << self
+          def get_supported_banks(filters = {})
+            MangoPay.request(:get, "#{MangoPay.api_path}/payment-methods/openbanking/metadata/supported-banks", {}, filters)
+          end
+        end
       end
     end
 
