@@ -367,6 +367,22 @@ module MangoPay
           def create(intent_id, params, idempotency_key = nil)
             MangoPay.request(:post, "#{MangoPay.api_path_v3}/payins/intents/#{intent_id}/splits", params, {}, idempotency_key)
           end
+
+          def execute(intent_id, split_id, idempotency_key = nil)
+            MangoPay.request(:post, "#{MangoPay.api_path_v3}/payins/intents/#{intent_id}/splits/#{split_id}/execute", {}, {}, idempotency_key)
+          end
+
+          def reverse(intent_id, split_id, idempotency_key = nil)
+            MangoPay.request(:post, "#{MangoPay.api_path_v3}/payins/intents/#{intent_id}/splits/#{split_id}/reverse", {}, {}, idempotency_key)
+          end
+
+          def get(intent_id, split_id)
+            MangoPay.request(:get, "#{MangoPay.api_path_v3}/payins/intents/#{intent_id}/splits/#{split_id}")
+          end
+
+          def update(intent_id, split_id, params)
+            MangoPay.request(:put, "#{MangoPay.api_path_v3}/payins/intents/#{intent_id}/splits/#{split_id}", params)
+          end
         end
       end
     end
