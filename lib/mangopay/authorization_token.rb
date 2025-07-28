@@ -66,7 +66,7 @@ module MangoPay
           f.flock(File::LOCK_SH)
           txt = f.read
           f.close
-          YAML.load(txt) || nil
+          YAML.safe_load(txt, permitted_classes: [Time]) || nil
         rescue Errno::ENOENT
           nil
         end
