@@ -75,31 +75,77 @@ describe MangoPay::PayIn::PayInIntent, type: :feature do
   #   end
   # end
 
-  describe 'CREATE SPLITS' do
+  describe 'SPLITS' do
     it 'creates a split' do
       intent = new_payin_intent_authorization
-      full_capture = {
-        "ExternalData": {
-          "ExternalProcessingDate": "01-10-2029",
-          "ExternalProviderReference": SecureRandom.uuid,
-          "ExternalMerchantReference": "Order-xyz-35e8490e-2ec9-4c82-978e-c712a3f5ba16",
-          "ExternalProviderName": "Stripe",
-          "ExternalProviderPaymentMethod": "PAYPAL"
-        }
-      }
-      MangoPay::PayIn::PayInIntent::Capture.create(intent['Id'], full_capture)
-      split = {
-        "Splits": [
-          {
-            "LineItemId": intent['LineItems'][0]['Id'],
-            "SplitAmount": 10
-          }
-        ]
-      }
-      created =  MangoPay::PayIn::PayInIntent::Split.create(intent['Id'], split)
+      created = create_new_splits(intent)
       expect(created['Splits']).to be_kind_of(Array)
       expect(created['Splits']).not_to be_empty
       expect(created['Splits'][0]['Status']).to eq('CREATED')
     end
+
+    it 'executes split' do
+      intent = new_payin_intent_authorization
+      split = create_new_splits(intent)['Splits'][0]
+      expect {
+        MangoPay::PayIn::PayInIntent::Split.execute(intent['Id'], split['Id'])
+      }.to raise_error { |err|
+        expect(err).to be_a MangoPay::ResponseError
+        expect(err.code).to eq '400'
+        expect(err.details['Type']).to eq 'param_error'
+      }
+    end
+
+    it 'reverses split' do
+      intent = new_payin_intent_authorization
+      split = create_new_splits(intent)['Splits'][0]
+      expect {
+        MangoPay::PayIn::PayInIntent::Split.reverse(intent['Id'], split['Id'])
+      }.to raise_error { |err|
+        expect(err).to be_a MangoPay::ResponseError
+        expect(err.code).to eq '400'
+        expect(err.details['Type']).to eq 'param_error'
+      }
+    end
+
+    it 'fetches split' do
+      intent = new_payin_intent_authorization
+      split = create_new_splits(intent)['Splits'][0]
+      fetched = MangoPay::PayIn::PayInIntent::Split.get(intent['Id'], split['Id'])
+      expect(fetched['Status']).to eq('CREATED')
+    end
+
+    it 'updates split' do
+      intent = new_payin_intent_authorization
+      split = create_new_splits(intent)['Splits'][0]
+      params = {
+        LineItemId: split['LineItemId'],
+        Description: 'updated split'
+      }
+      updated = MangoPay::PayIn::PayInIntent::Split.update(intent['Id'], split['Id'], params)
+      expect(updated['Description']).to eq('updated split')
+    end
+  end
+
+  def create_new_splits(intent)
+    full_capture = {
+      "ExternalData": {
+        "ExternalProcessingDate": "01-10-2029",
+        "ExternalProviderReference": SecureRandom.uuid,
+        "ExternalMerchantReference": "Order-xyz-35e8490e-2ec9-4c82-978e-c712a3f5ba16",
+        "ExternalProviderName": "Stripe",
+        "ExternalProviderPaymentMethod": "PAYPAL"
+      }
+    }
+    MangoPay::PayIn::PayInIntent::Capture.create(intent['Id'], full_capture)
+    split = {
+      "Splits": [
+        {
+          "LineItemId": intent['LineItems'][0]['Id'],
+          "SplitAmount": 10
+        }
+      ]
+    }
+    return  MangoPay::PayIn::PayInIntent::Split.create(intent['Id'], split)
   end
 end
