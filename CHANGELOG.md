@@ -1,3 +1,17 @@
+## [3.40.0] - 2025-08-07
+### Added
+Support for new Splits endpoints for Echo (#294 , [API release note](https://docs.mangopay.com/release-notes/api/2025-07-16)):
+- [PUT Update a Split of an Intent](https://docs.mangopay.com/api-reference/intents/update-intent-split)
+- [POST Execute a Split of an Intent](https://docs.mangopay.com/api-reference/intents/execute-intent-split)
+- [POST Reverse the Split of an Intent](https://docs.mangopay.com/api-reference/intents/reverse-intent-split)
+- [GET View a Split of an Intent](https://docs.mangopay.com/api-reference/intents/view-intent-split)
+
+New `ReportTypes` for Echo (#295, [API release note](https://docs.mangopay.com/release-notes/api/2025-08-06))):
+- `ECHO_INTENT`
+- `ECHO_INTENT_ACTION`
+- `ECHO_SETTLEMENT`
+- `ECHO_SPLIT`
+
 ## [3.39.1] - 2025-07-28
 ### Added
 - support for new endpoint [View supported banks for Pay by Bank](https://docs.mangopay.com/api-reference/pay-by-bank/view-supported-banks-pay-by-bank), to enable presentation of banks to user before Pay by Bank payment request
