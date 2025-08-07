@@ -73,7 +73,7 @@ describe MangoPay::PayIn::RecurringPayments, type: :feature do
       expect(cit).not_to be_nil
 
       update = MangoPay::PayIn::RecurringPayments::Recurring.update(id, {
-        Status: 'Ended'
+        Status: 'ENDED'
       })
 
       expect(update).not_to be_nil
