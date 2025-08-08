@@ -54,6 +54,7 @@ module MangoPay
   autoload :IdentityVerification, 'mangopay/identity_verification'
   autoload :Recipient, 'mangopay/recipient'
   autoload :Settlement, 'mangopay/settlement'
+  autoload :Response, 'mangopay/response'
 
   # temporary
   autoload :Temp, 'mangopay/temp'
