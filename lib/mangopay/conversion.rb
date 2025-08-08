@@ -34,6 +34,16 @@ module MangoPay
         url = "#{MangoPay.api_path}/conversions/quote/#{id}"
         MangoPay.request(:get, url, params)
       end
+
+      def create_client_wallets_quoted_conversion(params, idempotency_key = nil)
+        url = "#{MangoPay.api_path}/clients/conversions/quoted-conversion"
+        MangoPay.request(:post, url, params, {}, idempotency_key)
+      end
+
+      def create_client_wallets_instant_conversion(params, idempotency_key = nil)
+        url = "#{MangoPay.api_path}/clients/conversions/instant-conversion"
+        MangoPay.request(:post, url, params, {}, idempotency_key)
+      end
     end
   end
 end
