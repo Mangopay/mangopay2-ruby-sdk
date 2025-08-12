@@ -201,7 +201,7 @@ describe MangoPay::Client do
           "Amount": 1000
         }
       }
-      created = MangoPay::Client.create_pay_in_bank_wire_direct(dto)
+      created = MangoPay::Client.create_bank_wire_direct_pay_in(dto)
       expect(created).not_to be_nil
       expect(created['Id']).not_to be_nil
       expect(created['Type']).to eq('PAYIN')
