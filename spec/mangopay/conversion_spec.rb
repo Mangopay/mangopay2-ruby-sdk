@@ -31,6 +31,38 @@ describe MangoPay::Conversion, type: :feature do
     end
   end
 
+  describe 'CREATE QUOTED CONVERSION BETWEEN CLIENT WALLETS' do
+    it 'creates a new quoted conversion' do
+      quote = create_conversion_quote
+
+      conversion = MangoPay::Conversion.create_client_wallets_quoted_conversion(
+        QuoteId: quote['Id'],
+        CreditedWalletType: 'CREDIT',
+        DebitedWalletType: 'FEES'
+      )
+
+      expect(conversion['Status']).equal? 'SUCCEEDED'
+    end
+  end
+
+  describe 'CREATE INSTANT CONVERSION BETWEEN CLIENT WALLETS' do
+    it 'creates a new quoted conversion' do
+      conversion = MangoPay::Conversion.create_client_wallets_instant_conversion(
+        CreditedWalletType: 'FEES',
+        DebitedWalletType: 'FEES',
+        DebitedFunds: {
+          Currency: 'GBP',
+          Amount: 79
+        },
+        CreditedFunds: {
+          Currency: 'EUR'
+        }
+      )
+
+      expect(conversion['Status']).equal? 'SUCCEEDED'
+    end
+  end
+
   describe 'GET EXISTING CONVERSION' do
     it 'get an existing conversion' do
       conversion = create_instant_conversion
