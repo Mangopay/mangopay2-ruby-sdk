@@ -192,4 +192,22 @@ describe MangoPay::Client do
     end
   end
 
+  describe 'create payin bankwire direct' do
+    it 'creates the payin' do
+      dto = {
+        "CreditedWalletId": "CREDIT_EUR",
+        "DeclaredDebitedFunds": {
+          "Currency": "EUR",
+          "Amount": 1000
+        }
+      }
+      created = MangoPay::Client.create_bank_wire_direct_pay_in(dto)
+      expect(created).not_to be_nil
+      expect(created['Id']).not_to be_nil
+      expect(created['Type']).to eq('PAYIN')
+      expect(created['Status']).to eq('CREATED')
+      expect(created['PaymentType']).to eq('BANK_WIRE')
+      expect(created['ExecutionType']).to eq('DIRECT')
+    end
+  end
 end
