@@ -1,3 +1,8 @@
+## [3.40.1] - 2025-08-14
+### Added
+- Support for [POST Create a Quoted Conversion between Client Wallets](https://docs.mangopay.com/api-reference/conversions/create-quoted-conversion-client-wallets) and [POST Create an Instant Conversion between Client Wallets](https://docs.mangopay.com/api-reference/conversions/create-instant-conversion-client-wallets) #297
+- Support for [POST Create a Bank Wire to the Repudiation Wallet](https://docs.mangopay.com/api-reference/dispute-settlement/create-bank-wire-payin-to-repudiation-wallet) #299
+
 ## [3.40.0] - 2025-08-07
 ### Added
 Support for new Splits endpoints for Echo (#294 , [API release note](https://docs.mangopay.com/release-notes/api/2025-07-16)):
