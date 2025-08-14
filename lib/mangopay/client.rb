@@ -83,6 +83,10 @@ module MangoPay
         MangoPay.request(method, path, params)
       end
 
+      def create_bank_wire_direct_pay_in(params, idempotency_key = nil)
+        MangoPay.request(:post, url() + "/payins/bankwire/direct", params, {}, idempotency_key)
+      end
+
     end
   end
 end
