@@ -27,14 +27,15 @@ shared_context 'users' do
       Nationality: 'FR',
       CountryOfResidence: 'FR',
       Occupation: 'Worker',
-      IncomeRange: 1
+      IncomeRange: 1,
+      TermsAndConditionsAccepted: true
     }
   end
 
   def define_new_natural_user_sca_payer
     {
       "UserCategory": "PAYER",
-      "TermsAndConditionsAccepted": false,
+      "TermsAndConditionsAccepted": true,
       "FirstName": "Alex",
       "LastName": "Smith",
       "Email": "alex.smith@example.com",
@@ -79,7 +80,7 @@ shared_context 'users' do
   def define_new_legal_user_sca_payer
     {
       "UserCategory": "PAYER",
-      "TermsAndConditionsAccepted": false,
+      "TermsAndConditionsAccepted": true,
       "LegalPersonType": "SOLETRADER",
       "Name": "Alex Smith",
       "Email": "alex.smith.services@example.com",
@@ -193,7 +194,8 @@ shared_context 'users' do
       CompanyNumber: 'LU123456789',
       Statute: '',
       ProofOfRegistration: '',
-      ShareholderDeclaration: ''
+      ShareholderDeclaration: '',
+      TermsAndConditionsAccepted: true
     )
   end
 end

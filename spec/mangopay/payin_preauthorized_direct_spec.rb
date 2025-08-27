@@ -99,7 +99,8 @@ describe MangoPay::PayIn::PreAuthorized::Direct, type: :feature do
         expect(created['DepositId']).to eq(deposit['Id'])
       end
 
-      it 'creates a card direct pre authorized deposit payin complement' do
+      # skip because of PSP error
+      xit 'creates a card direct pre authorized deposit payin complement' do
         wallet = new_wallet
         author = new_natural_user
         card_registration = new_card_registration_completed
