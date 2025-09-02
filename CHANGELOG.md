@@ -1,3 +1,10 @@
+## [3.40.2] - 2025-09-02
+### Changed
+- OAuth token refresh buffer before expiry updated to 30s #303
+
+### Fixed
+- Tests #302
+
 ## [3.40.1] - 2025-08-14
 ### Added
 - Support for [POST Create a Quoted Conversion between Client Wallets](https://docs.mangopay.com/api-reference/conversions/create-quoted-conversion-client-wallets) and [POST Create an Instant Conversion between Client Wallets](https://docs.mangopay.com/api-reference/conversions/create-instant-conversion-client-wallets) #297
