@@ -54,14 +54,16 @@ describe MangoPay::User do
   describe 'UPDATE' do
     it 'updates a natural user' do
       updated_user = MangoPay::NaturalUser.update(new_natural_user['Id'] ,{
-        FirstName: 'Jack'
+        FirstName: 'Jack',
+        TermsAndConditionsAccepted: true
       })
       expect(updated_user['FirstName']).to eq('Jack')
     end
 
     it 'updates a legal user' do
       updated_user = MangoPay::LegalUser.update(new_legal_user['Id'], {
-        LegalRepresentativeFirstName: 'Jack'
+        LegalRepresentativeFirstName: 'Jack',
+        TermsAndConditionsAccepted: true
       })
       expect(updated_user['LegalRepresentativeFirstName']).to eq('Jack')
     end
@@ -85,7 +87,8 @@ describe MangoPay::User do
     it 'updates a SCA natural user' do
       user = new_natural_user_sca_owner
       updated_user = MangoPay::NaturalUserSca.update(user['Id'] ,{
-        FirstName: 'Jack'
+        FirstName: 'Jack',
+        TermsAndConditionsAccepted: true
       })
       fetched = MangoPay::NaturalUserSca.fetch(user['Id'])
       expect(updated_user['FirstName']).to eq('Jack')
@@ -97,7 +100,8 @@ describe MangoPay::User do
       legal_representative = user['LegalRepresentative']
       legal_representative['FirstName'] = 'Jack'
       updated_user = MangoPay::LegalUserSca.update(user['Id'] ,{
-        LegalRepresentative: legal_representative
+        LegalRepresentative: legal_representative,
+        TermsAndConditionsAccepted: true
       })
       fetched = MangoPay::LegalUserSca.fetch(user['Id'])
       expect(updated_user['LegalRepresentative']['FirstName']).to eq('Jack')
