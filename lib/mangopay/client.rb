@@ -83,6 +83,8 @@ module MangoPay
         MangoPay.request(method, path, params)
       end
 
+      # Create a Bank Wire PayIn to the Repudiation Wallet
+      # see https://docs.mangopay.com/api-reference/dispute-settlement/create-bank-wire-payin-to-repudiation-wallet
       def create_bank_wire_direct_pay_in(params, idempotency_key = nil)
         MangoPay.request(:post, url() + "/payins/bankwire/direct", params, {}, idempotency_key)
       end
