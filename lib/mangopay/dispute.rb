@@ -72,16 +72,6 @@ module MangoPay
         MangoPay.request(:get, url)
       end
 
-      # see https://docs.mangopay.com/api-reference/dispute-settlement/create-bank-wire-payin-to-repudiation-wallet
-      def create_bankwire_payin_to_repudiation_wallet(currency, amount)
-        url = "#{MangoPay.api_path}/clients/payins/bankwire/direct/"
-        params = {
-          CreditedWalletId: "CREDIT_#{currency}",
-          DeclaredDebitedFunds: { Currency: currency, Amount: amount }
-        }
-        MangoPay.request(:post, url, params)
-      end
-
       #####################################################
       # documents
       #####################################################
