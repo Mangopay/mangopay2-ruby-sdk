@@ -292,12 +292,11 @@ and it's infact not suitable like that
 =end
   describe 'create bankwire payin to repudiation wallet' do
     it 'creates a bankwire payin' do
-      created_pay_in = described_class.create_bankwire_payin_to_repudiation_wallet('EUR', 1000, 'ruby-sdk-test-tag')
+      created_pay_in = described_class.create_bankwire_payin_to_repudiation_wallet('EUR', 1000)
       expect(created_pay_in['Id']).not_to be_nil
       expect(created_pay_in['CreditedWalletId']).to eq('CREDIT_EUR')
       expect(created_pay_in['DeclaredDebitedFunds']['Currency']).to eq('EUR')
       expect(created_pay_in['DeclaredDebitedFunds']['Amount']).to eq(1000)
-      expect(created_pay_in['Tag']).to eq('ruby-sdk-test-tag')
       expect(created_pay_in['Type']).to eq('PAYIN')
       expect(created_pay_in['Nature']).to eq('REGULAR')
       expect(created_pay_in['PaymentType']).to eq('BANK_WIRE')

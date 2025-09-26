@@ -73,10 +73,9 @@ module MangoPay
       end
 
       # see https://docs.mangopay.com/api-reference/dispute-settlement/create-bank-wire-payin-to-repudiation-wallet
-      def create_bankwire_payin_to_repudiation_wallet(currency, amount, tag = nil)
+      def create_bankwire_payin_to_repudiation_wallet(currency, amount)
         url = "#{MangoPay.api_path}/clients/payins/bankwire/direct/"
         params = {
-          Tag: tag,
           CreditedWalletId: "CREDIT_#{currency}",
           DeclaredDebitedFunds: { Currency: currency, Amount: amount }
         }
