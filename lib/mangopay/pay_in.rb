@@ -372,9 +372,9 @@ module MangoPay
             MangoPay.request(:get, "#{MangoPay.api_path_v3}/payins/intents/#{intent_id}")
           end
 
-          # def cancel(intent_id, params)
-          #   MangoPay.request(:put, "#{MangoPay.api_path_v3}/payins/intents/#{intent_id}/cancel", params)
-          # end
+          def cancel(intent_id, params, idempotency_key = nil)
+            MangoPay.request(:post, "#{MangoPay.api_path_v3}/payins/intents/#{intent_id}/cancel", params, {}, idempotency_key)
+          end
         end
       end
 
