@@ -1,3 +1,8 @@
+## [3.41.0] - 2025-10-01
+### Added
+- Support for the [POST Cancel an Intent](https://docs.mangopay.com/api-reference/intents/cancel-intent) endpoint for [Echo](https://docs.mangopay.com/guides/echo), Mangopay's solution for platforms working with another third-party PSP for funds acquisition (#435)
+- Support for [POST Submit data for a PayPal PayIn](https://docs.mangopay.com/api-reference/paypal/submit-data-paypal-payin) endpoint (#305)
+
 ## [3.40.2] - 2025-09-02
 ### Changed
 - OAuth token refresh buffer before expiry updated to 30s #303
