@@ -71,4 +71,43 @@ describe MangoPay::PayIn::PayPal::Web, type: :feature do
     end
   end
 
+  describe 'Data Collection' do
+    it 'creates data collection' do
+      created = MangoPay::PayIn::PayPal::Web.create_data_collection(get_data_collection_dto)
+      expect(created['dataCollectionId']).not_to be_nil
+    end
+
+    it 'fetches data collection' do
+      created = MangoPay::PayIn::PayPal::Web.create_data_collection(get_data_collection_dto)
+      fetched = MangoPay::PayIn::PayPal::Web.get_data_collection(created['dataCollectionId'])
+      expect(fetched['DataCollectionId']).to eq(created['dataCollectionId'])
+      expect(fetched['sender_first_name']).to eq('Jane')
+      expect(fetched['sender_last_name']).to eq('Doe')
+    end
+  end
+
+  def get_data_collection_dto
+    return {
+      "sender_account_id": "A12345N343",
+      "sender_first_name": "Jane",
+      "sender_last_name": "Doe",
+      "sender_email": "jane.doe@sample.com",
+      "sender_phone": "(042)11234567",
+      "sender_address_zip": "75009",
+      "sender_country_code": "FR",
+      "sender_create_date": "2012-12-09T19:14:55.277-0:00",
+      "sender_signup_ip": "10.220.90.20",
+      "sender_popularity_score": "high",
+      "receiver_account_id": "A12345N344",
+      "receiver_create_date": "2012-12-09T19:14:55.277-0:00",
+      "receiver_email": "jane@sample.com",
+      "receiver_address_country_code": "FR",
+      "business_name": "Jane Ltd",
+      "recipient_popularity_score": "high",
+      "first_interaction_date": "2012-12-09T19:14:55.277-0:00",
+      "txn_count_total": "34",
+      "vertical": "Household goods",
+      "transaction_is_tangible": "0"
+    }
+  end
 end

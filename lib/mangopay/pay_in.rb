@@ -135,6 +135,14 @@ module MangoPay
         def self.add_paypal_tracking_information(pay_in_id, params, idempotency_key = nil)
           MangoPay.request(:put, "#{MangoPay.api_path}/payins/#{pay_in_id}/trackings", params, {}, idempotency_key)
         end
+
+        def self.create_data_collection(params, idempotency_key = nil)
+          MangoPay.request(:post, "#{MangoPay.api_path}/payins/payment-methods/paypal/data-collection", params, {}, idempotency_key)
+        end
+
+        def self.get_data_collection(data_collection_id, idempotency_key = nil)
+          MangoPay.request(:get, "#{MangoPay.api_path}/payins/payment-methods/paypal/data-collection/#{data_collection_id}")
+        end
       end
 
     end
@@ -372,9 +380,9 @@ module MangoPay
             MangoPay.request(:get, "#{MangoPay.api_path_v3}/payins/intents/#{intent_id}")
           end
 
-          # def cancel(intent_id, params)
-          #   MangoPay.request(:put, "#{MangoPay.api_path_v3}/payins/intents/#{intent_id}/cancel", params)
-          # end
+          def cancel(intent_id, params, idempotency_key = nil)
+            MangoPay.request(:post, "#{MangoPay.api_path_v3}/payins/intents/#{intent_id}/cancel", params, {}, idempotency_key)
+          end
         end
       end
 
