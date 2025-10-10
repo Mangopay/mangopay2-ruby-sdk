@@ -65,7 +65,8 @@ module MangoPay
                   :client_id, :client_apiKey,
                   :temp_dir, :log_file, :log_trace_headers, :http_timeout,
                   :http_max_retries, :http_open_timeout,
-                  :logger, :use_ssl, :uk_header_flag
+                  :logger, :use_ssl, :uk_header_flag,
+                  :after_request_proc
 
     def apply_configuration
       MangoPay.configure do |config|
@@ -80,6 +81,7 @@ module MangoPay
         config.use_ssl = @use_ssl
         config.logger = @logger
         config.uk_header_flag = @uk_header_flag
+        config.after_request_proc = @after_request_proc
       end
     end
 
@@ -110,7 +112,7 @@ module MangoPay
 
       true
     end
-    
+
     def log_trace_headers
       @log_trace_headers || false
     end
@@ -266,6 +268,8 @@ module MangoPay
         }
       end
 
+      configuration.after_request_proc&.call(data)
+
       data
     end
 
@@ -327,6 +331,8 @@ module MangoPay
           reset: res['x-ratelimit-reset'].split(", ")
         }
       end
+
+      configuration.after_request_proc&.call(data)
 
       data
     end
