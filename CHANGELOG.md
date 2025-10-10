@@ -1,3 +1,7 @@
+## [3.41.1] - 2025-10-10
+### Added
+- Configuration for `after_request_proc` to be able to check rate limits post-request (#301 - thank you @matteeyah and @robertfall for the contribution 🙏)
+
 ## [3.41.0] - 2025-10-01
 ### Added
 - Support for the [POST Cancel an Intent](https://docs.mangopay.com/api-reference/intents/cancel-intent) endpoint for [Echo](https://docs.mangopay.com/guides/echo), Mangopay's solution for platforms working with another third-party PSP for funds acquisition (#435)
