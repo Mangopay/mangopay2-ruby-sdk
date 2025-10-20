@@ -161,6 +161,18 @@ describe MangoPay::User do
     end
   end
 
+  describe 'MANAGE CONSENT' do
+    it 'manages consent' do
+      user = new_natural_user
+
+      enrollment_result = MangoPay::User.enroll_sca(user['Id'])
+      expect(enrollment_result["PendingUserAction"]["RedirectUrl"]).not_to be_nil
+
+      consent_result = MangoPay::User.manage_consent(user['Id'])
+      expect(consent_result["PendingUserAction"]["RedirectUrl"]).not_to be_nil
+    end
+  end
+
   describe 'FETCH' do
     it 'fetches all the users' do
       users = MangoPay::User.fetch()
