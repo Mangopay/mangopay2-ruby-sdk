@@ -11,11 +11,15 @@ module MangoPay
     include HTTPCalls::Update
     include HTTPCalls::Fetch
     class << self
-      def enroll_sca(user_id)
+      def enroll_sca(user_id, idempotency_key = nil)
         url = "#{MangoPay.api_path}/sca/users/#{user_id}/enrollment"
-        MangoPay.request(:post, url, {}, {})
+        MangoPay.request(:post, url, {}, {}, idempotency_key)
       end
 
+      def manage_consent(user_id, idempotency_key = nil)
+        url = "#{MangoPay.api_path}/sca/users/#{user_id}/consent"
+        MangoPay.request(:post, url, {}, {}, idempotency_key)
+      end
 
       # Fetches list of wallets belonging to the given +user_id+.
       # Optional +filters+ is a hash accepting following keys:
