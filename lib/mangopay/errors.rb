@@ -50,7 +50,7 @@ module MangoPay
 
     def type;    @details['Type'] || @details['type']; end
     def error;   @details['error']; end
-    def errors;  @details['errors'] || error; end
+    def errors;  @details['errors'] || @details['Errors'] || error; end
 
     def message;
       if error

@@ -119,8 +119,6 @@ module MangoPay
     end
 
     def uk_header_flag
-      warn "[DEPRECATION] `uk_header_flag` is deprecated and will be removed in a future version. " \
-             "Please update your configuration accordingly."
       @uk_header_flag || false
     end
   end
