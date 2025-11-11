@@ -139,6 +139,13 @@ describe MangoPay::Hook do
     end
   end
 
+  describe 'CARD' do
+    it 'view card validation' do
+      fetched_card_validation = MangoPay::Acquiring::Card.get_card_validation('placeholder', 'placeholder')
+    #   TODO: card_id and card_validation_id created by the PCI endpoint
+    end
+  end
+
   def create_new_pay_in_card_direct
     card_registration = new_card_registration_completed
     MangoPay::Acquiring::PayIn::Card::Direct.create(

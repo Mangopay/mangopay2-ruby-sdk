@@ -52,5 +52,11 @@ module MangoPay
         MangoPay.request(:post, "#{MangoPay.api_path}/acquiring/payins/#{pay_in_id}/refunds", params, {}, idempotency_key)
       end
     end
+
+    class Card < Resource
+      def self.get_card_validation(card_id, validation_id)
+        MangoPay.request(:get, "#{MangoPay.api_path}/acquiring/cards/#{card_id}/validation/#{validation_id}")
+      end
+    end
   end
 end
