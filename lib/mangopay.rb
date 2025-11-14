@@ -16,6 +16,9 @@ module MangoPay
 
   autoload :HTTPCalls, 'mangopay/http_calls'
   autoload :Resource, 'mangopay/resource'
+
+  autoload :BaseAdapter, 'mangopay/http_adapters/base_adapter'
+  autoload :NetHttpAdapter, 'mangopay/http_adapters/net_http_adapter'
   autoload :Client, 'mangopay/client'
   autoload :User, 'mangopay/user'
   autoload :NaturalUser, 'mangopay/natural_user'
@@ -66,7 +69,7 @@ module MangoPay
                   :temp_dir, :log_file, :log_trace_headers, :http_timeout,
                   :http_max_retries, :http_open_timeout,
                   :logger, :use_ssl, :uk_header_flag,
-                  :after_request_proc
+                  :after_request_proc, :http_client_adapter
 
     def apply_configuration
       MangoPay.configure do |config|
@@ -82,6 +85,7 @@ module MangoPay
         config.logger = @logger
         config.uk_header_flag = @uk_header_flag
         config.after_request_proc = @after_request_proc
+        config.http_client_adapter = @http_client_adapter
       end
     end
 
@@ -225,14 +229,7 @@ module MangoPay
         headers['x-tenant-id'] = 'uk'
       end
 
-      res = Net::HTTP.start(uri.host, uri.port, :use_ssl => configuration.use_ssl?, :read_timeout => configuration.http_timeout,
-                            :max_retries => configuration.http_max_retries,
-                            :open_timeout => configuration.http_open_timeout, ssl_version: :TLSv1_2) do |http|
-        req = Net::HTTP::const_get(method.capitalize).new(uri.request_uri, headers)
-        req.body = JSON.dump(params)
-        before_request_proc.call(req) if before_request_proc
-        do_request(http, req, uri)
-      end
+      res = http_client.execute_request(method, uri, params, headers, before_request_proc)
 
       raise MangoPay::ResponseError.new(uri, '408', {'Message' => 'Request Timeout'}) if res.nil?
 
@@ -284,28 +281,7 @@ module MangoPay
       boundary = "#{SecureRandom.hex}"
       headers['Content-Type'] = "multipart/form-data; boundary=#{boundary}"
 
-      multipart_body = []
-      multipart_body << "--#{boundary}"
-      multipart_body << "Content-Disposition: form-data; name=\"file\"; filename=\"#{file_name}\""
-      multipart_body << ""
-      multipart_body << file
-      multipart_body << "--#{boundary}--"
-      multipart_body << ""
-
-      # Join string parts and ensure binary content is preserved
-      body = multipart_body.map { |part| part.is_a?(String) ? part.force_encoding("ASCII-8BIT") : part }.join("\r\n")
-
-      res = Net::HTTP.start(uri.host, uri.port,
-                            use_ssl: configuration.use_ssl?,
-                            read_timeout: configuration.http_timeout,
-                            open_timeout: configuration.http_open_timeout,
-                            max_retries: configuration.http_max_retries,
-                            ssl_version: :TLSv1_2) do |http|
-        req_class = Net::HTTP.const_get(method.capitalize)
-        req = req_class.new(uri.request_uri, headers)
-        req.body = body
-        do_request(http, req, uri)
-      end
+      res = http_client.execute_multipart_request(method, uri, file, file_name, headers)
 
       raise MangoPay::ResponseError.new(uri, '408', { 'Message' => 'Request Timeout' }) if res.nil?
 
@@ -346,6 +322,13 @@ module MangoPay
 
     private
 
+    # Get the configured HTTP client adapter or default to Net::HTTP adapter.
+    #
+    # @return [MangoPay::HttpAdapters::BaseAdapter] The HTTP client adapter instance
+    def http_client
+      @http_client ||= configuration.http_client_adapter || HttpAdapters::NetHttpAdapter.new(configuration)
+    end
+
     def user_agent
       {
           bindings_version: VERSION,
@@ -377,79 +360,6 @@ module MangoPay
       rescue => e
         headers.update('x_mangopay_client_raw_user_agent' => user_agent.inspect, error: "#{e} (#{e.class})")
       end
-    end
-
-    def do_request(http, req, uri)
-      if logs_required?
-        do_request_with_log(http, req, uri)
-      else
-        do_request_without_log(http, req)
-      end
-    end
-
-    def do_request_with_log(http, req, uri)
-      res, time = nil, nil
-      params = FilterParameters.request(req.body)
-      if configuration.log_trace_headers
-        trace_headers = JSON.dump({ 'Idempotency-Key' => req['Idempotency-Key'] , 'x_mangopay_trace-id' =>  req['x_mangopay_trace-id'] })
-        line = "[#{Time.now.iso8601}] #{req.method.upcase} \"#{uri.to_s}\" #{params} #{trace_headers}"
-      else
-        line = "[#{Time.now.iso8601}] #{req.method.upcase} \"#{uri.to_s}\" #{params}"
-      end
-      begin
-        time = Benchmark.realtime {
-          begin
-            res = do_request_without_log(http, req)
-          rescue Net::ReadTimeout
-            res = nil
-          end
-        }
-        res
-      ensure
-        line = "#{log_severity(res)} #{line}"
-        if time.nil?
-          time_log = "[Unknown ms]"
-        else
-          time_log = "[#{(time * 1000).round(1)}ms]"
-        end
-        if res.nil?
-          params = ''
-          line += "\n  #{time_log} 408 Request Timeout #{params}\n"
-        else
-          params = FilterParameters.response(res.body)
-          line += "\n  #{time_log} #{res.code} #{params}\n"
-        end
-        logger.info { line }
-      end
-    end
-
-    def do_request_without_log(http, req)
-      http.request(req)
-    end
-
-    def log_severity(res)
-      errors = [Net::HTTPClientError, Net::HTTPServerError, Net::HTTPUnknownResponse]
-      errors.any? { |klass| res.is_a?(klass) } ? 'E' : 'I'
-    end
-
-    def logger
-      raise NotImplementedError unless logs_required?
-      return @logger if @logger
-
-      if !configuration.logger.nil?
-        @logger = configuration.logger
-      elsif !configuration.log_file.nil?
-        @logger = Logger.new(configuration.log_file)
-        @logger.formatter = proc do |_, _, _, msg|
-          "#{msg}\n"
-        end
-      end
-
-      @logger
-    end
-
-    def logs_required?
-      !configuration.log_file.nil? || !configuration.logger.nil?
     end
   end
 end
